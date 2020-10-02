@@ -1,0 +1,2254 @@
+%
+% [2020-10-02] Move this vocabulary file from SVN to github.
+% [2018-08-24] 这个TeX文件最终可能只当作天天练的内容，里面的词汇将慢慢移动到ch_concret_eng.tex
+%              文件当中去！
+% [2015-10-19] Move all here, work well on TeX-Live2014, but Live-2015 seems
+%              NOT GOOD for the ' symbole output.
+%
+% [2015-10-18] Try convert the concrete_eng.tex into XeLatex format
+
+\documentclass[a4paper]{article}
+\title{英语单词记忆卡片}
+\author{Yang Songxiang}
+
+%% MUST defined before fontspce
+\usepackage{tipa}
+
+\usepackage{fontspec,xunicode,xltxtra,makeidx,xecolor}
+\usepackage{color,listings,tabularx,amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{titlesec}
+\usepackage{lettrine}
+\usepackage{colortbl}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\usepackage[many]{tcolorbox}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{epigraph}
+\usepackage{soul}
+\usepackage[nonumberlist]{glossaries}
+%
+%%
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{tkz-base}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,trees,calc,automata,positioning, fit}
+\usetikzlibrary{calendar}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{angles}
+\usetikzlibrary{graphs}
+
+\tikzset{
+  mybox/.style={
+    rectangle,
+    rounded corners,
+    draw=black
+  },
+}
+
+\usepackage[auto-label]{exsheets}
+\usepackage{enumerate}
+\usepackage{tasks}
+\usepackage{indentfirst}
+
+\usepackage[bookmarks=true,pdfborder={0 0 0}]{hyperref}
+%%去除TexLive-2015开始fontspec对引号的影响
+\defaultfontfeatures[\rmfamily,\sffamily,\ttfamily]{}
+\setmainfont{WenQuanYi Micro Hei}
+\setsansfont{WenQuanYi Micro Hei}
+\setmonofont{WenQuanYi Micro Hei}
+
+%required Windows fonts
+\newcommand\fontnamekai{WenQuanYi Micro Hei}
+% Tex-Live2016
+%\newfontinstance\KAI {\fontnamekai}
+\newfontfamily\KAI {\fontnamekai}
+\newcommand{\kai}[1]{{\KAI#1}}
+%\newfontfamily\mynamingfont {Liberation Serif}
+%\newfontfamily\mynamingfontb {Century Schoolbook L}
+%\newfontfamily\mynamingfontc {Droid Serif}
+%\newfontfamily\mynamingfontd [Mapping=tex-text]{TeX Gyre Pagella}
+
+
+\newcommand\vtextvisiblespace[1][.4em]{%
+  \mbox{\kern.06em\vrule height.5ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.5ex}}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5\baselineskip}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip=0pt plus 1pt minus 0.1pt
+
+%listing global settings
+\lstset{basicstyle=\scriptsize,frame=lines}
+
+%some global color
+\definecolor{light-gray}{rgb}{0.87,0.87,0.87}
+\definecolor{light-yellow}{rgb}{0.88,0.92,0.48}
+\definecolor{mygreen}{rgb}{0.63,1,0.35}
+
+%complicated def
+\lstnewenvironment{myjavacode}[1][]
+      {\lstset{language=Java}\lstset{escapeinside={(*@}{@*)},
+       basicstyle=\footnotesize\ttfamily,
+       numbers=left,numberstyle=\scriptsize,stepnumber=1,numbersep=5pt,
+       breaklines=true,
+       %firstnumber=last,
+           %frame=tblr,
+           framesep=5pt,
+           showstringspaces=false,
+           keywordstyle=\itshape\color{blue},
+          %identifierstyle=\ttfamily,
+           stringstyle=\xecolor{maroon},
+        commentstyle=\color{black},
+        rulecolor=\color{black},
+        xleftmargin=0pt,
+        xrightmargin=0pt,
+        aboveskip=\medskipamount,
+        belowskip=\medskipamount,
+               backgroundcolor=\color{white}, #1
+}}
+{}
+
+%\newfontfamily\thekai{WenQuanYi Micro Hei}
+\newfontfamily\thekai{STKaiti}
+%%尝试把margainpar中的文字大小修改      
+\setlength\marginparwidth{2cm}
+\makeatletter
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{\thekai\footnotesize #1}%
+  \global\setbox\@currbox\copy\@marbox
+  \@xympar}
+\makeatother
+
+%% Try new a my own code 用于扩展词汇的统一处理
+\newcounter{myexpandnum}
+\newcounter{mydemonum}
+%\newenvironment{myexpand2}[1][\unskip]{\colorbox{red}{Expand\refstepcounter{myexpandnum} \themyexpandnum #1}}{}
+
+%\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum}  扩展词汇\themyexpandnum- \vspace{0.5cm} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=red] (0,0) circle (1ex); \colorbox{blue!30}{扩展词汇\themyexpandnum- \vspace{0.5cm}} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+
+\newenvironment{mydemosample}{\stepcounter{mydemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=blue] (0,0) circle (1ex); \colorbox{blue!30}{例句 \themydemonum} 
+\\
+\rule{0.2\textwidth}{0.5mm} \begin{quotation}}{\end{quotation}}
+
+%%这个用于适合打印的例句输出
+\newcounter{printdemonum}
+\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] {\node[rectangle]{\includegraphics[scale=0.10]{../latex/images/huawen.EPS}}} {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
+
+% a table collection
+%\definecolor{Gray}{gray}{0.85}
+%\definecolor{LightCyan}{rgb}{0.88,1,1}
+%\newcolumntype{mycA}{>{\columncolor{Gray}}c}
+%\newcolumntype{mycB}{>{\columncolor{LightCyan}}c}
+
+%\newcommand\mywordnums[2]{First #1 , second #2}
+\newcommand\mywordnums[2]{\bgroup \def\arraystretch{1.15} \scriptsize
+  \begin{tabular}{|>{\columncolor[gray]{0.8}}c|>{\columncolor[rgb]{0.88,1,1}}c|}
+   \hline
+   {单数} & {复数} \\
+   \hline
+   {#1} & {#2} \\
+   \hline
+  \end{tabular}
+\egroup}
+  
+%% 2016-12-22添加了一个类似tip类型的示例
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myTipStyleDemoCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=-0.5cm,
+rightmargin=-0.5cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ; 
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ; 
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) -- 
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myTipStyleDemo}
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%是替换掉上面的自己写的简单的myexpand环境
+%
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+\newcounter{myExpandWordCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\small,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ; 
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30,overlay]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ; 
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) -- 
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myExpandWord}
+
+
+
+%%
+%% 寒假学习计划的临时环境
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myPlanCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=1.8cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,green!30]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,green]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --\SetupExSheets{headings=margin}
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ; 
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ; 
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) -- 
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myPlan}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% mySimpExpand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%也是替换掉上自己写的简单的myexpand环境
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\tcbset{colback=Salmon!50!white,colframe=FireBrick!75!black, width=(\linewidth-8mm)/2,before=,after=\hfill,equal height group=ske}
+\newcounter{mySimpExpandCnt}
+\newenvironment{mySimpExpand}[1][]
+  {\refstepcounter{mySimpExpandCnt}\begin{tcolorbox}[
+    colback=green!5,
+    colframe=green!40!black,
+    title=\large{扩展词汇-\themySimpExpandCnt : #1}]
+  }
+  {\end{tcolorbox}}
+
+%% ReadIt(大家说英语节目的内容整理)
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\large,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ; 
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) -- 
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ; 
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) -- 
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myReadList}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) -- 
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ; 
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) -- 
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) -- 
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) -- 
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) -- 
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ; 
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) -- 
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) -- 
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList}
+
+
+%% 下面这个适合定理的风格
+
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\newcounter{mySimpExpandCounter}
+%\tcbuselibrary{theorem}
+%\newtcbtheorem[number within=section]{mySimpExpand22222}{My Theorem}%
+%{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+
+
+%\titleformat{\section}[block]{\kai}{\thesection}{10pt}{}
+
+%\makeglossaries
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+由于使用\XeLaTeX{}格式已经存在一个乱序的单词词汇表格， 但现实中一个个地背诵这些孤立的单词， 对于提高词汇量的帮助并不太大， 而且也容易疲劳。
+
+所以从2017年10月开始，单独使用这个文档，把整个词汇尽量按照分类来整理，用于日常单词记忆的主要手段。而总词汇表(vol.tex)则用于判断词汇量的参考文档使用。
+\end{abstract}
+
+%%% start new page from the first
+\newpage
+
+\section{身体部位}\label{sec.JuniorEng}
+
+\vspace{1cm}
+\begin{center}\index{hair} \index{ear} \index{leg} \index{mouth}  \index{nose} \index{face} \index{arm} \index{body} \index{toe} \index{wrong} \index{curly} \index{address} \index{Danmark} \index{ink} \index{attention} \index{pay attention} \index{comic} \index{comic book} \index{athletics} \index{athletic} \index{athlete} \index{wonder} \index{wonderful} \index{wrist} \index{middle} \index{central} \index{entrance} \index{ladder} \index{lonely} \index{alone} \index{set up} \index{agree with} \index{Paris} \index{winner} \index{nap} \index{Indian} \index{India} \index{race track} \index{blanket} \index{towel}
+ \begin{tikzpicture}
+ \node [rectangle ] (IDdog) {\includegraphics[scale=0.50]{../latex/images/dog.jpg}};
+ 
+\end{tikzpicture}
+
+	\vspace{3cm}\index{hand} \index{eye} \index{foot} \index{head} \index{tail} \index{neck}  \index{blind} \index{internet} \index{large} \index{worker} \index{term} \index{straight} \index{street} \index{grey} \index{worse} \index{square} \index{expensive} \index{cheap} \index{purse} \index{bus station} \index{guitar} \index{granny} \index{fruit stall} \index{whisper} \index{stair} \index{stairs} \index{upstairs} \index{downstairs} \index{lemon} \index{site} \index{jam} \index{treasure} \index{cave} \index{repair} \index{kick} \index{tidy} \index{glamorous} \index{valley} \index{cliff} \index{wave} \index{burn} \index{bomb}
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDdog) {\includegraphics[scale=0.19]{./demo1.jpg}};
+ 
+\end{tikzpicture}
+\end{center}
+
+\begin{printdemosample}
+ - Look at the giraffe.
+ 
+ - Wow! It has a long neck!
+\end{printdemosample}
+
+
+\vspace{1cm}
+
+
+\section{颜色}
+
+\begin{tikzpicture}
+ 
+  \node [rectangle, anchor = west, text width=2cm] (ID1) {green};
+  \node [rectangle, draw, right of = ID1, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID1] (ID2) {pink};
+  \node [rectangle, draw, anchor = west, right of = ID2, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, right of = ID1, xshift=4cm, text width=2cm] (ID3) {yellow};
+  \node [rectangle, draw, right of = ID3, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID3] (ID4) {red};
+  \node [rectangle, draw, anchor = west, right of = ID4, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID2] (ID5) {blue};
+  \node [rectangle, draw, right of = ID5, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID4] (ID6) {purple};
+  \node [rectangle, draw, right of = ID6, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID5] (ID7) {white};
+  \node [rectangle, draw, right of = ID7, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID6] (ID8) {brown};
+  \node [rectangle, draw, right of = ID8, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID7] (ID9) {black};
+  \node [rectangle, draw, right of = ID9, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+  \node [rectangle, anchor = west, text width=2cm, below of = ID8] (ID10) {orange};
+  \node [rectangle, draw, right of = ID10, xshift=0.5cm, text width=1cm, minimum height=3ex]{};
+  
+\end{tikzpicture}
+
+\begin{printdemosample}  \index{with} \index{block} \index{build} \index{suitcase} \index{armchair} \index{hear} \index{noise} \index{both} \index{university} \index{universe} \index{in danger} \index{danger} \index{dangerous} \index{grasshopper} \index{grassland} \index{die} \index{enjoy} \index{carry} \index{restaurant} \index{Washington} \index{medicine} \index{grandparent} \index{lie} \index{exercise} \index{happen} \index{come round} \index{exactly} \index{fortnight} \index{appear} \index{appearance} \index{disappear} \index{sightsee}\index{sightseeing} \index{harbour} \index{crew} \index{cabin crew} \index{set off} \index{route} \index{expedition} \index{goods} \index{silk} \index{herb} \index{spice}
+ First, they paint with red and orange. Then they paint with yellow and green.
+\end{printdemosample}
+
+
+\vspace{0.7cm}
+
+由颜色可以衍生的词汇：\index{black} \index{pink}  \index{red}  \index{green} \index{blue} \index{colour} \index{color} \index{colourful} \index{white} \index{brown} \index{yellow} \index{purple} \index{paintbrush} \index{draw} \index{paint} \index{brush} \index{prepare} \index{ourselves} \index{heart} \index{race} \index{stamp} \index{shampoo} \index{team} \index{haircut} \index{secret} \index{dream}\index{kitten} \index{seaside} \index{group} \index{double} \index{portion} \index{alcohol} \index{alcoholic} \index{carbon} \index{carbohydrate} \index{unfortunately} \index{nervous} \index{miserable}
+
+\begin{itemize}
+ \item 五颜六色的   $\;$ $\;$ \quad colorful (colourful) \qquad colored
+ \item 画画  $\;$ $\;$ $\;$ $\;$ \quad  $\;$ $\;$ $\;$ $\;$  draw
+ \item 涂色 $\;$ $\;$ $\;$ $\;$  \quad $\;$ $\;$  $\;$ $\;$ paint
+ \item 画刷 $\;$ $\;$ $\;$ $\;$  \quad $\;$ $\;$  $\;$ $\;$ paintbrush
+\end{itemize}
+
+\begin{printdemosample}
+ She gives Lucy a paintbrush.
+\end{printdemosample}
+
+\begin{printdemosample} \index{cute}  \index{voice}
+ I have a rabbit, it's white. It's cute.
+\end{printdemosample}
+
+
+\newpage
+
+\section{be}
+be是一个概括性的词，它包括了英文中表达"是"这个意思的单词总类：  \index{am}  \index{are} \index{is} \index{there are}  \index{there is}  \index{isn't} \index{of course} \index{TV} \index{watch TV} \index{from} \index{exhibitor} \index{below} \index{part} \index{create} \index{direction} \index{toward} \index{manners} \index{disappointed} \index{disappointing} \index{bright} \index{brightness} \index{tulip} \index{rose} \index{towel} \index{wheat} \index{straight away} \index{grill} \index{grilled} \index{join} \index{realistic}
+
+\begin{tikzpicture}
+ \node [rectangle] (IDbase) {be};
+ 
+ \node [rectangle, anchor = west, right of = IDbase, xshift=0.6cm, text width=0.7cm] (IDam) {am};
+ \node [rectangle, anchor = west, above of = IDam, yshift=-0.3cm, text width=0.7cm ] (IDis) {is};
+ \node [rectangle, anchor = west, below of = IDam, yshift=0.3cm, text width=0.7cm] (IDare) {are};
+ 
+ \draw [->, >=stealth'] (IDbase) -- (IDam);
+ \draw [->, >=stealth'] (IDbase) -- (IDis);
+ \draw[->, >=stealth'] (IDbase) -- (IDare);
+ 
+ \node [rectangle, anchor = west, text width=3.3cm, right of = IDbase, xshift=5cm, yshift=0.8cm, font=\scriptsize] (IDguize) {简单记得下面规则：};
+ \node [rectangle, anchor = west, text width=3.3cm, below of = IDguize,xshift=0.5cm, yshift=0.5cm, font=\scriptsize] (ID1) {am只与我(I)用};
+ \node [rectangle, anchor = west, text width=3.3cm, below of = ID1, yshift=0.5cm, font=\scriptsize] (ID2) {它他她this/that, 用is};
+ \node [rectangle, anchor = west, text width=3.3cm, below of = ID2, yshift=0.5cm, font=\scriptsize] (ID3) {剩下的都用are};
+ 
+ \draw [] ($(ID1.west)+ (0, 0.2)$) -- ($(ID1.west) + (0, -1.2)$);
+\end{tikzpicture}
+
+由于这个表达"是"的词使用太广泛了，所以我们在介绍用法的时候，用be来代表这些词的总体。
+
+比如根据\cite{bibEngJuniorOneB}里面表达人高兴开心的说法，我们就可以使用: \index{I} \index{we} \index{plastic} \index{they} \index{though} \index{although} \index{congratulations} \index{dark} \index{rhyme} \index{above} \index{sky} \index{is gone} \index{Japan} \index{public} \index{public signs} \index{size} \index{ago} \index{themselves} \index{fossil} \index{gray} \index{ice} \index{change} \index{money}\index{forty} \index{forty-seven} \index{thirty} \index{thirty-two} \index{earth} \index{on earth} \index{able} \index{be able to} \index{divide} \index{division} \index{stick} \index{squirrel} \index{character} \index{narrator} \index{wrestler} \index{security} \index{invisible} \index{pretend to}
+
+\vspace{0.4cm}
+
+  \hspace{3cm} be happy
+  
+\vspace{0.3cm}
+
+\marginpar{\vspace{0.8cm}你能够填对么?}
+\begin{tasks}(2)
+  \task They \blank[width=0.4cm]{} happy.  \task I \blank[width=0.4cm]{} happy.
+  \task He \blank[width=0.4cm]{} happy.  \task She \blank[width=0.4cm]{} happy.
+  \task We \blank[width=0.4cm]{} happy.  \task You \blank[width=0.4cm]{} happy.
+\end{tasks}
+
+\vspace{0.5cm}
+
+再比如：
+
+\vspace{0.4cm}
+
+  \hspace{3cm} be made of
+  
+\vspace{0.3cm}
+
+\begin{printdemosample}
+ These toys are made of plastic.
+ 
+ My table is made of wood.
+\end{printdemosample}
+
+\begin{tasks}(2)
+  \task My chair \blank[width=0.4cm]{} made of wood.  \task My blocks \blank[width=0.4cm]{} made of wood.
+\end{tasks}
+
+\vspace{0.5cm}
+
+某个地方有某个/某些东西：
+
+\vspace{0.4cm}
+
+  \hspace{3cm} there be
+  
+\vspace{0.3cm}
+
+最近原则
+
+\begin{printdemosample}
+ There's a lamp next to the bed.
+ 
+ There are three people in my family.
+ 
+ There is a pen and two books on the desk.
+ 
+ There are two books, a pen, and many pencils on the table.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Lucy finds a big box. She opens it. Inside, there is a dragon and some paints.
+\end{printdemosample}
+
+不是there be的情况下，看主语(谁)是几个人来决定用is/are:  \index{here} \index{there} \index{in order to} \index{order} \index{late} \index{loud} \index{later} \index{famous} \index{naughty} \index{second} \index{third} \index{fourth} \index{fifth} \index{country} \index{world} \index{worldwide} \index{sports centre} \index{sports center} \index{shoulder} \index{as soon as} \index{beard} \index{moustache} \index{sunglasses} \index{gather} \index{take care of} \index{have to} \index{has to} \index{had to}
+
+\begin{printdemosample}
+ Tom and Tim are brothers.
+\end{printdemosample}
+
+
+\vspace{5.1cm}
+家庭成员的单词：\index{sister} \index{brother}  \index{aunt}  \index{uncle} \index{cousin} \index{garden} \index{family} \index{daughter} \index{father} \index{mother} \index{friend} \index{grandfather} \index{grandmother}  \index{baby} \index{babysitter} \index{certainly} \index{tooth fairy} \index{fair} \index{fairly} \index{unfair} \index{moon} \index{wake up} \index{be sleepy} \index{asleep} \index{be asleep} \index{be awake} \index{magic} \index{pillow} \index{pill} \index{in a hurry} \index{husband}\index{band} \index{lose} \index{corner} \index{corn} \index{solve} \index{capital}\index{capital city} \index{since} \index{P.E.} \index{side} \index{ground} \index{accommodation}  \index{label} \index{biography} \index{blogger} \index{advert} \index{advertisement} \index{exist} \index{embarrassed} \index{prison} \index{prisoner} \index{jail} \index{punish}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task father  \task mother \task grandfather \task grandmother
+ \task brother \task sister  \task cousin    \task aunt
+ \task uncle   \task family  \task dad       \task mum
+ \task grandpa \task grandma \task friend    \task baby 
+\end{tasks}
+
+由家庭成员联想到人称的指代单词： \index{you}   \index{she}  \index{he} \index{Mr Chan} \index{Miss Thin} \index{Mrs Ship}  \index{it}  \index{shall} \index{comfortable} \index{percent} \index{leaf} \index{again} \index{stranger} \index{soccer} \index{mask} \index{circle} \index{hang} \index{hang up} \index{sour} \index{salt} \index{salty} \index{in total} \index{content}\index{tent} \index{contest} \index{totally} \index{England} \index{degree} \index{notice} \index{already} \index{neither} \index{neither nor} \index{sheet}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task I  \task you \task he \task she
+ \task it \task we  \task they \task Mr
+ \task Miss \task Mrs 
+\end{tasks}
+
+下一组：\index{your} \index{my} \index{its} \index{our} \index{their}  \index{his} \index{her} \index{on time} \index{sweep} \index{messy} \index{best} \index{the best} \index{finish line} \index{line} \index{reach} \index{reach up} \index{trunk} \index{agree} \index{disagree} \index{dislike} \index{spend} \index{spent} \index{special} \index{flat} \index{control} \index{replied} \index{said} \index{began} \index{brought} \index{bought}\index{taught} \index{none}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task my  \task your \task his \task her
+ \task its \task our  \task their  \task 's
+\end{tasks}
+
+\begin{printdemosample}
+ That's my book, and this is your pen.
+\end{printdemosample}
+
+\begin{printdemosample} \index{shop} \index{person} \index{or} \index{phone number} \index{throw away} \index{pleased} \index{handwriting} \index{television} \index{outside} \index{box office}
+
+ This is Mr Green.
+ 
+ This is Miss Li.
+ 
+ This is Mrs Ship.
+ 
+ This is Ron Rabbit's shop.
+\end{printdemosample}
+
+既然有家庭成员了，那么居住的房子称呼也要有：\index{bathroom} \index{house} \index{kitchen}  \index{bedroom} \index{room} \index{sitting room}  \index{lamp} \index{gate} \index{door} \index{wall} \index{dining room} \index{bed} \index{bad} \index{balcony} \index{basement} \index{connect}
+
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task bathroom  \task house \task kitchen \task bedroom
+ \task room \task sitting room  \task  lamp \task door
+ \task wall \task dining room  \task bed
+\end{tasks}
+
+\begin{printdemosample}\marginpar{bed\\ bad \\ sad}
+ - I got two tickets this morning.
+ 
+ - Oh, that's too bad!
+\end{printdemosample}
+
+
+\vspace{0.4cm}
+
+介绍家中东西位置，我们需要下面词汇：  \index{in} \index{behind} \index{in front of} \index{under}  \index{on} \index{next} \index{between} \index{inside} \index{holiday} \index{tie} \index{belt} \index{high heels} \index{bracelet} \index{earing} \index{handkerchief} \index{plain}\index{earring} \index{handsome} \index{shy} \index{drama} \index{fiction} \index{non-fiction} \index{thrill} \index{thriller}
+
+%% hand drawing
+
+\vspace{5cm}  
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task in    \task under     \task behind    \task in front of
+ \task on    \task next to   \task between   \task inside
+ \task outside
+\end{tasks}
+
+\newpage
+
+\section{字段相同的词} \index{test} \index{rope} \index{skipping rope} \index{skip} \index{install} \index{webcam} \index{angrily} \index{frightened} \index{frightening} \index{relax} \index{relaxed} \index{download}
+  
+\begin{tikzpicture}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, -1); \coordinate  (p3) at (5, 1); \coordinate  (p4) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {w};
+  \node at (p2) {b};
+  \node at (0, 0) {p};
+  \node at (pcenter) {ear};
+  
+  \node at (p3) {wear};
+  \node at (5, 0) {pear};
+  \node at (p4) {bear};
+\end{tikzpicture}
+
+\begin{printdemosample} \index{hat} \index{wear} \index{pear} \index{calendar}
+ I can wear my hat.
+\end{printdemosample}
+
+\begin{printdemosample} \index{short}
+ - Look at the bear.
+ 
+ - Oh, it has a short tail.
+\end{printdemosample}
+
+
+\begin{tikzpicture}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0.1, -1); \coordinate  (p3) at (5, 1); \coordinate  (p4) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {h};
+  \node at (p2) {ch};
+  \node at (pcenter) {air};
+  
+  \node at (p3) {hair};
+  \node at (p4) {chair};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ There's a desk and a chair in my room.
+
+ My chair is made of wood.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{hair不可数，不可用a}
+ - That is my cousin Maria, her hair is long.
+ 
+ - Yes, she has long hair.
+\end{printdemosample}
+
+注意头发通常我们不说a long hair, 其它的则可以使用a, 而对称的部位则用复数即可：\index{see}  \index{last} \index{professor} \index{steal} \index{chain} \index{goalkeeper}
+
+\begin{printdemosample}  \index{to} \index{will} \index{help} \index{border}
+ This is a baby shark. It has eyes to help it see. 
+ 
+ It has a tail to help it swim.
+ 
+ It has a mouth to help it eat.
+ 
+ It will grow into a big shark.
+\end{printdemosample}
+
+\newpage
+
+\marginpar{\vspace{0.7cm}take off\\ take it easy}
+\begin{tikzpicture} \index{take} \index{make} \index{cake} \index{cupcake} \index{borrow} \index{lend} \index{stone} \index{text} \index{textbook} \index{instruction}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, 0);
+  \coordinate  (p3) at (0, -1);
+  \coordinate  (p4) at (5, 1);
+  \coordinate  (p5) at (5, 0);
+  \coordinate  (p6) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {t};
+  \node at (p2) {m};
+  \node at (p3) {c};
+  
+  \node at (pcenter) {ake};
+  
+  \node at (p4) {take};
+  \node at (p5) {make};
+  \node at (p6) {cake};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ - This cake is cold.
+ 
+ - This pizza is hot.
+\end{printdemosample}
+
+\marginpar{\vspace{0.7cm}sometimes}
+\begin{tikzpicture}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, -1); \coordinate  (p3) at (5, 1); \coordinate  (p4) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {s};
+  \node at (p2) {c};
+  \node at (pcenter) {ome};
+  
+  \node at (p3) {some};
+  \node at (p4) {come};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ Some people go by train, some people go by bicycle.
+\end{printdemosample}
+
+
+\begin{tikzpicture}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, -1); \coordinate  (p3) at (5, 1); \coordinate  (p4) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {c};
+  \node at (p2) {p};
+  \node at (pcenter) {arrot};
+  
+  \node at (p3) {carrot};
+  \node at (p4) {parrot};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ He talks like a parrot and just repeat what he heard. 
+\end{printdemosample}
+
+
+\vspace{0.8cm} \index{walk}
+
+\marginpar{\vspace{0.7cm}talk about}
+\begin{tikzpicture}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, -1); \coordinate  (p3) at (5, 1); \coordinate  (p4) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {w};
+  \node at (p2) {t};
+  \node at (pcenter) {alk};
+  
+  \node at (p3) {walk};
+  \node at (p4) {talk};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ Stop talking and listen!
+\end{printdemosample}
+
+\begin{printdemosample} \index{about}
+ Let's talk about this room.
+ 
+ Let's talk in English.
+\end{printdemosample}
+
+
+\newpage
+
+\marginpar{\vspace{0.7cm}look at \\ look for \\look out \\look around}
+\begin{tikzpicture} \index{look} \index{look at}  \index{look for} \index{look out} \index{take a look} \index{have a look}\index{have a swim} \index{cook} \index{mail} \index{beginner}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, 0);
+  \coordinate  (p3) at (0, -1);
+  \coordinate  (p4) at (5, 1);
+  \coordinate  (p5) at (5, 0);
+  \coordinate  (p6) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {c};
+  \node at (p2) {b};
+  \node at (p3) {l};
+  
+  \node at (pcenter) {ook};
+  
+  \node at (p4) {cook};
+  \node at (p5) {book};
+  \node at (p6) {look};
+\end{tikzpicture}
+
+\begin{printdemosample} \index{book} \index{dancing}
+ I can cook. I can sing. I can dance.
+\end{printdemosample}
+
+\begin{printdemosample} \index{doctor} \index{dad} \index{supermarket} \index{floor} \index{missing}
+ - My dad is a cook.
+ 
+ - My dad is a doctor.
+\end{printdemosample}
+
+\begin{printdemosample}
+ John is a very good cook. \qquad (He cooks well)
+\end{printdemosample}
+
+由cook联想出职位单词： \index{dancer} \index{singer} \index{each}  \index{clown} \index{teacher} \index{farmer} \index{nurse} \index{policeman} \index{police car} \index{police officer} \index{policewoman} \index{postman} \marginpar{\vspace{1.2cm}源自铜扣(copper\begin{IPA}[kA:p@r]\end{IPA}) }
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task teacher    \task doctor        \task nurse  \task dancer
+ \task policeman  \task policewoman   \task postman \task cop \begin{IPA}[kA:p]\end{IPA}
+ \task singer     \task police officer \task farmer \task worker
+\end{tasks}
+
+\vspace{0.8cm}
+
+\begin{tikzpicture} \index{wood} \index{wooden} \index{blood}\index{flood} \index{consider} \index{formal} \index{sugar} \index{thumb} \index{warn} \index{suggest} \index{metal} \index{attractive} \index{gorgeous} \index{arrest} \index{attack} \index{crime} \index{criminal}
+  \coordinate  (p1) at (0, 1);
+  \coordinate  (p2) at (0, 0);
+  \coordinate  (p3) at (0, -1);
+  \coordinate  (p4) at (5, 1);
+  \coordinate  (p5) at (5, 0);
+  \coordinate  (p6) at (5, -1);
+  \coordinate (pcenter) at (2, 0);
+  
+  \node at (p1) {f};
+  \node at (p2) {w};
+  \node at (p3) {bl};
+  
+  \node at (pcenter) {ood};
+  
+  \node at (p4) {food};
+  \node at (p5) {wood};
+  \node at (p6) {blood};
+\end{tikzpicture}
+  
+  \marginpar{\vspace{0.9cm}中国菜，中餐}
+  
+ \begin{printdemosample}  \index{like} \index{meal} \index{pick} \index{pick up} \index{simple} \index{calculator} \index{kilo-} \index{kilometer} \index{kilometre} \index{China} \index{Chinese} \index{America}\index{Italy} \index{Italian} \index{Poland} \index{Polish} \index{table tennis} \index{volleyball} \index{be made of} \index{fire} \index{firefly} \index{fire engine} \index{building} \index{twin} \index{lovely} \index{English} \index{close} \index{snowman} \index{try} \index{lesson} \index{hill} \index{headache} \index{go climbing} \index{fever} \index{be afraid of}
+  I like Chinese food.
+ \end{printdemosample}
+ 
+ \begin{printdemosample}
+  My chair is made of wood. My table is made of wood too.
+ \end{printdemosample}
+
+
+\newpage
+
+联想词 \index{bottle} \index{fill up} \index{water}  \index{fine} \marginpar{\vspace{1.3cm}尽可能想到的所有单词}
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDcloud) {\includegraphics[scale=0.10]{./bottle.png}};
+  \node [rectangle, right of = IDcloud, xshift=0.6cm ] (IDrain) {\includegraphics[scale=0.10]{./bottle.png}};
+  \node [rectangle, right of = IDrain, xshift=0.6cm ] (IDsun) {\includegraphics[scale=0.10]{./bottle.png}};
+  \node [rectangle, right of = IDsun, xshift=0.6cm ] (IDsun2) {\includegraphics[scale=0.10]{./bottle.png}};
+  \node [rectangle, right of = IDsun2, xshift=0.6cm ] (IDsun3) {\includegraphics[scale=0.10]{./bottle.png}};
+\end{tikzpicture}
+  
+  
+\vspace{2cm} \index{cup} \index{high} \index{check} \index{check in} \index{check out} \index{immigration} \index{waste}\index{a waste of time} \index{mean}\index{album} \index{slip} \index{through} \index{skin} \index{protect} \index{climb up} \index{sharp} \index{magazine} \index{future} \index{brave} \index{player} \index{football player} \index{painting} \index{diet} \index{on diet} \index{barbecue} \index{chess} \index{delicious} \index{Easter} \index{patient} \index{mature} \index{bridge}\index{tear up} \index{scary} \index{calm} \index{calm down} \index{anxious} \index{serious}\index{seriously} \index{charming} \index{literature} \index{shocking} \index{romantic} \index{soldier} \index{skill} \index{guilty} \index{stress} \index{stressed} \index{confused} \index{confuse}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task bottle  \task empty  \task full     \task fill up
+ \task water    \task wine   \task low     \task high
+ \task cup     \task cupcake \task drink   \task eat
+\end{tasks}
+
+\begin{printdemosample}
+ a bottle of milk.
+ 
+ seven bottles of milk
+\end{printdemosample}
+
+\vspace{0.9cm}
+
+由于满、空等，联想出一些反义词汇： \index{long} \index{tall} \index{short} \index{happy}  \index{unhappy} \index{small} \index{fat} \index{big} \index{thin} \index{little} \index{quick} \index{slow} \index{slowly} \index{slow down} \index{speed up} \index{speed} \index{keep} \index{move} \index{young} \index{spirit} \index{finger} \index{hobby} \index{telescope} \index{Canada} \index{finally} \index{final} \index{storybook} \index{at weekends} \index{Christmas} \index{Christmas tree} \index{message} \index{be good at} \index{knowledge} \index{ambition} \index{soft} \index{softly} \index{software} \index{understand} \index{traffic light} \index{traffic} \index{smell} \index{password} \index{hero} \index{heroine} \index{fairy} \index{fight} \index{firefighter} \index{unbelievable} \index{uncomfortable} \index{unforgettable} \index{unpleasant} \index{terrific}
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDcloud) {\includegraphics[scale=0.10]{./snail.png}};
+  \node [rectangle, right of = IDcloud, xshift=3.9cm ] (IDrain) {\includegraphics[scale=0.09]{./horse.png}};
+\end{tikzpicture}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task fat  \task thin   \task tall   \task short
+ \task black \task white \task big    \task small
+ \task little \task long  \task fast  \task slow
+ \task old    \task young  \task happy  \task sad
+ \task up     \task down   \task in  \task out
+ \task on     \task off   \task high   \task low
+\end{tasks}
+
+
+高频率词汇on/off: \index{off} \index{turn off}  \index{turn on}  \index{take off} \index{back off} \index{get on} \index{get off} \index{old} \index{new} \index{put on} \index{back} \index{Sunday} \index{Friday} \index{Monday} \index{sound} \index{festival} \index{listen to} \index{fast} \index{fasten} \index{knit}
+
+\begin{printdemosample}
+ Buzz off, Bill!
+\end{printdemosample}
+
+\marginpar{\vspace{1cm}put on \\ take off} \index{yes} \index{just} \index{top} \index{top ten} \index{a little} \index{January} \index{February} \index{March} \index{April} \index{May} \index{June} \index{July} \index{August} \index{September} \index{October} \index{November}  \index{power} \index{power on} \index{power off} \index{powerful} \index{architect}
+\begin{printdemosample}
+ - Put on your coat, Linling.
+ 
+ - Yes, Mum.
+\end{printdemosample}
+
+
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task turn on  \task turn off  \task power on  \task power off
+ \task get on     \task get off \task back off  \task take off
+ \task put on
+\end{tasks}
+
+\begin{tikzpicture}[scale=0.7]
+ \draw (1.2856,1.532) arc 
+     [start angle = 50,
+      end angle = 130,
+      radius=2.0];
+      
+  \draw [ultra thick] (0,0) -- (130:2);
+  \draw [] (0, 0) -- (50:2);
+  
+  \draw [->, >=stealth'] (0.7, 1.2) to [bend right=35] (-0.7, 1.2);
+  
+   \draw [->, >=stealth'] (-0.4, 0.6) to [bend left=35] (0.4, 0.6);
+   
+   \node at (0, 1.6) [font=\scriptsize]{turn on};
+   \node at (0, 1.0) [font=\scriptsize]{turn off};
+  
+\end{tikzpicture}
+
+单词turn具有转圈的意思：  \index{turn} \index{introduce} \index{important} \index{life} \index{news report} \index{shape} \index{different} \index{difference} \index{health} \index{healthy} \index{shine} \index{airport} \index{sign} \index{dollar} \index{pound} \index{difficult}\index{difficulty} \index{gram} \index{kilogram} \index{heavy} \index{shiny} \index{turkey}
+
+\marginpar{\vspace{1cm}turn around}
+\begin{printdemosample}
+ - Your turn.
+ 
+ - Yes, it's my turn!
+\end{printdemosample}
+
+\vspace{1cm}
+
+另外两个高频词是up/down: \index{cut up} \index{cut} \index{shut} \index{shut up} \index{listen up} \index{get up} \index{sit down} \index{stand} \index{stand up} \index{sit} \index{seat} \index{so} \index{mustn't} \index{won't} \index{saw} \index{found} \index{got} \index{dessert} \index{desert} \index{past} \index{pasta} \index{lift} \index{half} \index{perfect} \index{early} \index{excellent} \index{put up} \index{take down} \index{shadow} \index{antique}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task get up  \task cut up  \task fill up  \task listen up
+ \task stand up  \task sit down  \task take down  \task write down
+ \task speed up  \task slow down  \task be fed up with
+\end{tasks}
+
+\begin{printdemosample}
+ Cut up this fish!
+ 
+ Fill up this cup!
+\end{printdemosample}
+
+\begin{printdemosample}  \index{job}  \index{clean up} \index{mind} \index{kind} \index{center} \index{centre} \index{than} \index{paw} \index{claw} \index{useful} \index{bite} \index{listener} \index{weak} \index{pity} \index{match} \index{sleep} \index{have a sleep} \index{sleepy} \index{camp} \index{waterproof} \index{bulletproof}
+ I'm fed up with this job!
+\end{printdemosample}
+
+\begin{printdemosample}
+ Let's clean up this room.
+ 
+ Let's clean it up.
+\end{printdemosample}
+
+
+\newpage
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDcloud) {\includegraphics[scale=0.12]{./car.png}};
+  \node [rectangle, right of = IDcloud, xshift=4.6cm ] (IDrain) {\includegraphics[scale=0.16]{./boat.png}};
+\end{tikzpicture}
+   
+\vspace{2cm} \index{van} \index{boat} \index{car} \index{bike} \index{bicycle}  \index{boy} \index{girl}  \index{wheel} \index{river} \index{lake}   \index{man} \index{woman}  \index{after school} \index{classmate} \index{hundred} \index{thousand} \index{thousands of} \index{hundreds of} \index{marathon} \index{space} \index{spaceship} \index{pianist} \index{traveller} \index{U.K.} \index{chat}
+
+\marginpar{\vspace{1cm}交通工具}
+\marginpar{\vspace{1.5cm}使用工具的人} \index{taxi} \index{once} \index{at once} \index{number} \index{tea} \index{show} \index{over there} \index{report} \index{reporter} \index{shopper} \index{dial}
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task car    \task boat   \task ship     \task train
+ \task van    \task bike   \task bicycle  \task taxi 
+ \task ferry  \task wheel  \task boy      \task girl
+ \task man     \task woman  \task driver   \task lake
+ \task river 
+\end{tasks}
+
+乘坐交通工具，一般用by:  \index{by} \index{by car} \index{by bus} \index{drive} \index{driver} \index{same} \index{light}\index{lightning} \index{hold} \index{hold on} \index{beside} \index{crayon} \index{problem} \index{each other} \index{present} \index{flavour} \index{sweet} \index{busy} \index{pepper} \index{caf\'{e}} \index{penguin} \index{jungle} \index{mountain} \index{come bottom in} \index{bottom} \index{come top in} \index{had} \index{dinosaur} \index{safe} \index{project} \index{poster} \index{Hong Kong} \index{firecracker} \index{hooray} \index{prince} \index{metro} \index{habit} \index{deep} \index{cheer} \index{cheerful} \index{Sydney} \index{astronaut} \index{gale}
+
+\begin{itemize}
+ \item by car
+ \item by bus
+ \item by train
+ \item by bicycle
+\end{itemize}
+
+和by发音类似的buy, 以及反义词sell: \index{sell} \index{buy} \index{slippers} \index{sneakers} \index{boots} \index{sandals} \index{cupboard} \index{a cup of} \index{a glass of} \index{twice} \index{better} \index{quite} \index{ski} \index{skiing} \index{meter} \index{metre} \index{feel} \index{most} \index{list} \index{score} \index{crab} \index{octopus} \index{roar} \index{tap} \index{us} \index{art} \index{artist} \index{museum} \index{turn into} \index{honey} \index{sentence} \index{National Day} \index{fashion} \index{fashionable} \index{fashion model} \index{fashion show} \index{bald} \index{advanced}
+
+
+\begin{printdemosample}
+ Sam and his dad go to a bookstore, they buy a book.
+\end{printdemosample}
+
+\begin{printdemosample}
+ This is Miss Thin's shop. Miss Thin sells eggs, nuts and carrots.
+\end{printdemosample}
+
+\vspace{0.2cm}
+
+称赞的说法：
+
+\begin{printdemosample} \index{amazing}  \index{great}  \index{nice} \index{awesome} \index{uniform} \index{plane} \index{airplane} \index{air} \index{weather} \index{drawer} \index{rubbish}\index{incredible} \index{marvellous} \index{increase} \index{decrease} \index{lady} \index{dentist} \index{snack} \index{library} \index{peach} \index{glove} \index{gloves} \index{idea} \index{fact} \index{ocean} \index{land} \index{shorts} \index{waterfall}\index{colored} \index{page} \index{nearby} \index{lion} \index{nut} \index{encourage} \index{expect} \index{avoid} \index{painful} \index{describe} \index{episode} \index{series}
+ That's great/nice.
+ 
+ That's amazing.
+ 
+ It's awesome.
+\end{printdemosample}
+
+\begin{printdemosample}
+  I can cook.
+  
+  That's great.
+\end{printdemosample}
+
+
+  
+  \newpage
+  
+
+\section{天气和四季} \index{rain} \index{rainy} \index{cloud} \index{cloudy} \index{sun} \index{sunny} \index{name}  \index{brain} \index{offer} \index{tractor} \index{truck} \index{shopping} \index{else} \index{scooter} \index{for} \index{snow} \index{snowy} \index{spill} \index{value} \index{valuable} \index{usable} \index{adjust} \index{adjustable} \index{reason} \index{reasonable} \index{sweat} \index{businessman} \index{sometime} \index{some times} \index{some time} \index{signal}
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDcloud) {\includegraphics[scale=0.30]{./cloud.png}};
+  \node [rectangle, right of = IDcloud, xshift=1.6cm ] (IDrain) {\includegraphics[scale=0.10]{./rain.png}};
+  \node [rectangle, right of = IDrain, xshift=1.6cm ] (IDsun) {\includegraphics[scale=0.12]{./sun.eps}};
+  \node [rectangle, right of = IDsun, xshift=1.6cm ] (IDsun) {\includegraphics[scale=0.12]{./wind.png}};
+\end{tikzpicture}
+
+\begin{tasks}(4)
+ \task windy  \task rainy  \task sunny  \task cloudy
+ \task wind   \task rain   \task sun    \task cloud
+\end{tasks}
+
+
+\begin{printdemosample}  \index{but} \index{dry} \index{wet} \index{season} \index{clever} \index{smart} \index{silly} \index{in fact} \index{tonight} \index{email} \index{surf} \index{way} \index{this way} \index{no way} \index{only} \index{believe} \index{motorbike} \index{motorway} \index{lorry} \index{helicopter} \index{fireman} \index{pilot} \index{sail} \index{sailor} \index{teapot} \index{fantastic} \index{volunteer} \index{medal} \index{shake} \index{raise} \index{passage} \index{politician} \index{poem} \index{poetry}
+
+ When the rain comes, ants look for shelter. But ducks stay in the rain.
+\end{printdemosample}
+
+\vspace{0.5cm}
+联想词：\index{train}  \index{by train}   \index{rainbow} \index{question} \index{answer} \index{finish} \index{December} \index{Saturday} \index{Wednesday} \index{Thursday} \index{parents} \index{parent} \index{either} \index{no problem} \index{foil jacket} \index{curtain} \index{webpage} \index{website} \index{sixth} \index{seventh} \index{look up} \index{joke} \index{also} \index{curiously} \index{traditional} \index{wedding}\index{fetch} \index{deliver} \index{culture} \index{departure} \index{department}
+
+rainy \qquad rain  \qquad train  \qquad brain  \qquad rainbow
+
+\vspace{1.8cm}
+
+一年四季：\index{spring} \index{summer} \index{autumn}  \index{fall} \index{winter} \index{cold} \index{hot} \index{warm} \index{cool} \index{upset} \index{French} \index{rest} \index{raincoat} \index{costume} \index{arrive at} \index{necklace} \index{alarm} \index{worried} \index{friendly} \index{friendship} \index{lazy} \index{grandson} \index{granddaughter} \index{married} \index{teenager} \index{comb} \index{hometown} \index{among} \index{writer} \index{keyboard} \index{mile} \index{positive} \index{elderly}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task spring  \task summer  \task autumn     \task winter
+ \task warm    \task hot    \task cool  \task cold
+\end{tasks}
+
+秋天的两种说法：
+
+autumn  \qquad  fall \qquad \qquad \includegraphics[scale=0.10]{./fall.png}
+
+\begin{printdemosample}
+ - It's cool.
+ 
+ - Yes, it's autumn.
+\end{printdemosample}
+
+\index{these} \index{those} \index{forget} \index{forget to} \index{follow}  \index{chicken} \index{nature} \index{cabbage} \index{cucumber} \index{mushroom} \index{newspaper} \index{news} \index{learn} \index{student} \index{mug} \index{rucksack} \index{key} \index{wallet} \index{swan} \index{rainforest} \index{camel} \index{tight} \index{tights} \index{diary} \index{online} \index{right now}
+\begin{printdemosample}\marginpar{these \\ those}
+ These are apples, those are pumpkins.
+\end{printdemosample}
+
+ \newpage
+ 
+一年四季展示了时间的变化，所以下面是时间相关单词： \index{morning} \index{evening} \index{night} \index{time}  \index{home}  \index{go home} \index{hour} \index{minute} \index{year} \index{day}  \index{then} \index{now}  \index{afternoon} \index{noon} \index{week} \index{weekend} \index{month} \index{breathe} \index{survive} \index{survivor} \index{movie} \index{stretch} \index{blonde} \index{nothing} \index{soft drink} \index{injure} \index{elbow} \index{ankle}
+
+\marginpar{\vspace{1cm}no\\now\\then}
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task morning  \task afternoon  \task evening \task noon 
+ \task night    \task time     \task hour       \task minute 
+ \task day      \task year     \task week       \task now
+\end{tasks}
+
+\marginpar{\vspace{0.7cm}after}
+\begin{printdemosample}\index{after} \index{discuss}
+ Good monring. Good afternoon. Good evening. Good night.
+\end{printdemosample}
+
+
+对于每一个时间单位，我们都可使用every来搭配。\index{every} \index{everyone} \index{could} \index{would} \index{should} \index{cross} \index{true} \index{false} \index{basket} \index{as usual} \index{bank} \index{banker} \index{suddenly} \index{celebration} \index{celebrate} \index{celebrity} \index{calculate} \index{absent} \index{fog} \index{foggy} \index{success}  \index{successful} \index{unsuccessful} \index{plan} \index{enough} \index{bored} \index{concert} \index{photograph} \index{bowl} \index{reply} \index{keeper} \index{fresh} \index{flag} \index{Thanksgiving} \index{while} \index{cage} \index{regular} \index{regularly} \index{promise} \index{lecture} \index{behave} \index{behaviour} \index{interview} \index{headline} \index{scene} \index{responsible} \index{rescue} \index{qualification} \index{announcement} \index{destination} \index{extinct} \index{worth} \index{take up} \index{cruel} \index{prescription}
+
+\marginpar{\vspace{1cm}形容词}
+\begin{printdemosample}
+This is a suit for everyday wear.
+
+I speak English every day.
+
+Hello, everyone.
+\end{printdemosample}
+
+同时，需要注意区分 very  \qquad every  \qquad very much  \index{very much} \index{very} \index{visit} \index{visitor} \index{expo} \index{a pair of} \index{baker} \index{decide} \index{decide to}\index{decision} \index{leave} \index{trouble} \index{choose} \index{bat} \index{be careful} \index{carefully} \index{result} \index{mistake} \index{weigh} \index{weight} \index{smoke} \index{quickly} \index{boxer} \index{row} \index{a number of} \index{clear} \index{clearly} \index{unclear} \index{storm} \index{thunder} \index{thunderstorm} \index{flour} \index{dear} \index{private} \index{crash} \index{laptop} \index{bargain} \index{attic} \index{for ages} \index{funfair}
+
+\begin{printdemosample}
+ Thank you very much.
+ 
+ It's very high.
+\end{printdemosample}
+
+而day也可以组合成多个词汇： \index{today} \index{birthday} \index{yesterday} \index{tomorrow} \index{dragon} \index{away} \index{at} \index{at home} \index{at school} \index{let} \index{kite} \index{together} \index{globe} \index{global} \index{zone} \index{obvious} \index{gold} \index{golden} \index{improve} \index{theatre} \index{champion}\index{championship} \index{at all} \index{luggage} \index{main} \index{low} \index{unless} \index{however} \index{whoever} \index{whenever} \index{wherever} \index{whatever} \index{look after} \index{hate} \index{recommend} \index{especially} \index{underground} \index{roundabout} \index{journey} \index{astronaut} \index{explore} \index{explorer} \index{prefer} \index{queue} \index{army} \index{equipment}
+
+\marginpar{\vspace{1cm}Happy birthday!}
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task today  \task yesterday  \task tomorrow  \task birthday
+\end{tasks}
+
+\marginpar{\vspace{0.9cm}all day long}
+\begin{printdemosample}
+ Dad is a singer. He sings all day long.
+\end{printdemosample}
+
+
+\vspace{2cm}
+
+询问时间的方式: \index{o'clock} \index{and} \index{clock} \index{because} \index{toilet} \index{hotel} \index{stadium} \index{castle} \index{station} \index{railway station} \index{bake} \index{baked} \index{oil} \index{cereal} \index{prize} \index{price} \index{flight} \index{passport} \index{challenge} \index{support} \index{advise} \index{advice} \index{towel} \index{boil} \index{boiled} \index{coach} \index{gym} \index{practise} \index{practice} \index{field} \index{maybe} \index{traffic jam} \index{normal} \index{program} \index{programme} \index{complete} \index{bath} \index{instead} \index{usual} \index{by usual} \index{litter} \index{littering} \index{much} \index{activity} \index{information} \index{tyre} \index{flat tyres} \index{fix} \index{tourist} \index{tourism} \index{tour} \index{tour guide} \index{chef} \index{vehicle} \index{pavement} \index{sidewalk} \index{disease}
+
+\marginpar{\vspace{0.8cm}可以回答该到做什么事情的时间了。}
+\begin{printdemosample}
+ - What's the time?
+ 
+ - It's time to drink and eat.
+\end{printdemosample}
+
+\marginpar{\vspace{0.8cm}必需回答几点}
+\begin{printdemosample}
+ - What time is it?
+ 
+ - It's seven o'clock. It's time for breakfast.
+\end{printdemosample}
+
+接下来注意It's time for sth. 和It's time to do sth.两种句式
+
+Peppa Pig中猪妈妈的"Home time."相当于\blank[width=3cm]{}？ \marginpar{It's time to go home.}
+
+ \newpage
+ 
+\section{动词}
+
+  \subsection{基础} \index{jump} \index{jumper}  \index{run} \index{giant} \index{Santa Claus}\index{go} \index{come} \index{hop} \index{fly} \index{jog}  \index{reindeer} \index{indeed} \index{rather} \index{envelope} \index{receive} \index{reception} \index{sold} \index{Korea} \index{force} \index{air force}
+\index{want} \index{want to} \index{sport} \index{more} \index{hungry} 
+\index{thirsty} \index{hide} \index{catch} \index{throw} \index{picnic} 
+\index{break} \index{break into} \index{take a break} \index{have a break} \index{tear} \index{suit} \index{suitable} \index{act} 
+\index{action} \index{action film} \index{actor} \index{actress} \index{speech} \index{as well} 
+\index{fail} \index{ice-cream} \index{iceberg} \index{scream} \index{opinion} \index{advice}  \index{reliable} \index{stage} \index{Belgium} \index{well-known} \index{phrase} \index{take place}
+\index{coal}
+  
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDjump) {\includegraphics[scale=0.17]{./run.png}};
+ \node [rectangle , right of = IDjump, xshift=3cm](IDwalk)  {\includegraphics[scale=0.25]{./jump.jpg}};
+ \node [rectangle , right of = IDwalk, xshift=3cm]  {\includegraphics[scale=0.05]{./walk.png}};
+ 
+ \node [rectangle, below of = IDjump, xshift=3.6cm, yshift=-1.5cm] {go \qquad come \qquad fly \qquad hop \qquad jog \qquad run \qquad jump  \qquad walk};
+\end{tikzpicture}
+
+\begin{printdemosample} \index{go away} \index{south} \index{south east} \index{south west} \index{north} \index{east} \index{west} \index{western} \index{club} \index{model} \index{logo} \index{ever} \index{business} \index{certain} \index{fur} \index{furry} \index{gave} \index{probably} \index{detect} \index{detective} \index{hankie} \index{sometimes} \index{brake} \index{detail} \index{feather} \index{silently} \index{silent} \index{a can of} \index{fry} \index{fried} \index{grain} \index{french fries}
+ Don't go away, we'll right be back.
+\end{printdemosample}
+
+
+ 关于说话： \index{say} \index{call} \index{tell} \index{touch} \index{shout} \index{pie} \index{him} \index{them} \index{bleed} \index{fruit} \index{a piece of} \index{piece} \index{adventure} \index{teenager} \index{assist}\index{assistant} \index{college} \index{paragraph} \index{population} \index{environmental} \index{issue} \index{reduce} \index{shower} \index{triangle} \index{rectangle} \index{angle}
+ 
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task say      \task talk      \task speak     \task tell
+ \task shout    \task call
+\end{tasks}
+ 
+  其它杂项：\index{grow} \index{grow up} \index{has}  \index{have} \index{care} \index{sing} \index{stop} \index{find} \index{mix} \index{stay} \index{count} \index{play} \index{read} \index{listen} \index{write} \index{wrote} \index{think} \index{thought} \index{open}  \index{get} \index{know} \index{give} \index{give up} \index{ride} \index{ought to} \index{retire}
+  
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task grow   \task has  \task have   \task care
+ \task sing   \task find \task stop   \task mix
+ \task stay   \task count   \task play \task read
+ \task write  \task think  \task listen \task open
+ \task get    \task give  \task know  \task ride
+\end{tasks} 
+
+
+  
+表达人的表情： smile \; angry \; laugh \; sad  \; surprised \; tired \; excited \index{smile}  \index{angry}   \index{laugh}  \index{sad} \index{surprised} \index{surprising} \index{tired} \index{excited} \index{exciting} \index{clothes} \index{lock} \index{unlock} \index{nightmare} \index{blow} \index{circus} \index{unicycle} \index{trolley} \index{Ferris wheel} \index{witch} \index{broom} \index{ugly} \index{lobster} \index{seashell} \index{knock} \index{chest} \index{wide} \index{guard} \index{possible} \index{impossible} \index{cycle} \index{into} \index{cube} \index{jet lag} \index{menu} \index{main course}
+
+  \begin{tikzpicture}
+ \node [rectangle ] (IDsmile) {\includegraphics[scale=0.07]{./smile.jpg}};
+ \node [rectangle , right of = IDsmile, xshift=3cm](IDangry)  {\includegraphics[scale=0.07]{./angry.jpg}};
+ \node [rectangle , right of = IDangry, xshift=3cm]  {\includegraphics[scale=0.15]{./laugh.jpg}};
+ 
+\end{tikzpicture}
+
+表明频率的词： \index{never} \index{always} \index{hardly} \index{often} \index{usually} \index{unusually} \index{worry} \index{forest} \index{vase} \index{broccoli} \index{roof} \index{opposite} \index{scared} \index{save} \index{accident} \index{poor} \index{rich} \index{law} \index{by the way} \index{date} \index{gun} \index{thief} \index{foreign} \index{foreigner} \index{stupid} \index{sunset} \index{during} \index{plenty of} \index{neighbour} \index{president} \index{polite} \index{several} \index{all the time} \index{level} \index{sea level} \index{record} \index{plateau} \index{homeland} \index{boarding pass} \index{duty-free shops} \index{compose} \index{composer} \index{conductor}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](5)
+ \task always \task often  \task never  \task sometimes \task usually
+\end{tasks}
+
+  \subsection{现在时和过去时}
+现在时: 经常发生的情况。 过去时\marginpar{故事中最常用的两种描述方式。}： 强调过去发生的，现在不发生的情况。\index{welcome} \index{spell} \index{point} \index{star} \index{start} \index{party} \index{must} \index{such as} \index{vegetable} \index{something} \index{someone} \index{climb} \index{type} \index{pet} \index{language} \index{Australia} \index{Australian} \index{hug} \index{greet} \index{greeting} \index{trap} \index{caught} \index{own} \index{on one's own} \index{moment} \index{fool} \index{foolish} \index{midnight} \index{owner} \index{dive} \index{diver} \index{homesick}
+
+现在时注意事项： {\large{他、她、它的动词加s}{}}
+
+\begin{printdemosample} \index{use}  \index{discover}\index{continent} \index{anyway} \index{honestly} \index{earlier} \index{stuff}
+ I use scissors.
+
+ We use scissors.
+  
+ She uses scissors
+\end{printdemosample}
+
+\begin{printdemosample}
+ Mum never sings, but she hums all day long!
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ The sun rises in the east and sets in the west every day.
+\end{printdemosample}
+
+动词加s，作为第三人称单数：
+
+{
+\centering
+\bgroup
+\def\arraystretch{1.15} 
+\begin{tabular}{|l|l||l|l|}
+\hline
+{动词原型} & {第三人称单数} &  {动词原型} & {第三人称单数} \\
+\hline
+{sing} & {sing} & {like} & {likes}  \\
+{jump} & {jumps} & {give} & {gives} \\
+\hline
+\end{tabular}
+\egroup{}
+}
+
+\begin{printdemosample}
+ The duck jumps into the river.
+ 
+ Three ducks jump into the river.
+\end{printdemosample}
+
+
+\vspace{0.5cm}
+
+除了普通加s外，还有较多的一部分是和名词复数的情况类似的：
+
+\begin{itemize}
+ \item o, s, x, ch, sh结尾： + es
+ \item 辅音+y结尾： y 变 ies
+ \item 元音+y结尾： + s
+\end{itemize}
+
+实际中，好多动词都是特殊情况，这个需要平时多接触、多阅读才能熟练掌握，而不是孤立地背诵单个单词。  \index{do} \index{does} \index{wash} \index{wash up} \index{pass} \index{watch} \index{yell} \index{quarter} \index{a.m.} \index{p.m.} \index{pupil} \index{drop} \index{worst} \index{American} \index{Japanese} \index{until} \index{history} \index{historical fiction} \index{science fiction} \index{comedy} \index{ask} \index{remember} \index{island} \index{chick} \index{blond} \index{full} \index{kill} \index{alligator} \index{novel} \index{novelist} \index{mystery} \index{liquid} \index{recipe}
+
+
+{
+\centering
+\bgroup
+\def\arraystretch{1.15} 
+\begin{tabular}{|l|l||l|l|}
+\hline
+{动词原型} & {第三人称单数} &  {动词原型} & {第三人称单数} \\
+\hline
+{go} & {goes} & {do} & {does}  \\
+{fly} & {flies} & {study} & {studies} \\
+{play} & {plays} & {teach} & {teaches} \\
+{watch} & {watches} & {fix} & {fixes} \\
+{wash} & {washes} & {pass} & {passes} \\
+\hline
+\end{tabular}
+\egroup{}
+}
+
+\begin{printdemosample}
+ She often goes to school by bus.
+\end{printdemosample}
+
+
+\newpage
+\rule{\textwidth}{0.05cm}
+
+\begin{question}
+ Qucy \blank[width=1.5cm]{} (study) English, Chinese and Math at school.
+\end{question}
+
+\begin{question}
+ We often \blank[width=1.5cm]{} (play) in the playground.
+\end{question}
+
+\begin{question}
+ Miss Hill \blank[width=3.0cm]{} (get on) the bus. 
+ 
+ Miss Hill \blank[width=3.0cm]{} (get off) the bus.
+\end{question}
+
+\begin{question}
+ I always \blank[width=3.0cm]{} (walk) along the river. 
+ 
+ He always \blank[width=3.0cm]{} (walk) along the river.
+\end{question}
+
+\begin{question}
+ A raven \blank[width=1.0cm]{} (see) some cheese. He \blank[width=1cm]{}(take) the cheese, and \blank[width=1cm]{}(fly) to a tall tree.
+\end{question}
+
+\begin{question}
+I \blank[width=1.5cm]{} (give) Lucy a paintbrush.
+
+She \blank[width=1.5cm]{} (give) Lucy a paintbrush. 
+
+They \blank[width=1.5cm]{} (give) Lucy a paintbrush.
+
+Dad \blank[width=1.5cm]{} (give) Lucy a paintbrush.
+
+The dragon \blank[width=1.5cm]{} (give) Lucy a paintbrush.
+\end{question}
+
+\rule{\textwidth}{0.05cm}
+
+\vspace{0.3cm}
+现在时的询问： Do, Does
+
+\begin{printdemosample}
+ Do you like carrots?
+ 
+ Does he like apples?
+\end{printdemosample}
+
+一种学习方法，就是尝试把上面的示例和练习改成疑问以及否定方式。不断巩固。
+
+
+否定方式的使用： do not, does not \index{not} \index{no}  \index{aren't}  \index{didn't} \index{ceiling} \index{intelligent} \index{collection} \index{collect} \index{compare}\index{actually} \index{apartment} \index{height} \index{pocket money} \index{personal} \index{length} \index{abroad} \index{south west} \index{file} \index{crazy} \index{hard-working} \index{definitely}
+ 
+
+\begin{printdemosample}
+ I don't like carrots.
+ 
+ He doesn't like carrots.
+\end{printdemosample}
+
+\begin{printdemosample}
+ "Does your dad like rainbows?" says the dragon. 
+ 
+ "Yes," syas Lucy. "But he doesn't like a mess."
+\end{printdemosample}
+
+
+\newpage
+\rule{\textwidth}{0.05cm}
+  
+过去时，强调以前发生的，现在不发生的事情。 \index{clean}
+
+特点： {\large{动词加ed, is/am变was, are变were}{}}
+
+
+{
+\centering
+\bgroup
+\def\arraystretch{1.15} 
+\begin{tabular}{|l|l||l|l|}
+\hline
+{动词原型} & {过去式} &  {动词原型} & {过去式} \\
+\hline
+{look} & {looked} & {watch} & {watched}  \\
+{clean} & {cleaned} & {jump} & {jumped} \\
+\hline
+\end{tabular}
+\egroup{}
+}
+
+\begin{printdemosample}
+ Bob Bug was in his cot.
+ 
+ "Get up, Bob." said Dad.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I was there yesterday.
+\end{printdemosample}
+
+\begin{printdemosample}
+These rooms were very clean in the morning.
+\end{printdemosample}
+
+\framebox{练习}学着把前面现在时改成过去时
+
+\vspace{0.8cm}
+
+\begin{printdemosample}
+  When I was in the countryside, I often walked by the riverside. 
+\end{printdemosample}
+
+
+动词使用过去式，格式变化较多，通常我们分成下面几种：
+
+\begin{itemize}
+ \item 直接 + ed
+ \item 单词已经是e结尾， + d (dance, danced)
+ \item 辅音字母+y结尾， y变i, 再 + ed (study)
+ \item 辅音字母结尾，双写该字母, 再 + ed (shop)
+ \item 以上规则都没有的(come, go)
+\end{itemize}
+
+
+不规则的过去式需要平时多读书来积累： \index{was}  \index{were} \index{sorry} \index{quietly}\index{politely} \index{engineer} \index{nest}\index{patiently}\index{enormous}\index{hatch}\index{chance} \index{the whole} \index{centimetre} \index{virus} \index{aspirin} \index{cure}
+
+{
+\centering
+\bgroup
+\def\arraystretch{1.15} 
+\begin{tabular}{|l|l||l|l|}
+\hline
+{动词原型} & {过去式} &  {动词原型} & {过去式} \\
+\hline
+{go} & {went} & {do} & {did}  \\
+{say} & {said} & {come} & {came} \\
+{have/has} & {had} & {eat} & {ate} \\
+{is/am} & {was} & {are} & {were} \\
+{begin} & {began} & {give} & {gave} \\
+\hline
+\end{tabular}
+\egroup{}
+}
+
+\newpage
+
+\begin{printdemosample}
+ She often came to help us in those days.
+\end{printdemosample}
+
+
+询问： Did(Was, Were)， 否定: did not (was not, were not)
+
+\begin{printdemosample}
+ - Did you go to Beijing last week?
+ 
+ - Yes, we did.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Did you go to Beijing yesterday?
+ 
+ - No, I didn't.
+\end{printdemosample}
+
+\begin{printdemosample}
+ What did you do yesterday?
+\end{printdemosample}
+
+  \subsection{wh开头的询问}  \index{what} \index{who} \index{when} \index{where}  \index{which} \index{whose}  \index{why}   \index{how}  \index{game} \index{pretty} \index{bigger} \index{biggest} \index{happier} \index{dolphin} \index{starfish} \index{good at}
+
+\begin{tasks}[counter-format=tsk[1].](4)
+ \task when \task which \task what \task where
+ \task who  \task whose \task why  \task how
+\end{tasks}
+
+\begin{printdemosample}
+What are you doing?
+
+What's this?
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Where are they going?
+ 
+ - They're going to the game.
+\end{printdemosample}
+\begin{printdemosample}
+When will my fish come?
+
+Which is my fish?
+\end{printdemosample}
+  
+how属于特殊的不是以wh打头的询问词：
+
+\begin{printdemosample}
+ How are you, Sucy?
+\end{printdemosample}
+  
+\begin{printdemosample}
+ How old are you?
+ 
+ I'm ten.
+\end{printdemosample}
+
+\begin{printdemosample}
+ How to make a hat?
+\end{printdemosample}
+
+\begin{printdemosample}
+ - How many ducks can you see?
+ 
+ - Three.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - How many marbles do you have?
+ 
+ - I have ten marbles.
+\end{printdemosample}
+
+问天气如何：
+
+\begin{printdemosample}
+ - How's the weather?  \qquad \qquad What is the weather like?
+ 
+ - It's sunny.
+\end{printdemosample}
+
+  
+  \subsection{进行时的语法}
+表明正在做某件事情：
+
+% be doing
+
+主要的特点： 动词加ing, 当然这个进行也包括下面两种： \index{hospital} \index{clinic} \index{sofa} \index{homework} \index{toothache} \index{cough} \index{temperature} \index{all right} \index{stomach} \index{stomachache} \index{fit} \index{fitness} \index{unfit} \index{keep fit} \index{so easy} \index{outfit} \index{elegant} \index{opera} \index{damage} \index{damaged} \index{middle-aged} \index{refund} \index{carpet} \index{pollution} \index{government}
+
+\begin{itemize}
+ \item was/were doing sth.
+ \item is/am/are doing sth.
+\end{itemize}
+
+\begin{printdemosample}
+ - What are you doing? 
+ 
+ -I am doing my homework.
+\end{printdemosample}
+
+\begin{printdemosample}
+ They aren't doing their homework.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We were watching TV from seven to nine last night.
+\end{printdemosample}
+
+\begin{question}
+把下面句子改成进行时：
+
+  I watch TV every day. \quad \blank[width=4cm]{}.
+  
+  She works in a hospital.   \quad \blank[width=4cm]{}.
+  
+  Do you read this book?  \quad  \blank[width=4cm]{}?
+  
+  They don't play computer games. \quad  \blank[width=4cm]{}.
+  
+\end{question}
+
+
+\newpage
+
+\section{名词}
+
+  \subsection{名词指代词}
+\lstinline{a,e,i,o,u}开头的，需要使用an, 其它用a. \index{egg} \index{umbrella} \index{a} \index{an} \index{amazing} \index{London} \index{Berlin} \index{well} \index{get well} \index{may} \index{speak} \index{talk} \index{phone} \index{cell phone} \index{mobile phone} \index{grass} \index{over} \index{music} \index{radio} \index{radio station} \index{hairdryer} \index{most of} \index{make friends} \index{hand in} \index{proud} \index{forever}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task apple  \task egg \task insect     \task orange
+ \task onion \task umbrella
+ 
+\end{tasks}
+
+这里需要注意的是， \lstinline{a,e,i,o,u}开头指的是读音，而不是简单的字母。
+
+下面是几个示例：
+
+\begin{tasks}(4)
+ \task an hour
+ \task an L
+ \task an M
+ \task an SOS
+\end{tasks}
+
+\begin{printdemosample}
+  \begin{tikzpicture}
+     \node [font=\large] (ID1) {Fish};
+     \node [right of = ID1, xshift=4cm, yshift=-0.3cm] (ID2) {This word begins with an F.};
+     
+     \draw [->, >=stealth']($(ID2.west) + (0, -0.11)$) to [bend left=35] ($(ID1.south) + (0.0, -0.1)$);
+  \end{tikzpicture}
+
+\end{printdemosample}
+
+单词the和a/an一样，是英文中出现频率最高的几个，意思多和中文里面的"这个"相近，用于指示某个物品。\index{the} \index{anywhere} \index{rule} \index{hurt} \index{whole} \index{area}
+
+\begin{printdemosample}
+ Look at the tree.
+\end{printdemosample}
+
+\begin{printdemosample}
+Oh, the sun.
+\end{printdemosample}
+
+the在元音开头的字母前，需要发{ \begin{IPA}[Di:]\end{IPA}
+
+\begin{tasks}
+ \task the apple  \task the egg  \task the orange
+\end{tasks}
+
+“最喜欢的”说法是favorite，favourite, 极其有用：  \index{favorite} \index{boring} \index{cartoon} \index{drum} \index{road} \index{countryside}
+
+\begin{printdemosample}
+ - Hey, I was watching my favorite TV show!
+ 
+ - Your show is boring, we want to watch cartoons.
+\end{printdemosample}
+
+\newpage
+
+  \subsection{单数与复数} \index{ball}
+
+\begin{printdemosample}
+ There's a cat on that table.
+ 
+ There're three ducks in the river.
+ 
+ I have a lot of balls.
+\end{printdemosample}
+
+普通的复数情况： \index{animal} \index{animation}  \index{spider} \index{plant} \index{bookstore} \index{bookshop} \index{right} \index{left} \index{entertain} \index{entertainment}
+
+{
+\centering
+\bgroup
+\def\arraystretch{1.15} 
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+{单词复数} & {单词复数} &  {单词复数} & {单词复数} & {单词复数}\\
+\hline
+{birds} & {ducks} & {horses} & {books} & {spiders}  \\
+{lambs} & {eggs} & {carrots} & {animals} & {plants}\\
+\hline
+\end{tabular}
+\egroup{}
+}
+
+\vspace{0.3cm}
+
+特殊情况 - s, o, x, sh, ch结尾的，多数是加es: \index{box} \index{bus}  \index{bus stop}  \index{scissors}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task bus  \task buses
+ \task box  \task boxes
+ \task glass    \task glasses
+ \task potato  \task potatoes
+ \task tomato  \task tomatoes
+ \task  peach    \task peaches
+ \task sandwich  \task sandwiches
+\end{tasks}
+
+注意有些o结尾的单词又不需要es: \index{photo} \index{piano} \index{rise} \index{rise up} \index{wise} \index{wealthy} \index{gradually} \index{forecast}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](2)
+ \task photo  \task photos
+ \task piano  \task pianos
+\end{tasks}
+
+\begin{printdemosample}
+ I like tomatoes.
+\end{printdemosample}
+
+
+
+特殊情况 - 辅音加y结尾的， y变成i, 再加es
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task cherry  \task cherries
+ \task strawberry  \task strawberries
+\end{tasks}
+
+特殊情况 - 以f, fe结尾的，变v, 再加es
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task life
+\end{tasks}
+
+特殊情况 - 不加s/es的: \index{tooth} \index{teeth} \index{child} \index{children} \index{mice} \index{rat} \index{sure} \index{energy}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task foot  \task feet \task tooth    \task teeth
+ \task man  \task men   \task child  \task children
+ \task mouse \task mice
+\end{tasks}
+
+\vspace{0.5cm}
+
+不可数名词，没有s的情况: \index{people}\index{paper} \marginpar{\vspace{1.2cm}Fish and Chips}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task fish \task fun \task hair \task juice \task milk \task paper \task people \task rain  \task sheep \task water
+ \task cheese
+\end{tasks}
+
+\begin{printdemosample}  \index{please} \index{cinema} \index{refer to} \index{fridge}\index{refrigerator} \index{belong to} \index{bigger} \index{faster} \index{helpful} \index{make sure} \index{make up}  \index{lost} \index{city}\index{town} \index{downtown} \index{Antarctica}
+ - Have some juice, please!
+ 
+ - Have some snacks, please!
+\end{printdemosample}
+
+\begin{printdemosample} \index{funny}  \index{fun} \index{strange} \index{note} \index{pocket} \index{seek} \index{before} \index{Tuesday} \index{sand} \index{look forward to}
+ Hello, friends. Let's have some fun!
+\end{printdemosample}
+
+
+因为单数、复数，所以联想出数字单词： \index{one}  \index{two} \index{three}  \index{four} \index{five} \index{six} \index{seven} \index{eight} \index{nine} \index{ten} \index{eleven} \index{twelve}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task one     \task two  \task three  \task four  \task five
+ \task six     \task seven  \task eight  \task nine  \task ten
+ \task eleven  \task twelve
+\end{tasks}
+
+有了数目，联想"很多的"词汇： a lot of  \quad lots of  \quad some  \quad many                   \index{a lot of} \index{lots of} \index{few} \index{a few}
+
+询问有多少？ \index{how many} \index{many} \index{any} \index{arrive} \index{arrival} \index{rival} \index{round} \index{around} \index{hurry} \index{hurry up}
+
+\begin{printdemosample}
+ How many marbles?
+ 
+ How many eggs?
+\end{printdemosample}
+
+
+\newpage
+
+  \subsection{动物(animals)} \index{goat} \index{cow} \index{tiger} \index{parrot} \index{hamster} \index{horse} \index{sheep} \index{shark} \index{giraffe} \index{fox} \index{hard}\index{work hard} \index{hardware} \index{war} \index{delete} \index{work} \index{housework} \index{bring} \index{story} \index{float} \index{sink} \index{rock} \index{hedgehog} \index{selfish}
+
+  \index{rabbit} \index{hare} \index{insect} \index{zebra} \index{monkey} \index{cat} \index{zoo} \index{panda} \index{mouse} \index{tortoise} \index{bear} \index{puppy} \index{bee}
+  \index{duck} \index{lamb} \index{frog} \index{pig} \index{fish}  \index{ant} \index{dragonfly} \index{ladybird} \index{butterfly} \index{cicada} \index{bird} \index{dog}  \index{farm} \index{elephant} \index{wildlife} \index{snake} \index{whale} \index{hippo} \index{kangaroo} \index{butter}
+
+\marginpar{\vspace{1cm}zoo \\ farm \\ puppy}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task rabbit  \task insect \task dog     \task zebra
+ \task cat     \task tiger  \task panda   \task monkey
+ \task frog    \task parrot \task mouse   \task tortoise
+ \task giraffe \task bear   \task shark   \task ant
+ \task duck    \task sheep  \task bird  
+ \task butterfly \task dragonfly \task ladybird \task cicada
+ \task goat     \task cow  \task hamster  \task horse
+ \task fox     \task lamb  \task pig      \task fish
+ \task bee     \task elephant \task snake  \task wild life
+\end{tasks}
+
+由狗联想出单词： \qquad bark  \qquad woof  \qquad bone                                           \index{bone} \index{bark} 
+
+  \subsection{植物(plants)} \index{bamboo} \index{flower} \index{tree}  \index{police}\index{police station} \index{officer} \index{easy} \index{wish} \index{dish} \index{quack} \index{for example} \index{exam} \index{hope} \index{hopelessly}
+  
+\begin{tasks}[counter-format=tsk[1].](4)
+ \task flower \task tree \task trunk \task bark
+ \task leaf  \task leaves  \task branch  \task rose
+ \task bamboo
+\end{tasks}
+
+  \subsection{场景化的对话}
+初次见面的打招呼：  \index{glad} \index{done} \index{be made of}  \index{word} \index{fig}  \index{buzz}   \index{example} \index{me}  \index{made}
+
+\begin{printdemosample}
+ - Nice to meet you. \quad/ \qquad Glad to meet you
+ 
+ - Me too. \quad/ \qquad Nice to meet you too.
+\end{printdemosample}
+
+熟悉人的打招呼则使用Hello， 或者Hi即可。
+
+
+称赞：\index{Well done} \index{I'm sorry} \index{beautiful} \index{how much} \index{how often} \index{jump into} \index{went to} \index{went} \index{cost} \index{came} \index{pay} \index{pay back} \index{bill} \index{high jump} \index{long jump}
+
+\begin{printdemosample}
+ - Well done! \quad/  Perfect! \quad/ Excellent! \quad /  They're beautiful!
+ 
+ - Thank you.
+\end{printdemosample}
+
+询问陌生人： \index{thank you} \index{thank} \index{show off} \index{thanks} \index{roll} \index{spin} \index{glass} \index{glasses} \index{forward} \index{is broken} \index{be broken}
+
+\begin{printdemosample}
+ - Execuse me, xxxxx
+\end{printdemosample}
+
+对不起：  \index{Excuse me}
+
+\begin{printdemosample}
+ - I'm sorry.
+ 
+ - It's ok.
+\end{printdemosample}
+
+
+\newpage
+
+  \subsection{食物(food)} \index{food}
+ \index{cherry} \index{salad} \index{banana} \index{jelly} \index{juice} \index{onion} \index{cheese} \index{apple} \index{bread} \index{melon} \index{pineapple} \index{pumpkin}\index{rice} \index{soup}\index{soap} \index{soap opera} \index{noodle}
+
+基本学习的单词包括： \index{chip} \index{carrot} \index{grape} \index{eat} \index{drink} \index{tomato} \index{hamburger} \index{sausage} \index{milk} \index{potato} \index{sandwich} \index{tart} \index{pizza}   \index{orange} \index{watermelon} \index{coconut} \index{biscuit} \index{yogurt}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task apple     \task onion   \task cupcake  \task cherry
+ \task carrot    \task banana  \task grape    \task peach
+ \task pizza     \task cake    \task salad    \task chip
+ \task hamburger \task tomato  \task donut    \task sausage
+ \task milk      \task jelly   \task potato   \task cheese
+ \task bread     \task coffee   \task juice   \task pear
+ \task sandwich  \task tart    \task melon \task watermelon
+ \task pumpkin \task pineapple \task coconut \task biscuit
+\end{tasks}
+
+\vspace{0.5cm}
+
+联想: \index{yummy} \index{yuk} \index{coffee} \index{wait} \index{wait for} \index{near} \index{far} \index{become} \index{market}\index{marketing} \index{bump into} \index{exit} \index{love} \index{fall in love} \index{in particular} \index{nearly} \index{almost} \index{travel} \index{travel agent} \index{trip} \index{everything} \index{thing} \index{without} \index{really} \index{chemist} \index{performer} \index{perform} \index{performance} \index{proper} \index{admiring} \index{admiration} \index{get married} \index{smooth}
+
+\begin{tasks}[counter-format=tsk[1].](2)
+ \task yummy  \task yuk
+ \task eat    \task drink
+\end{tasks}
+
+扩展: \index{breakfast} \index{lunch} \index{dinner} \index{supper} \index{begin}\index{begin to} \index{beginning} \index{ticket} \index{wife} \index{empty} \index{cry} \index{return} \index{was born} \index{German} \index{Germany} \index{competitor} \index{course} \index{musician}
+
+\begin{tasks}[counter-format=tsk[1].](2)
+ \task breakfast  \task lunch
+ \task supper    \task dinner
+\end{tasks}
+
+\vspace{0.8cm}
+
+{\large{\~{}berry}{}} \hspace{0.2cm}  这是一个和甜水果有关的后缀, 通常小小，圆圆的小果子都带有这样的后缀: \index{camera}  \index{strawberry} \index{still} \index{blueberry}  \index{yours} \index{mine} \index{ours} \index{theirs} \index{hers} \index{cell} \index{real} \index{photographer} \index{image} \index{sat}\index{told}
+
+  比如： \marginpar{\vspace{0.6cm}ferry}
+  
+\begin{tasks}[counter-format=tsk[1].](2)
+ \task berry         \task blueberry
+ \task strawberry    \task lingonberry
+\end{tasks}
+
+
+\newpage
+
+  \subsection{文具用品} \index{film} \index{computer} \index{chair}\index{school bag} \index{ruler}\index{rubber} \index{eraser} \index{pencil case} \index{pen} \index{bag}  \index{card} \index{class} \index{playground} \index{desk}  \index{grade}  \index{blackboard} \index{school}  \index{school bus} \index{balloon} \index{table}   \index{window} \index{bell} \index{toy}  \index{doll} \index{robot} \index{pencil} \index{science} \index{scientist} \index{math}\index{maths} \index{classroom} \index{step}
+
+
+\marginpar{\vspace{0.4cm}eraser为美国人对橡皮的说法}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task pencil case \task school bag \task rubber \task eraser
+ \task pen         \task pencil     \task ruler  \task book
+ \task desk        \task grade      \task class  \task chair
+ \task playground  \task film       \task computer \task blackboard
+ \task school bus  \task balloon    \task window  \task bell
+ \task card        \task toy        \task doll   \task robot
+\end{tasks}
+
+  \subsection{衣服服装}
+
+这里包括了衣、帽、鞋等人穿着相关的所有词汇说法。\index{cap} \index{skirt} \index{shirt} \index{T-shirt} \index{sweater}\index{anorak} \index{coat} \index{scarf} \index{beanie} \index{shoe} \index{cloth} \index{vest} \index{sock} \index{jacket} \index{trousers} \index{pants}\index{whereas}       \marginpar{pants} 
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task sweater  \task cap   \task T-shirt  \task coat
+ \task scarf    \task shirt  \task anorak \task beanie
+ \task dress    \task shoe   \task hat   \task cloth
+ \task vest     \task sock   \task jacket \task trousers
+\end{tasks}
+
+\begin{printdemosample} \index{dress} \index{dress up} \index{need} \index{needn't} \index{invite} \index{myself} \index{letter} \index{soon} \index{village} \index{male} \index{female} \index{more than}
+ You do not need to dress up for dinner 
+\end{printdemosample}
+
+帽子由于不同类型，说法不同。cap \qquad beanie  \qquad hat \index{hat} \index{send} \index{place} \index{listen to music} \index{New Zealand}
+
+\begin{tikzpicture}
+ \node [rectangle ] (IDcap) {\includegraphics[scale=0.19]{./cap.png}};
+ \node [rectangle, right of = IDcap, xshift=2cm] (IDdog) {\includegraphics[scale=0.05]{./hat.png}};
+\end{tikzpicture}
+
+
+  \subsection{其它杂项单词}
+这里是将之前ch\_concret\_eng文档中剩下的词汇都汇总到这里： \index{dirty}  \index{first}  \index{mess} \index{Let's}   \index{age} \index{another} \index{along} \index{lucky} \index{luck} \index{song}  \index{shell}   \index{sick} \index{sickness}  \index{ill} \index{illness}\index{quiet} \index{swimming}  \index{map}  \index{not yet} \index{all}  \index{some} \index{interesting} \index{interest} \index{sea} \index{beach} \index{recover} \index{cover}
+\index{ready}  \index{ring} \index{king} \index{queen} \index{chop}   \index{swimming pool} \index{the other} \index{good luck}
+\index{pull} \index{push} \index{strong} \index{end} \index{integer} \index{minus} \index{hole} \index{manager}
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task dirty  \task first  \task mess  \task Let's
+ \task age  \task another  \task along  \task lucky
+ \task song   \task shell  \task sick \task quiet
+ \task sing   \task swimming \task map \task swimming pool
+ \task ready    \task ring   \task king \task not yet
+ \task queen  \task chop  \task all  \task interesting
+\end{tasks}
+
+
+  
+\newpage
+
+\section{拾遗}
+
+  \subsection{数学英语-初级}
+由于英语和数学的结合将是一个趋势，所以这里开始需要让笑笑掌握简单的数学英语知识点。这也有助于后面阅读科技文章。\index{plus} \index{equal} \index{sum} \index{Me too} \index{fifty} \index{sixty} \index{eyeslash} \index{beak} \index{reuse} \index{recycle} \index{tip} \index{protection} \index{technology}
+
+本小节主要以\cite{bibCaliforniaMath}中内容安排为基础，逐步介绍数学中，英语的描述方式。\index{add} \index{addition}
+
+我们首先从加法(addition)开始，第一个学习的就是加法符号(+)，在英语中称为plus: \marginpar{add, addition} \index{thirteen} \index{fourteen} \index{sixteen} \index{fifteen} \index{seventeen} \index{eighteen} \index{nineteen} \index{twenty} \index{remain} \index{taste} \index{Sweden} \index{produce} \index{butcher} \index{design} \index{designer} \index{cotton} \index{horrible}
+
+\begin{tikzpicture}
+  \node [] (IDmath) {$2 + 3 = 5$};
+  
+  \node [right of = IDmath, xshift=3cm] {2 plus 3 equals 5};
+  
+  \node at (-2, -0.7) [] (IDplus){plus}; \node at (2, -0.7) [] (IDsum){sum};
+  \draw [->, >=stealth'] (IDplus.east) to [bend right=35] ($(IDmath.south) + (-0.4, 0)$);
+  \draw [->, >=stealth'] (IDsum.west) to [bend left=30] ($(IDmath.south) + (0.6, 0)$);
+  %\node at () {};
+\end{tikzpicture}
+
+"等于"的单词为equal, 所以上述过程为: $\;$ \underline{2 plus 3 equals 5}
+
+同时，我们对于上面的加法，可以说: $\;$ \underline{5 is the sum of $3 + 2$}
+
+下面可以学着使用这些说法来完成习题，这些练习均来自\cite{bibCaliforniaMath}中的内容：
+
+
+
+减法(substraction)的符号$-$英语中称为minus, 下面是减法的运算示例： \marginpar{substraction} \index{substraction} \index{all night}
+
+\begin{tikzpicture}
+  \node [] (IDmath) {$5 - 2 = 3$};
+  
+  \node [right of = IDmath, xshift=3cm] {five minus two equals three};
+  
+  \node at (-2, -0.7) [] (IDplus){minus}; \node at (2, -0.7) [] (IDsum){difference};
+  \draw [->, >=stealth'] (IDplus.east) to [bend right=35] ($(IDmath.south) + (-0.4, 0)$);
+  \draw [->, >=stealth'] (IDsum.west) to [bend left=30] ($(IDmath.south) + (0.6, 0)$);
+  %\node at () {};
+\end{tikzpicture}
+
+尝试完成下面的试题练习：
+
+
+
+
+  \subsection{易混淆单词} \index{too}  \index{fan} \index{mirror} \index{bin} \index{bean} \index{even} \index{popular} \index{review}\index{view} \index{saying} \index{on foot} \index{shopkeeper} \index{hunt} \index{hunter} \index{peanut} \index{national} \index{mark} \index{marker} \index{cries} \index{handle} \index{dead} \index{document} \index{documentary} \index{audience} \index{screen}
+  
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](2)
+ \task lamb \quad lamp   \task bad \quad bed
+ \task for \quad four  \task  nose \quad nurse
+ \task house \quad horse  \task to \quad two \quad too
+ \task coat \quad goat \quad boat  \task every  \quad very
+ \task buy  \quad by  \task fun   \quad fan
+ \task bin  \quad bean  \task body  \task baby
+\end{tasks}
+
+极容易混的词; \index{live} \index{swamp} \index{bug} \index{lives} \index{style} \index{mood} \index{Asia} \index{Asian} \index{Africa} \index{African} \index{Europe} \index{European} \index{post} \index{satisfy} \index{satisfied}\index{satisfactory} \index{material} \index{section} \index{environment} \index{across} \index{whether} \index{dump} \index{alphabet} \index{Geography} \index{beat} \index{fold}
+
+\vspace{0.7cm}
+
+{\large{lives}{}}
+
+\vspace{1cm}
+
+{\large{read}{}}
+
+
+  \subsection{相加词汇} \index{skate} \index{basketball} \index{baseball} \index{football} \index{badminton} \index{toothbrush}\index{toothpaste} \index{bathtub}\index{jellybean}\index{skateboard} \index{perhaps} \index{rush} \index{rush hour} \index{tiny} \index{dumpling} \index{pack} \index{unpack} \index{backpack} \index{backpacking} \index{backpacker} \index{zip} \index{unzip} \index{less} \index{least} \index{at least} \index{guide} \index{provide} \index{exchange} \index{species} \index{currency} \index{delay} \index{reservation} \index{escape} \index{resort} \index{sleeve} \index{collar} 
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task toothbrush  \task paintbrush \task blackboard \task skateboard 
+ \task bathtub 
+ \task football    \task jellybean
+\end{tasks}
+
+skateboard/scooter
+
+
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 2017-11-18 英语天天练
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\input everyday.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  
+ 
+
+\begin{thebibliography}{99}
+\bibitem{bibNewConceptEngYoungVer} 外语教学与研究出版社:{\em 新概念英语青少版入门级}, 2010年.
+\bibitem{bibEngJuniorOneA}译林出版社:{\em 小学英语(一上)}, 2012年.
+\bibitem{bibEngJuniorOneB}译林出版社:{\em 小学英语(一下)}, 2012年.
+\bibitem{bibEngJuniorTwoA}译林出版社:{\em 小学英语(二上)}, 2016年.
+\bibitem{bibPhonicsStageTwo} 外语教学与研究出版社:{\em 丽声拼读故事会 第二级}, 2011年.
+\bibitem{bibNationalGeoBasic} 外语教学与研究出版社:{\em 国家地理儿童百科入门级}, 2010年.
+\bibitem{bibNewDongFangReadBasic} 西安交通大学出版社:{\em 新东方泡泡剑桥儿童英语故事阅读}, 2012年.
+\bibitem{bibCaliforniaMath}McGraw-Hill Press:{\em 加州小学数学}, 2012年.
+\end{thebibliography}
+
+\printindex
+
+\end{document}
