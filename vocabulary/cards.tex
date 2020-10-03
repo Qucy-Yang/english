@@ -140,7 +140,7 @@
 
 %%这个用于适合打印的例句输出
 \newcounter{printdemonum}
-\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] {\node[rectangle]{\includegraphics[scale=0.10]{../latex/images/huawen.EPS}}} {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
+\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}]  {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
 
 % a table collection
 %\definecolor{Gray}{gray}{0.85}
@@ -602,14 +602,12 @@ secondextra={
 \vspace{1cm}
 \begin{center}\index{hair} \index{ear} \index{leg} \index{mouth}  \index{nose} \index{face} \index{arm} \index{body} \index{toe} \index{wrong} \index{curly} \index{address} \index{Danmark} \index{ink} \index{attention} \index{pay attention} \index{comic} \index{comic book} \index{athletics} \index{athletic} \index{athlete} \index{wonder} \index{wonderful} \index{wrist} \index{middle} \index{central} \index{entrance} \index{ladder} \index{lonely} \index{alone} \index{set up} \index{agree with} \index{Paris} \index{winner} \index{nap} \index{Indian} \index{India} \index{race track} \index{blanket} \index{towel}
  \begin{tikzpicture}
- \node [rectangle ] (IDdog) {\includegraphics[scale=0.50]{../latex/images/dog.jpg}};
  
 \end{tikzpicture}
 
 	\vspace{3cm}\index{hand} \index{eye} \index{foot} \index{head} \index{tail} \index{neck}  \index{blind} \index{internet} \index{large} \index{worker} \index{term} \index{straight} \index{street} \index{grey} \index{worse} \index{square} \index{expensive} \index{cheap} \index{purse} \index{bus station} \index{guitar} \index{granny} \index{fruit stall} \index{whisper} \index{stair} \index{stairs} \index{upstairs} \index{downstairs} \index{lemon} \index{site} \index{jam} \index{treasure} \index{cave} \index{repair} \index{kick} \index{tidy} \index{glamorous} \index{valley} \index{cliff} \index{wave} \index{burn} \index{bomb}
 
 \begin{tikzpicture}
- \node [rectangle ] (IDdog) {\includegraphics[scale=0.19]{./demo1.jpg}};
  
 \end{tikzpicture}
 \end{center}
@@ -1092,11 +1090,6 @@ be是一个概括性的词，它包括了英文中表达"是"这个意思的单�
 联想词 \index{bottle} \index{fill up} \index{water}  \index{fine} \marginpar{\vspace{1.3cm}尽可能想到的所有单词}
 
 \begin{tikzpicture}
- \node [rectangle ] (IDcloud) {\includegraphics[scale=0.10]{./bottle.png}};
-  \node [rectangle, right of = IDcloud, xshift=0.6cm ] (IDrain) {\includegraphics[scale=0.10]{./bottle.png}};
-  \node [rectangle, right of = IDrain, xshift=0.6cm ] (IDsun) {\includegraphics[scale=0.10]{./bottle.png}};
-  \node [rectangle, right of = IDsun, xshift=0.6cm ] (IDsun2) {\includegraphics[scale=0.10]{./bottle.png}};
-  \node [rectangle, right of = IDsun2, xshift=0.6cm ] (IDsun3) {\includegraphics[scale=0.10]{./bottle.png}};
 \end{tikzpicture}
   
   
@@ -1119,8 +1112,6 @@ be是一个概括性的词，它包括了英文中表达"是"这个意思的单�
 由于满、空等，联想出一些反义词汇： \index{long} \index{tall} \index{short} \index{happy}  \index{unhappy} \index{small} \index{fat} \index{big} \index{thin} \index{little} \index{quick} \index{slow} \index{slowly} \index{slow down} \index{speed up} \index{speed} \index{keep} \index{move} \index{young} \index{spirit} \index{finger} \index{hobby} \index{telescope} \index{Canada} \index{finally} \index{final} \index{storybook} \index{at weekends} \index{Christmas} \index{Christmas tree} \index{message} \index{be good at} \index{knowledge} \index{ambition} \index{soft} \index{softly} \index{software} \index{understand} \index{traffic light} \index{traffic} \index{smell} \index{password} \index{hero} \index{heroine} \index{fairy} \index{fight} \index{firefighter} \index{unbelievable} \index{uncomfortable} \index{unforgettable} \index{unpleasant} \index{terrific}
 
 \begin{tikzpicture}
- \node [rectangle ] (IDcloud) {\includegraphics[scale=0.10]{./snail.png}};
-  \node [rectangle, right of = IDcloud, xshift=3.9cm ] (IDrain) {\includegraphics[scale=0.09]{./horse.png}};
 \end{tikzpicture}
 
 \begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
@@ -1211,8 +1202,6 @@ be是一个概括性的词，它包括了英文中表达"是"这个意思的单�
 \newpage
 
 \begin{tikzpicture}
- \node [rectangle ] (IDcloud) {\includegraphics[scale=0.12]{./car.png}};
-  \node [rectangle, right of = IDcloud, xshift=4.6cm ] (IDrain) {\includegraphics[scale=0.16]{./boat.png}};
 \end{tikzpicture}
    
 \vspace{2cm} \index{van} \index{boat} \index{car} \index{bike} \index{bicycle}  \index{boy} \index{girl}  \index{wheel} \index{river} \index{lake}   \index{man} \index{woman}  \index{after school} \index{classmate} \index{hundred} \index{thousand} \index{thousands of} \index{hundreds of} \index{marathon} \index{space} \index{spaceship} \index{pianist} \index{traveller} \index{U.K.} \index{chat}
@@ -1273,10 +1262,6 @@ be是一个概括性的词，它包括了英文中表达"是"这个意思的单�
 \section{天气和四季} \index{rain} \index{rainy} \index{cloud} \index{cloudy} \index{sun} \index{sunny} \index{name}  \index{brain} \index{offer} \index{tractor} \index{truck} \index{shopping} \index{else} \index{scooter} \index{for} \index{snow} \index{snowy} \index{spill} \index{value} \index{valuable} \index{usable} \index{adjust} \index{adjustable} \index{reason} \index{reasonable} \index{sweat} \index{businessman} \index{sometime} \index{some times} \index{some time} \index{signal}
 
 \begin{tikzpicture}
- \node [rectangle ] (IDcloud) {\includegraphics[scale=0.30]{./cloud.png}};
-  \node [rectangle, right of = IDcloud, xshift=1.6cm ] (IDrain) {\includegraphics[scale=0.10]{./rain.png}};
-  \node [rectangle, right of = IDrain, xshift=1.6cm ] (IDsun) {\includegraphics[scale=0.12]{./sun.eps}};
-  \node [rectangle, right of = IDsun, xshift=1.6cm ] (IDsun) {\includegraphics[scale=0.12]{./wind.png}};
 \end{tikzpicture}
 
 \begin{tasks}(4)
@@ -1306,7 +1291,7 @@ rainy \qquad rain  \qquad train  \qquad brain  \qquad rainbow
 
 秋天的两种说法：
 
-autumn  \qquad  fall \qquad \qquad \includegraphics[scale=0.10]{./fall.png}
+autumn  \qquad  fall \qquad \qquad 
 
 \begin{printdemosample}
  - It's cool.
@@ -1404,11 +1389,6 @@ Peppa Pig中猪妈妈的"Home time."相当于\blank[width=3cm]{}？ \marginpar{I
   
 
 \begin{tikzpicture}
- \node [rectangle ] (IDjump) {\includegraphics[scale=0.17]{./run.png}};
- \node [rectangle , right of = IDjump, xshift=3cm](IDwalk)  {\includegraphics[scale=0.25]{./jump.jpg}};
- \node [rectangle , right of = IDwalk, xshift=3cm]  {\includegraphics[scale=0.05]{./walk.png}};
- 
- \node [rectangle, below of = IDjump, xshift=3.6cm, yshift=-1.5cm] {go \qquad come \qquad fly \qquad hop \qquad jog \qquad run \qquad jump  \qquad walk};
 \end{tikzpicture}
 
 \begin{printdemosample} \index{go away} \index{south} \index{south east} \index{south west} \index{north} \index{east} \index{west} \index{western} \index{club} \index{model} \index{logo} \index{ever} \index{business} \index{certain} \index{fur} \index{furry} \index{gave} \index{probably} \index{detect} \index{detective} \index{hankie} \index{sometimes} \index{brake} \index{detail} \index{feather} \index{silently} \index{silent} \index{a can of} \index{fry} \index{fried} \index{grain} \index{french fries}
@@ -1438,9 +1418,6 @@ Peppa Pig中猪妈妈的"Home time."相当于\blank[width=3cm]{}？ \marginpar{I
 表达人的表情： smile \; angry \; laugh \; sad  \; surprised \; tired \; excited \index{smile}  \index{angry}   \index{laugh}  \index{sad} \index{surprised} \index{surprising} \index{tired} \index{excited} \index{exciting} \index{clothes} \index{lock} \index{unlock} \index{nightmare} \index{blow} \index{circus} \index{unicycle} \index{trolley} \index{Ferris wheel} \index{witch} \index{broom} \index{ugly} \index{lobster} \index{seashell} \index{knock} \index{chest} \index{wide} \index{guard} \index{possible} \index{impossible} \index{cycle} \index{into} \index{cube} \index{jet lag} \index{menu} \index{main course}
 
   \begin{tikzpicture}
- \node [rectangle ] (IDsmile) {\includegraphics[scale=0.07]{./smile.jpg}};
- \node [rectangle , right of = IDsmile, xshift=3cm](IDangry)  {\includegraphics[scale=0.07]{./angry.jpg}};
- \node [rectangle , right of = IDangry, xshift=3cm]  {\includegraphics[scale=0.15]{./laugh.jpg}};
  
 \end{tikzpicture}
 
@@ -2122,10 +2099,6 @@ the在元音开头的字母前，需要发{ \begin{IPA}[Di:]\end{IPA}
 
 帽子由于不同类型，说法不同。cap \qquad beanie  \qquad hat \index{hat} \index{send} \index{place} \index{listen to music} \index{New Zealand}
 
-\begin{tikzpicture}
- \node [rectangle ] (IDcap) {\includegraphics[scale=0.19]{./cap.png}};
- \node [rectangle, right of = IDcap, xshift=2cm] (IDdog) {\includegraphics[scale=0.05]{./hat.png}};
-\end{tikzpicture}
 
 
   \subsection{其它杂项单词}
@@ -2231,7 +2204,6 @@ skateboard/scooter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 
-\input everyday.tex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
