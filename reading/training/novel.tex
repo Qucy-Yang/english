@@ -1,0 +1,774 @@
+%
+% [2020-10-05] First creation
+
+\documentclass[a4paper]{article}
+\title{英语文章阅读词汇整理}
+\author{Yang Songxiang}
+
+%% MUST defined before fontspce
+\usepackage{tipa}
+
+\usepackage{fontspec,xunicode,xltxtra,makeidx,xecolor}
+\usepackage{color,listings,tabularx,amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{titlesec}
+\usepackage{lettrine}
+\usepackage{colortbl}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\usepackage[many]{tcolorbox}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{epigraph}
+\usepackage{soul}
+\usepackage[nonumberlist]{glossaries}
+%
+%%
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{tkz-base}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,trees,calc,automata,positioning, fit}
+\usetikzlibrary{calendar}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{angles}
+\usetikzlibrary{graphs}
+
+\tikzset{
+  mybox/.style={
+    rectangle,
+    rounded corners,
+    draw=black
+  },
+}
+
+\usepackage[auto-label]{exsheets}
+\usepackage{enumerate}
+\usepackage{tasks}
+\usepackage{indentfirst}
+
+\usepackage[bookmarks=true,pdfborder={0 0 0}]{hyperref}
+%%去除TexLive-2015开始fontspec对引号的影响
+\defaultfontfeatures[\rmfamily,\sffamily,\ttfamily]{}
+\setmainfont{WenQuanYi Micro Hei}
+\setsansfont{WenQuanYi Micro Hei}
+\setmonofont{WenQuanYi Micro Hei}
+
+%required Windows fonts
+\newcommand\fontnamekai{WenQuanYi Micro Hei}
+% Tex-Live2016
+%\newfontinstance\KAI {\fontnamekai}
+\newfontfamily\KAI {\fontnamekai}
+\newcommand{\kai}[1]{{\KAI#1}}
+%\newfontfamily\mynamingfont {Liberation Serif}
+%\newfontfamily\mynamingfontb {Century Schoolbook L}
+%\newfontfamily\mynamingfontc {Droid Serif}
+%\newfontfamily\mynamingfontd [Mapping=tex-text]{TeX Gyre Pagella}
+
+
+\newcommand\vtextvisiblespace[1][.4em]{%
+  \mbox{\kern.06em\vrule height.5ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.5ex}}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5\baselineskip}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip=0pt plus 1pt minus 0.1pt
+
+%listing global settings
+\lstset{basicstyle=\scriptsize,frame=lines}
+
+%some global color
+\definecolor{light-gray}{rgb}{0.87,0.87,0.87}
+\definecolor{light-yellow}{rgb}{0.88,0.92,0.48}
+\definecolor{mygreen}{rgb}{0.63,1,0.35}
+
+%complicated def
+\lstnewenvironment{myjavacode}[1][]
+      {\lstset{language=Java}\lstset{escapeinside={(*@}{@*)},
+       basicstyle=\footnotesize\ttfamily,
+       numbers=left,numberstyle=\scriptsize,stepnumber=1,numbersep=5pt,
+       breaklines=true,
+       %firstnumber=last,
+           %frame=tblr,
+           framesep=5pt,
+           showstringspaces=false,
+           keywordstyle=\itshape\color{blue},
+          %identifierstyle=\ttfamily,
+           stringstyle=\xecolor{maroon},
+        commentstyle=\color{black},
+        rulecolor=\color{black},
+        xleftmargin=0pt,
+        xrightmargin=0pt,
+        aboveskip=\medskipamount,
+        belowskip=\medskipamount,
+               backgroundcolor=\color{white}, #1
+}}
+{}
+
+%\newfontfamily\thekai{WenQuanYi Micro Hei}
+\newfontfamily\thekai{STKaiti}
+%%尝试把margainpar中的文字大小修改
+\setlength\marginparwidth{2cm}
+\makeatletter
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{\thekai\footnotesize #1}%
+  \global\setbox\@currbox\copy\@marbox
+  \@xympar}
+\makeatother
+
+%% Try new a my own code 用于扩展词汇的统一处理
+\newcounter{myexpandnum}
+\newcounter{mydemonum}
+%\newenvironment{myexpand2}[1][\unskip]{\colorbox{red}{Expand\refstepcounter{myexpandnum} \themyexpandnum #1}}{}
+
+%\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum}  扩展词汇\themyexpandnum- \vspace{0.5cm} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=red] (0,0) circle (1ex); \colorbox{blue!30}{扩展词汇\themyexpandnum- \vspace{0.5cm}} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+
+\newenvironment{mydemosample}{\stepcounter{mydemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=blue] (0,0) circle (1ex); \colorbox{blue!30}{例句 \themydemonum}
+\\
+\rule{0.2\textwidth}{0.5mm} \begin{quotation}}{\end{quotation}}
+
+%%这个用于适合打印的例句输出
+\newcounter{printdemonum}
+\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] {\node[rectangle]{\includegraphics[scale=0.10]{../../img/huawen.eps}}} {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
+% a table collection
+%\definecolor{Gray}{gray}{0.85}
+%\definecolor{LightCyan}{rgb}{0.88,1,1}
+%\newcolumntype{mycA}{>{\columncolor{Gray}}c}
+%\newcolumntype{mycB}{>{\columncolor{LightCyan}}c}
+
+%\newcommand\mywordnums[2]{First #1 , second #2}
+\newcommand\mywordnums[2]{\bgroup \def\arraystretch{1.15} \scriptsize
+  \begin{tabular}{|>{\columncolor[gray]{0.8}}c|>{\columncolor[rgb]{0.88,1,1}}c|}
+   \hline
+   {单数} & {复数} \\
+   \hline
+   {#1} & {#2} \\
+   \hline
+  \end{tabular}
+\egroup}
+
+%% 2016-12-22添加了一个类似tip类型的示例
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myTipStyleDemoCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=-0.5cm,
+rightmargin=-0.5cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myTipStyleDemo}
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%是替换掉上面的自己写的简单的myexpand环境
+%
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+\newcounter{myExpandWordCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\small,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myExpandWord}
+
+
+
+%%
+%% 寒假学习计划的临时环境
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myPlanCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=1.8cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,green!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,green]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --\SetupExSheets{headings=margin}
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myPlan}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% mySimpExpand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%也是替换掉上自己写的简单的myexpand环境
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\tcbset{colback=Salmon!50!white,colframe=FireBrick!75!black, width=(\linewidth-8mm)/2,before=,after=\hfill,equal height group=ske}
+\newcounter{mySimpExpandCnt}
+\newenvironment{mySimpExpand}[1][]
+  {\refstepcounter{mySimpExpandCnt}\begin{tcolorbox}[
+    colback=green!5,
+    colframe=green!40!black,
+    title=\large{扩展词汇-\themySimpExpandCnt : #1}]
+  }
+  {\end{tcolorbox}}
+
+%% ReadIt(大家说英语节目的内容整理)
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\large,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myReadList}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList}
+
+
+%% 下面这个适合定理的风格
+
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\newcounter{mySimpExpandCounter}
+%\tcbuselibrary{theorem}
+%\newtcbtheorem[number within=section]{mySimpExpand22222}{My Theorem}%
+%{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+
+
+%\titleformat{\section}[block]{\kai}{\thesection}{10pt}{}
+
+%\makeglossaries
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+整理平时阅读英文材料当中碰到的常见词汇以及对应的语句
+\end{abstract}
+
+%%% start new page from the first
+\newpage
+
+\section{小说材料词汇}\label{sec.JuniorEng}
+
+   \subsection{动作词汇}
+除了平时学习中的动词外，小说里面会使用更多的动作表达词汇, 这里列举在这些文章中出现得较多的词汇。
+
+      \subsubsection{肢体动作}
+
+\begin{tasks}[style=itemize](2)
+  \task dart  \task slam
+  \task plop
+\end{tasks}
+
+\begin{printdemosample}
+Another drop of water fell with a soft plop.\marginpar{\footnotesize{又一滴水轻轻地滴答一声掉落下来}}
+\end{printdemosample}
+
+slam一般用来形容"用力关，使劲推"等动作 \index{slam}
+
+\begin{printdemosample}
+  She slammed the door and locked it behind her. \marginpar{\footnotesize{她砰地一声关上了门，并随手锁上了}}
+\end{printdemosample}
+
+
+      \subsubsection{喊叫的词汇}
+
+\begin{tasks}[style=itemize](3)
+  \task yell \task yelp  \task scream
+  \task growl  \startnewitemline
+  \task grumble  \startnewitemline
+\end{tasks}
+
+yelp多指由于疼痛害怕等原因而发出的短暂尖叫：
+
+\begin{printdemosample}
+  Her dog yelped and came to heel.\marginpar{\footnotesize{她的狗汪地怪叫一声，紧跟了上来}}
+
+\vspace{0.8cm}
+
+  "Yow!" she yelped, fanning her mouth. "This porridge is as hot as lava!"
+\end{printdemosample}
+
+
+由grumble词中的"发牢骚"含义, 我们可以引申出grumpy词，表示"脾气暴躁的" \index{grumpy}
+
+\begin{printdemosample}
+Some folk think I'm a grumpy old man. \marginpar{\footnotesize{有些人认为我是一个性格暴躁的老头}}
+\end{printdemosample}
+
+  \subsection{房屋相关}
+
+\begin{tasks}
+  \task porch \task 门廊，门厅
+\end{tasks}
+
+  \subsection{烹饪相关}
+
+首先，烹饪手法的几个词汇：
+
+\begin{tasks}
+  \task boiled \task grilled \task baked \task fried
+\end{tasks}
+
+注意chip和french fried
+
+烧菜中的几个不常见词汇：
+
+\begin{tasks}
+  \task cabbage
+  \task corn
+  \task cucumber
+  \task garlic
+  \task lettuce
+  \task peanut
+  \task spinach
+\end{tasks}
+
+\section{科学文章词汇}
+
+  \subsection{天文}
+
+  \subsection{化学}
+  oxygen
+  \subsection{计算机}
+
+
+一年四季展示了时间的变化，所以下面是时间相关单词： \index{morning} \index{evening} \index{night} \index{time}  \index{home}  \index{go home} \index{hour} \index{minute} \index{year} \index{day}  \index{then} \index{now}  \index{afternoon} \index{noon} \index{week} \index{weekend} \index{month} \index{breathe} \index{survive} \index{survivor} \index{movie} \index{stretch} \index{blonde} \index{nothing} \index{soft drink} \index{injure} \index{elbow} \index{ankle} \index{knee}
+
+\marginpar{\vspace{1cm}no\\now\\then}
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task morning  \task afternoon  \task evening \task noon
+ \task night    \task time     \task hour       \task minute
+ \task day      \task year     \task week       \task now
+\end{tasks}
+
+\marginpar{\vspace{0.7cm}after}
+\begin{printdemosample}\index{after} \index{discuss}
+ Good monring. Good afternoon. Good evening. Good night.
+\end{printdemosample}
+
+
+对于每一个时间单位，我们都可使用every来搭配。\index{every} \index{everyone} \index{could} \index{would} \index{should} \index{cross} \index{true} \index{false} \index{basket} \index{as usual} \index{bank} \index{banker} \index{suddenly} \index{celebration} \index{celebrate} \index{celebrity} \index{calculate} \index{absent} \index{fog} \index{foggy} \index{success}  \index{successful} \index{unsuccessful} \index{plan} \index{enough} \index{bored} \index{concert} \index{photograph} \index{bowl} \index{reply} \index{keeper} \index{fresh} \index{flag} \index{Thanksgiving} \index{while} \index{cage} \index{regular} \index{regularly} \index{promise} \index{lecture} \index{lecturer} \index{behave} \index{behaviour} \index{interview} \index{headline} \index{scene} \index{responsible} \index{rescue} \index{qualification} \index{announcement} \index{destination} \index{extinct} \index{worth} \index{take up} \index{cruel} \index{prescription}
+
+\marginpar{\vspace{1cm}形容词}
+\begin{printdemosample}
+This is a suit for everyday wear.
+
+I speak English every day.
+
+Hello, everyone.
+\end{printdemosample}
+
+同时，需要注意区分 very  \qquad every  \qquad very much  \index{very much} \index{very} \index{visit} \index{visitor} \index{expo} \index{a pair of} \index{baker} \index{decide} \index{decide to}\index{decision} \index{leave} \index{trouble} \index{choose} \index{bat} \index{be careful} \index{carefully} \index{result} \index{mistake} \index{weigh} \index{weight} \index{smoke} \index{quickly} \index{boxer} \index{row} \index{a number of} \index{clear} \index{clearly} \index{unclear} \index{storm} \index{thunder} \index{thunderstorm} \index{flour} \index{dear} \index{private} \index{crash} \index{laptop} \index{bargain} \index{attic} \index{for ages} \index{funfair}
+
+\begin{printdemosample}
+ Thank you very much.
+
+ It's very high.
+\end{printdemosample}
+
+而day也可以组合成多个词汇： \index{today} \index{birthday} \index{yesterday} \index{tomorrow} \index{dragon} \index{away} \index{at} \index{at home} \index{at school} \index{let} \index{kite} \index{together} \index{globe} \index{global} \index{zone} \index{obvious} \index{gold} \index{golden} \index{improve} \index{theatre} \index{champion}\index{championship} \index{at all} \index{luggage} \index{main} \index{low} \index{unless} \index{however} \index{whoever} \index{whenever} \index{wherever} \index{whatever} \index{look after} \index{hate} \index{recommend} \index{especially} \index{underground} \index{roundabout} \index{journey} \index{astronaut} \index{explore} \index{explorer} \index{prefer} \index{queue} \index{army} \index{equipment}
+
+\marginpar{\vspace{1cm}Happy birthday!}
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task today  \task yesterday  \task tomorrow  \task birthday
+\end{tasks}
+
+\marginpar{\vspace{0.9cm}all day long}
+\begin{printdemosample}
+ Dad is a singer. He sings all day long.
+\end{printdemosample}
+
+
+\vspace{2cm}
+
+询问时间的方式: \index{o'clock} \index{and} \index{clock} \index{because} \index{toilet} \index{hotel} \index{hostel} \index{stadium} \index{castle} \index{station} \index{railway station} \index{bake} \index{baked} \index{oil} \index{cereal} \index{prize} \index{price} \index{flight} \index{passport} \index{challenge} \index{support} \index{advise} \index{allow} \index{advice} \index{towel} \index{boil} \index{boiled} \index{coach} \index{gym} \index{practise} \index{practice} \index{field} \index{maybe} \index{traffic jam} \index{normal} \index{program} \index{programme} \index{programmer} \index{complete} \index{bath} \index{instead} \index{usual} \index{by usual} \index{litter} \index{littering} \index{much} \index{activity} \index{information} \index{tyre} \index{flat tyres} \index{fix} \index{tourist} \index{tourism} \index{tour} \index{tour guide} \index{chef} \index{vehicle} \index{pavement} \index{sidewalk} \index{disease}
+
+\marginpar{\vspace{0.8cm}可以回答该到做什么事情的时间了。}
+\begin{printdemosample}
+ - What's the time?
+
+ - It's time to drink and eat.
+\end{printdemosample}
+
+\marginpar{\vspace{0.8cm}必需回答几点}
+\begin{printdemosample}
+ - What time is it?
+
+ - It's seven o'clock. It's time for breakfast.
+\end{printdemosample}
+
+接下来注意It's time for sth. 和It's time to do sth.两种句式
+
+Peppa Pig中猪妈妈的"Home time."相当于\blank[width=3cm]{}？ \marginpar{It's time to go home.}
+
+
+\section{新闻报道}
+
+  \subsection{综述}
+
+Stable food production and prices in China will contribute greatly to global food security, which has been challenged by the ongoing COVID-19 pandemic, a major body of the United Nations said.
+
+ "With the novel coronavirus spreading rapidly, the impacts of the COVID-19 pandemic on global agricultural and food markets are becoming increasingly apparent," said the Food and Agriculture Organization of the United Nations. "As one of the largest exporters and importers of agricultural commodities, China's robust food supply, stock and consumption contribute as a great stabilizer in international food market and food security."
+
+China is expected to have a good harvest this year, with total grain production expected to remain at 650 million metric tons for the sixth consecutive year, despite the impact of COVID-19 and flooding in some areas, according to the Ministry of Agriculture and Rural Affairs.
+
+Total grain production for the summer harvest this year exceeded 142 million tons, a rise of 0.9 percent compared with last summer, according to the National Bureau of Statistics.
+
+The FAO said production of wheat crops and cereal imports in China are stable, and prices of rice and wheat, two of the most important crops in China, have remained generally steady since the beginning of this year.
+
+Throughout the world, however, food security faces challenges caused by the pandemic. An additional 130 million people globally may fall into hunger this year, according to a report jointly released in July by five international organizations including the FAO, the United Nations World Food Programme and the World Health Organization.
+
+In its August edition of the global food monitoring brief, the FAO lowered its forecast for world cereal production this year by 25 million tons, a decrease of 0.9 percent compared to the previous forecast in July. Meanwhile, the forecast for world cereal stocks by the end of next year has also been cut by the organization, although it said the stocks this year will still represent an all-time high.
+
+Although self-sufficient in cereals, such as wheat and rice, China relied on imports for the bulk of domestic demand for soybeans. China imports more than 80 million tons of soybeans every year£­most of which are used to produce edible oil and animal feed£­accounting for more than 80 percent of all crop imports, according to the Ministry of Agriculture and Rural Affairs.
+
+Meanwhile, the import of cereals only accounts for 2 percent of domestic production every year, it said.
+
+The FAO has called on governments to recognize the importance of ensuring that trade, whether domestic or international, remains open and frictionless, is free from restrictions and meets food capacities in terms of volume and fulfilling nutritional gaps, it said.
+
+"We need to rely on markets as an integral part of the global food system. This is all the more important in the face of major disruptions, whether they come from COVID-19, locust outbreaks or climate change," said Qu Dongyu, the FAO's director-general.
+
+\printindex
+
+\end{document}

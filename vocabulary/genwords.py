@@ -355,31 +355,43 @@ class Vocabulary:
 
     __input_fn = "cards.idx"
 
+    __advanced_list = [
+      "hydrogen",
+      "inorganic",
+      "organic", "oxygen",
+    ]
+
     __mediate_list = [
       "announcement",
-      "embarrassed"
+      "celebration", "crowded",
+      "embarrassed", "exhausted",
+      "forever",
+      "journalist",
+      "similar",
+      "tourism",
+      "volunteer",
     ]
 
     __simple_list = [
       "a", "about", "after", "all", "am", "an", "and", "any", "are", "aren't", "as", "ask", "at",
-      "bad", "be", "big", "bird", "book", "box", "boy", "bring", "bus", "but", "busy", "buy", "by",
-      "cake", "can", "clean", "cold", "cool", "come", "cut",
+      "bad", "be", "bed", "big", "bird", "book", "box", "boy", "bring", "bus", "but", "busy", "buy", "by",
+      "cake", "can", "car", "cat", "clean", "close", "cold", "cool", "come", "cut",
       "dance", "day", "do", "does", "dog", "down", "did", "draw",
       "egg", "every", "English",
       "fast", "father", "find", "fish","five", "fly", "foot", "football", "for", "from",
       "get", "girl", "give",  "go", "good", "green",
-      "happy", "hand", "has", "have", "he", "help", "her", "his", "home", "hot", "how",
+      "happy", "hand", "has", "have", "he", "help", "her", "here", "his", "home", "hot", "how",
       "if", "in", "is", "isn't", "it", "I",
       "jump",
-      "leg", "let", "like", "listen", "little", "look", "long",
-      "man", "many", "me", "morning", "mother", "my", "must", "Miss Thin", "Mr Chan", "Mrs Ship",
-      "name", "new", "no", "not",
+      "leg", "let", "lesson", "like", "listen", "little", "look", "long", "Let's",
+      "man", "many", "me", "morning", "mother", "my", "must", "Me too", "Miss Thin", "Mr Chan", "Mrs Ship",
+      "name", "new", "next", "no", "not",
       "of", "off", "old", "on", "one", "only", "open", "or", "our", "out",
       "pen", "pig", "play", "please", "put",
       "quick", "quickly",
       "read", "red", "right", "run",
-      "say", "school", "see", "she", "shopping", "should", "sing", "sister", "six", "sleep", "slow", "slowly","so", "some", "stand", "stop", "sun",
-      "tell", "than", "that", "the", "there are", "there is", "they", "this", "time", "to", "today", "too", "two",
+      "say", "school", "see", "she", "shopping", "should", "sing", "sister", "sit", "six", "sleep", "slow", "slowly","so", "some", "soon", "stand", "stop", "sun",
+      "tell", "than", "that", "the", "there are", "there is", "they", "this", "time", "to", "today", "too", "tooth", "two",
       "up", "us",
       "very",
       "wait", "was", "water", "we", "what", "when", "who", "why", "will", "with", "woman",  "work", "write",
