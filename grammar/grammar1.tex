@@ -1,0 +1,5811 @@
+% An Annoated version of Grammer
+%
+% [2020-12-05] Create this new grammar one
+%
+% [2015-10-19] Move all here, work well on TeX-Live2014, but Live-2015 seems
+%              NOT GOOD for the ' symbole output.
+%
+% [2015-10-18] Try convert the concrete_eng.tex into XeLatex format
+
+\documentclass[a4paper]{article}
+\title{English Grammar}
+\author{Yang Songxiang}
+
+%% MUST defined before fontspce
+\usepackage{tipa}
+
+\usepackage{fontspec,xunicode,xltxtra,makeidx,xecolor}
+\usepackage{color,listings,tabularx,amsfonts}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{titlesec}
+\usepackage{lettrine}
+\usepackage{framed}
+\usepackage{colortbl}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\usepackage[many]{tcolorbox}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{epigraph}
+\usepackage{soul}
+\usepackage[nonumberlist]{glossaries}
+%
+%%
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{tkz-base}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,trees,calc,automata,positioning, fit}
+\usetikzlibrary{calendar}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{angles}
+\usetikzlibrary{graphs}
+
+\tikzset{
+  mybox/.style={
+    rectangle,
+    rounded corners,
+    draw=black
+  },
+}
+
+\usepackage[auto-label]{exsheets}
+\usepackage{enumerate}
+\usepackage{tasks}
+\usepackage{indentfirst}
+
+\usepackage[bookmarks=true,pdfborder={0 0 0}]{hyperref}
+%%去除TexLive-2015开始fontspec对引号的影响
+\defaultfontfeatures[\rmfamily,\sffamily,\ttfamily]{}
+\setmainfont{WenQuanYi Micro Hei}
+\setsansfont{WenQuanYi Micro Hei}
+\setmonofont{WenQuanYi Micro Hei}
+
+%required Windows fonts
+\newcommand\fontnamekai{STKaiti}
+% Tex-Live2016
+%\newfontinstance\KAI {\fontnamekai}
+\newfontfamily\KAI {\fontnamekai}
+\newcommand{\kai}[1]{{\KAI#1}}
+%\newfontfamily\mynamingfont {Liberation Serif}
+%\newfontfamily\mynamingfontb {Century Schoolbook L}
+%\newfontfamily\mynamingfontc {Droid Serif}
+%\newfontfamily\mynamingfontd [Mapping=tex-text]{TeX Gyre Pagella}
+
+
+\newcommand\vtextvisiblespace[1][.4em]{%
+  \mbox{\kern.06em\vrule height.5ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.5ex}}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5\baselineskip}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip=0pt plus 1pt minus 0.1pt
+
+%listing global settings
+\lstset{basicstyle=\scriptsize,frame=lines}
+
+%some global color
+\definecolor{light-gray}{rgb}{0.87,0.87,0.87}
+\definecolor{light-yellow}{rgb}{0.88,0.92,0.48}
+\definecolor{mygreen}{rgb}{0.63,1,0.35}
+
+%complicated def
+\lstnewenvironment{myjavacode}[1][]
+      {\lstset{language=Java}\lstset{escapeinside={(*@}{@*)},
+       basicstyle=\footnotesize\ttfamily,
+       numbers=left,numberstyle=\scriptsize,stepnumber=1,numbersep=5pt,
+       breaklines=true,
+       %firstnumber=last,
+           %frame=tblr,
+           framesep=5pt,
+           showstringspaces=false,
+           keywordstyle=\itshape\color{blue},
+          %identifierstyle=\ttfamily,
+           stringstyle=\xecolor{maroon},
+        commentstyle=\color{black},
+        rulecolor=\color{black},
+        xleftmargin=0pt,
+        xrightmargin=0pt,
+        aboveskip=\medskipamount,
+        belowskip=\medskipamount,
+               backgroundcolor=\color{white}, #1
+}}
+{}
+
+\newfontfamily\thekai{STKaiti}
+%%尝试把margainpar中的文字大小修改
+\setlength\marginparwidth{2cm}
+\makeatletter
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{\thekai\footnotesize #1}%
+  \global\setbox\@currbox\copy\@marbox
+  \@xympar}
+\makeatother
+
+%% Try new a my own code 用于扩展词汇的统一处理
+\newcounter{myexpandnum}
+\newcounter{mydemonum}
+%\newenvironment{myexpand2}[1][\unskip]{\colorbox{red}{Expand\refstepcounter{myexpandnum} \themyexpandnum #1}}{}
+
+%\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum}  扩展词汇\themyexpandnum- \vspace{0.5cm} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=red] (0,0) circle (1ex); \colorbox{blue!30}{扩展词汇\themyexpandnum- \vspace{0.5cm}} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+
+\newenvironment{mydemosample}{\stepcounter{mydemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=blue] (0,0) circle (1ex); \colorbox{blue!30}{例句 \themydemonum}
+\\
+\rule{0.2\textwidth}{0.5mm} \begin{quotation}}{\end{quotation}}
+
+%%这个用于适合打印的例句输出
+\newcounter{printdemonum}
+\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] {\node[rectangle]{\includegraphics[scale=0.10]{../img/huawen.eps}}} {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
+
+% a table collection
+%\definecolor{Gray}{gray}{0.85}
+%\definecolor{LightCyan}{rgb}{0.88,1,1}
+%\newcolumntype{mycA}{>{\columncolor{Gray}}c}
+%\newcolumntype{mycB}{>{\columncolor{LightCyan}}c}
+
+%\newcommand\mywordnums[2]{First #1 , second #2}
+\newcommand\mywordnums[2]{\bgroup \def\arraystretch{1.15} \scriptsize
+  \begin{tabular}{|>{\columncolor[gray]{0.8}}c|>{\columncolor[rgb]{0.88,1,1}}c|}
+   \hline
+   {单数} & {复数} \\
+   \hline
+   {#1} & {#2} \\
+   \hline
+  \end{tabular}
+\egroup}
+
+%% 2016-12-22添加了一个类似tip类型的示例
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myTipStyleDemoCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=-0.5cm,
+rightmargin=-0.5cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myTipStyleDemo}
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%是替换掉上面的自己写的简单的myexpand环境
+%
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+\newcounter{myExpandWordCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\small,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myExpandWord}
+
+
+%% marginpar for exercise
+\SetupExSheets{headings=margin-nr}
+
+%%
+%% 寒假学习计划的临时环境
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myPlanCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=1.8cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,green!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,green]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myPlan}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% mySimpExpand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%也是替换掉上自己写的简单的myexpand环境
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\tcbset{colback=Salmon!50!white,colframe=FireBrick!75!black, width=(\linewidth-8mm)/2,before=,after=\hfill,equal height group=ske}
+\newcounter{mySimpExpandCnt}
+\newenvironment{mySimpExpand}[1][]
+  {\refstepcounter{mySimpExpandCnt}\begin{tcolorbox}[
+    colback=green!5,
+    colframe=green!40!black,
+    title=\large{扩展词汇-\themySimpExpandCnt : #1}]
+  }
+  {\end{tcolorbox}}
+
+%% ReadIt(大家说英语节目的内容整理)
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\large,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myReadList}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\normalsize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily read it} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily read it} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList2}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList}
+
+
+%% 下面这个适合定理的风格
+
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\newcounter{mySimpExpandCounter}
+%\tcbuselibrary{theorem}
+%\newtcbtheorem[number within=section]{mySimpExpand22222}{My Theorem}%
+%{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+
+
+%\titleformat{\section}[block]{\kai}{\thesection}{10pt}{}
+
+%% 2015-10-18 Try use glossaries packages for English Words Annotation
+%\input words.tex
+
+%\makeglossaries
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+这是语法文档的\XeLaTeX{}格式输出。
+\end{abstract}
+
+%%% start new page from the first
+\newpage
+
+\section{小学英语语法整理}\label{sec.JuniorEng}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%这里打算开始重构整个文档， 将学习过程中的琐碎知识点都一个个地整理起来，不追求完整性
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{excited和exciting}
+这类词汇是小学经常考察的知识点：
+
+\begin{itemize}
+ \item $\sim$ ed多指"感到$\cdots$的", 所以多用来表示人。
+ \item $\sim$ ing多指"让人感到$\cdots$的"， 所以多用来表示物。
+\end{itemize}
+
+\begin{printdemosample}
+ She was frightened of flying.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{be interested in}
+ This new book is very interesting, I'm interested in it.
+\end{printdemosample}
+
+\begin{printdemosample}
+  I felt relaxed when I heard the relaxing music.
+\end{printdemosample}
+
+\begin{tasks}[style=enumerate](3)
+ \task interesting  \task exciting  \task surprising
+ \task interested   \task excited   \task suprised
+ \task frightening  \task disappointing \task relaxing
+ \task frightened   \task disappointed  \task relaxed
+\end{tasks}
+
+试着完成下面的试题：
+
+\begin{question}
+ My father is very \blank[width=1cm]{} to watch the \blank[width=1cm]{} basketball match.
+
+  \begin{tasks}[counter-format=tsk[A].](3)
+   \task excited, excited
+   \task exciting, excited
+   \task excited, exciting
+   \end{tasks}
+\end{question}
+\begin{solution}
+C
+\end{solution}
+
+\begin{question}
+  It is \blank[width=1cm]{} that he didn't pass the examination.
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+    \task disappointed
+    \task disappointing
+    \end{tasks}
+ \end{question}
+ \begin{solution}
+ B
+ \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{关于帮助(help)}
+
+首先，请人帮忙的说法有好多种，需要至少熟悉下面几种：
+
+\begin{printdemosample}
+ - Would you please do me a favour?
+
+ - Sure, what can I do for you?
+\end{printdemosample}
+
+或者:
+
+\begin{printdemosample}
+ - Could you please do a favor for me?
+
+ - Sure, how may I help you?
+\end{printdemosample}
+
+give $\cdots$ a hand也表示帮忙的意思：\marginpar{此为口语化表达}
+
+\begin{printdemosample}
+ Give me a hand, please.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Come and give me a hand in the garden.
+\end{printdemosample}
+
+help单独使用，则表示中文中的"救命"的求救意思：
+
+\begin{printdemosample} \marginpar{cry $\,$ cries}
+ An ant falls into a river, "Help!", he cries.
+\end{printdemosample}
+
+当“有助于$\cdots$”讲的时候，可以这么说：
+
+\begin{printdemosample}
+ Some dinosaurs left fossils. Fossils help us learn about them.
+\end{printdemosample}
+
+\begin{printdemosample}  \index{to} \index{will} \index{help}
+ This is a baby shark. It has eyes to help it see.
+
+ It has a tail to help it swim.
+
+ It has a mouth to help it eat.
+
+ It will grow into a big shark.
+\end{printdemosample}
+
+询问别人需要帮助(比如商店购物等)，需要知道下面的两种问法：
+
+\begin{printdemosample}
+ What can I do for you?
+\end{printdemosample}
+
+\begin{printdemosample}
+ How may I help you?
+\end{printdemosample}
+
+  \subsection{less和ness后缀}
+  ？？？
+
+%%%%%%%%%%%%%%%%END OF REFACTORING ...%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+  \subsection{天气情况的询问} \label{sec.Weather}\index{weather}
+
+最常见的是下面两种问法：
+
+\begin{itemize}
+ \item How's the weather?
+ \item What's the weather like?
+\end{itemize}
+
+\begin{printdemosample}
+ - How's the weather?
+
+ - It's cloudy.
+\end{printdemosample}
+
+
+\begin{tasks}(5)
+ \task windy  \task rainy  \task sunny  \task cloudy  \task snowy
+ \task wind   \task rain   \task sun    \task cloud   \task snow
+\end{tasks}
+
+\begin{printdemosample} \marginpar{look for}
+ When the rain comes, ants look for shelter. But ducks stay in the rain.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - What is the weather like in your hometown?
+
+ - It is always sunny.
+\end{printdemosample}
+
+
+  \subsection{aw发音} \index{draw} \index{drawer}
+
+这个多数情况下发\begin{IPA}[O:]\end{IPA}音
+
+\begin{tasks}(4)
+ \task draw  \task saw  \task paw  \task claw  \task hawk
+ \task awful \task awesome  \task drawer \task strawberry
+\end{tasks}
+
+\begin{printdemosample}
+ That's awful!
+\end{printdemosample}
+
+\begin{printdemosample}
+ Wow! That's totally awesome!
+\end{printdemosample}
+
+\begin{printdemosample}\marginpar{可以尝试一下不同时态的说法！}
+ He opened a drawer in his writing-table.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He doesn't know how to paint a lion's paw.
+\end{printdemosample}
+
+
+ \subsection{单词like}\label{sec.like} \index{like}
+喜欢做某事的两种说法：
+
+\begin{tasks}[style=enumerate](1)
+ \task sb like to do sth.
+ \task sb like doing sth.
+\end{tasks}
+
+需要注意这两种说法的细微区别
+
+\begin{printdemosample}
+ She likes watching TV everyday.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She likes to swim this afternoon.
+\end{printdemosample}
+
+而直接用like sth，通常表示喜欢某个事物、或者像某个事物： (这个有两种含义)
+
+\begin{printdemosample}
+ He looks like a tiger.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I like pandas because they're cute.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He likes pandas because they're so lovely.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She liked pandas when she was a child. Now, she doesn't like them any more.
+\end{printdemosample}
+
+另外一个比较客气的说法是:
+
+\begin{printdemosample}
+ I'd like to watch T.V. with my mother.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I would like to watch T.V. with my mother.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I'd like some juice.
+\end{printdemosample}
+
+和like to do相比， would like to更加强调自己的想要去做某件事情
+
+下面留几个小练习：
+
+\begin{question}
+- Do you like playing football?
+
+\noindent - No, I don't. I like \blank[width=1cm]{}.
+
+\begin{tasks}[counter-format=tsk[A].](3)
+ \task run
+ \task skipping
+ \task swims
+\end{tasks}
+\end{question}
+\begin{solution}
+B
+\end{solution}
+
+\begin{question}
+ - What do you like doing?
+
+\noindent - I like \blank[width=1cm]{}.
+
+\begin{tasks}[counter-format=tsk[A].](3)
+ \task swim
+ \task swimming
+ \task swims
+\end{tasks}
+\end{question}
+\begin{solution}
+B
+\end{solution}
+
+ \subsection{has got/have got}  \marginpar{学而思三年级暑假内容}
+这个一般表示"已经得到、有"的意思。
+
+当表示"有"的意思时，基本和单独的have/has表达的意思一样。
+
+\begin{printdemosample}
+ Miss, Miss, Bill has got my hat!
+\end{printdemosample}
+
+\begin{printdemosample}  \marginpar{知道什么时候是have,什么时候是has}
+ I have got some books.
+
+ I haven't got any books.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - What's the matter?
+
+ - I've got a bad cold.
+\end{printdemosample}
+
+\begin{printdemosample}  \marginpar{疑问句和否定句的说法}
+ - Have you got a cold?
+
+ - No, I haven't.
+\end{printdemosample}
+
+
+  \subsection{str的发音}
+
+\begin{tasks}[style=enumerate](3)
+ \task street    \task strong        \task strange
+ \task string    \task strawberries   \task stranger
+\end{tasks}
+
+在街道上的说法： \index{on the street}  \index{in the street}
+
+in the street和on the street一般都可以\marginpar{in适合于英国，on适用于美国}
+
+\begin{printdemosample}
+We mustn't play on the street
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{by chance}
+ I met her by chance on the street yesterday.
+\end{printdemosample}
+
+
+  \subsection{want和want to} \index{want} \index{want to}
+这里需要知道下面三种用法：
+
+\begin{itemize}
+ \item want to do sth
+ \item want sth
+ \item want sb to do sth
+\end{itemize}
+
+\begin{printdemosample}
+I want to have a talk with him alone.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Do you want some tea?
+
+ Do you want some more tea?
+\end{printdemosample}
+
+\begin{printdemosample}
+I want you to buy a cup of coffee for me right now.
+\end{printdemosample}
+
+  \subsection{be good at}
+这个单词表示"擅长做$\cdots$"
+
+\begin{itemize}
+ \item be good at sth
+ \item be good at doing sth.
+\end{itemize}
+
+
+\begin{printdemosample}
+ Lucy is good at swimming.
+\end{printdemosample}
+
+\begin{printdemosample}
+ James was good at running when he was a child. Now, he is good at jumping.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I am good at chess, but not checkers.
+\end{printdemosample}
+
+ \subsection{be going to}
+将要做什么事情： sb be going to do sth.
+
+相当于sb will do sth.
+
+\begin{printdemosample}
+ Don't worry, this is going to be fine.
+\end{printdemosample}
+
+\begin{printdemosample}
+ They're going to buy some books tomorrow.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The weather is getting windy and cloudy. It's going to rain.
+\end{printdemosample}
+
+  \subsection{一周7天} \marginpar{周一到周日的书写要贯穿到平时的天天练当中！}
+
+\begin{printdemosample}
+ There are seven days in a week.
+\end{printdemosample}
+
+各个周的称呼：
+
+\begin{tasks}[counter-format=tsk[1])](4)
+ \task Monday
+ \task Tuesday
+ \task Wednesday
+ \task Thursday
+ \task Friday
+ \task Saturday
+ \task Sunday
+ \end{tasks}
+
+习惯地记住"在星期$\cdots$”是用on $\cdots$:
+
+\begin{printdemosample}  \marginpar{注意当中的细微区别！}
+ Lucy goes to school on Thursday.
+
+ We go to school on Wednesdays.
+\end{printdemosample}
+
+上面的on Wednesdays就是"每个星期三"，我们可以使用两种方式：
+
+\begin{printdemosample}
+ We go to school on Wednesdays.
+
+ We go to school every Wednesday.
+\end{printdemosample}
+
+
+周末 - 为week和end的结合： weekend
+
+在周末的说法，通常是可以用两种方式：\marginpar{at为英国用法，on为美国用法}
+
+\begin{tasks}[counter-format=tsk[1])](2)
+ \task at the weekend
+ \task at weekends
+ \task on the weekend
+ \task on weekends
+ \end{tasks}
+
+  \subsection{some和any} \marginpar{学而思培训内容}
+否定、疑问下，some要变any
+
+\begin{printdemosample}
+ Lele has some tomatoes.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Does Lele have any tomatoes?
+\end{printdemosample}
+
+\begin{printdemosample}
+ There are some potatoes under the table.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Are there any potatoes under the table?
+
+ There aren't any potatoes under the table.
+\end{printdemosample}
+
+\begin{printdemosample}   \marginpar{剑桥二知识点}
+ Can you find any differences between these two pictures?
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Let's find some buses, can you see number 35?
+
+ - No, I can't see any buses!
+\end{printdemosample}
+
+注意一个非常有用的not $\cdots$ any more, 或者not $\cdots$ any longer的用法： \marginpar{及其有用的表达方式！}
+
+\begin{printdemosample}
+ I went to kindergarten When I was a young child. But now, I don't go there any more.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He doesn’t live here any longer.
+\end{printdemosample}
+
+  \subsection{问年龄/数量/价格}
+这里列举日常中经常使用的询问句型：
+
+\begin{printdemosample} \marginpar{问年龄、岁数}
+ - How old are you?
+
+ - I am eight years old.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - How old is your mother?
+
+ - She is twenty-seven.
+\end{printdemosample}
+
+\begin{printdemosample}  \marginpar{问数量}
+ - How many birds can you see?
+
+ - I can see forty-nine birds.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - How many books do you have?
+
+ - Thirty-six.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{in all}
+ Tom has two cats.
+
+ Peter has five cats.
+
+ How many cats do they have in all?
+\end{printdemosample}
+
+
+\begin{printdemosample} \marginpar{问价格}
+ - How much is it?
+
+ - Five yuan.
+\end{printdemosample}
+
+\begin{printdemosample}  \marginpar{dollar}
+ - How much is it?
+
+ - \$20.
+\end{printdemosample}
+
+  \subsection{there be句型}
+基础部分：记得$> 1$的情况下用are
+
+\begin{printdemosample}
+ There is a lamp next to the bed.
+
+ There are some eggs in the basket.
+
+ There are a lot of pencils on the desk.
+
+ There is a piece of cake in the refrigerator.
+\end{printdemosample}
+
+对于有多个事物一起的情况下，有最近的事物决定使用is还是are: \marginpar{近视眼！}
+
+\begin{printdemosample}
+ There is a pen and two books on the desk.
+
+ There are two books, a pen and many pencils on the table.
+
+ Lucy finds a big box. She opens it. Inside, there's a dragon and some paints.
+\end{printdemosample}
+
+难点： 对于不可数的液体(milk, juice, water, $\cdots$)，由于其没有s的形式，故还用is:
+
+\begin{printdemosample}
+ There is some milk in the cup.
+
+ Is there any milk in the cup?
+\end{printdemosample}
+
+\begin{printdemosample}
+ There is some meat in the fridge.
+\end{printdemosample}
+
+people是一个非常特殊的单词，它代表的是一个人的集体，虽然没有s的复数形式，但我们通常还用are:
+
+\begin{printdemosample}
+ There are some people in this bookstore.
+\end{printdemosample}
+
+
+尝试下面的小练习：
+
+\begin{question}  \marginpar{2018博亚杯}
+ \blank*[width=1cm]{} a lot of rain in New York in summer.
+ \begin{tasks}[counter-format=tsk[A].](3)
+ \task There was
+ \task There were
+ \task There is
+ \end{tasks}
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+
+  \subsection{difference和different}  \marginpar{剑二题型}
+这两个单词一个是名词，一个是形容词
+
+\begin{printdemosample}
+ - Can you find any differences?
+
+ - Yes, I can see something different.
+\end{printdemosample}
+
+\begin{printdemosample}
+ There's no difference in the results.
+\end{printdemosample}
+
+和”某某不同“，我们多使用be different to/from的方式：
+
+\begin{printdemosample}
+ Paul's very different from his brother.
+
+ Paul is very different to his brother.
+\end{printdemosample}
+
+注意除了表示不同外，difference还是用来表示数序中减法的结果，也就是我们说的"差"
+
+\begin{printdemosample}
+ \ul{Difference} is the result of a subtraction.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The difference of five and two is three, that is, \[5 - 2 = 3\]
+\end{printdemosample}
+
+ 练习一题： %%放在这里，而不是放在some/any话题下，是因为打印纸的范围问题，只能放在这里
+
+ \begin{question} \marginpar{这里有陷阱！}
+ I don't have \blank[width=1cm]{} ice cream.
+
+ \begin{tasks}[counter-format=tsk[A].](3)
+   \task a
+   \task any
+   \task some
+   \end{tasks}
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+
+除了上面的陷阱例题外，我们还要注意，当是客气地询问别人需要吃、喝什么东西的时候，我们是希望对方肯定的回答的，所以也是用some.
+
+所以是Would you like some xxxxxx?
+
+\begin{question}
+ - Would you like \blank[width=1cm]{} water?
+
+ - No, I don't need \blank[width=1cm]{} water, thank you.
+ \begin{tasks}[counter-format=tsk[A].](3)
+   \task a
+   \task any
+   \task some
+   \end{tasks}
+\end{question}
+
+
+  \subsection{borrow和lend}
+借的方向不一样，所以我们都是用：
+
+\begin{itemize}
+ \item borrow $\cdots$ from $\cdots$
+ \item lend $\cdots$ to $\cdots$
+\end{itemize}
+
+\begin{printdemosample}
+ Members can borrow up to ten books from the library at any one time.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{顺便学习下几个钱币的表示方式}
+ She borrowed \pounds100 from her parents.
+
+ She borrows \$10 from her parents every Monday.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Can you lend me your car this evening?
+\end{printdemosample}
+
+  \subsection{序数词}
+英语中对于表达"第$\cdots$个"的意思，不是简单的数字，而是下面的序数词： \marginpar{second还可表示时间秒}
+
+\begin{tasks}[style=enumerate, label-offset=0.5em, label-align=right](5)
+ \task first  \task second   \task third  \task fourth \task fifth
+ \task sixth  \task seventh  \task eighth  \task ninth  \task tenth
+ \task eleventh \task twelfth \task thirteenth  \task fourteenth \task fifteenth
+\end{tasks}
+
+表达第几个，经常在上面的序数词前面加上一个the:
+
+\begin{printdemosample}
+ Alice finds two cats. The first one is white, and the second one is black.
+\end{printdemosample}
+
+短语a second opinion, 意思指"别的(其他人的)建议/诊断"。\marginpar{a second opinion}
+
+该短语多用于多用于医疗场景下面，比如某个医生得出某个诊断结果后，一般人若不愿意接收，那么总是想再找另外的医生(second)来确认、查看。这个时候就可以说：
+
+\begin{printdemosample}
+ Let's get a second opinion.
+\end{printdemosample}
+
+实际场景中，还有序数词的缩写方式，要了解：
+
+\begin{tasks}[style=enumerate](4)
+ \task 1st        \task 2nd     \task 3rd   \task 4th
+ \task 1$\displaystyle ^{st}$  \task  2$^{nd}$  \task 3$^{rd}$  \task 4$^{th}$
+\end{tasks}
+
+  \subsection{tw发音}
+这个用的最多的是几个数字(包含2的)：
+
+\begin{tasks}[style=enumerate](4)
+ \task twelve  \task twenty  \task twice  \task twentieth \task twelfth
+\end{tasks}
+
+别的单词：
+
+\begin{tasks}[style=enumerate](4)
+ \task twin  \task tweet
+\end{tasks}
+
+  \subsection{gram和kilogram}
+这个与三年级上的数学内容有关，所以需要学习以下。 \marginpar{kilo-的前缀表示千}
+
+\begin{tasks}[style=enumerate](3)
+ \task gram        \task meter      \task metre
+ \task kilogram  \task kilometer  \task kilometre
+\end{tasks}
+
+理解了这个单词，那么数学中的单位缩写(g, kg, m, km)就都能够理解，而不是死记硬背！ \marginpar{看到k头脑中立刻想到thousand(1000)}
+
+Wikipedia对千克的定义解释：
+\begin{quote}
+ The {\large{kilogram}{}} or {\large{kilogramme}{}} (symbol: kg) is the base unit of mass in the International System of Units (SI)
+\end{quote}
+
+下面是美国数学测试题目：
+
+\begin{question}
+ How many grams are in 95 kg?
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+ \task $9.5$ g
+ \task $9500$ g
+ \task $0.95$ g
+ \task $95000$ g
+ \end{tasks}
+
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+\begin{question}
+ How many grams are in forty-eight kg? \qquad \blank[width=2cm]{} g
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+  \subsection{打电话场景}
+
+\begin{printdemosample}
+ - May I speak to Sucy?
+
+ - Speaking
+\end{printdemosample}
+
+\begin{printdemosample}\marginpar{和上句意思一样}
+ - May I speak to Sucy?
+
+ - This is Sucy.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - May I speak to Mr Gates?
+
+ - He's not here right now. He's out.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{Don't hang up}
+ - May I speak to Mrs Sucy?
+
+ - Hold on, please.
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ - What's your phone number?
+
+ - My phone number is 18913381721.
+\end{printdemosample}
+
+make a phone call
+
+\begin{printdemosample} \marginpar{phone call}
+ If you make a phone call, you dial someone's phone number and speak to them by phone.
+\end{printdemosample}
+
+在电话里讲$\cdots$, 注意这个和中文的说法是不同的， 我们要用on the phone:
+
+\begin{printdemosample}
+ They talked about something on the phone last night.
+\end{printdemosample}
+
+\begin{printdemosample}
+ William is talking on his phone.
+\end{printdemosample}
+
+
+  \subsection{问频率how often} \label{sec.HowOften}
+首先，要熟悉下面几个表示频率的词：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task always        \task often    \task usually   \task never
+ \task ever          \task seldom   \task sometimes
+\end{tasks}
+
+\begin{printdemosample}
+ Mum never sings, but she hums all day long.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We usually go to school by bicycle.
+\end{printdemosample}
+
+\begin{printdemosample}
+ They seldom speak.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{有时候我觉得自己快要疯掉了}
+ Sometimes I feel I'm losing my mind.
+\end{printdemosample}
+
+表示次数的单词：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](3)
+ \task one time        \task two times    \task three times
+ \task once            \task twice   \task four times
+\end{tasks}
+
+\begin{printdemosample}
+ - How often does he play tennis?
+
+ - He plays tennis every day.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - How often do you drink milk?
+
+ - I drink milk twice a day.
+\end{printdemosample}
+
+如果只是问一共有多少次，那么可以简单地使用how many times
+
+\begin{printdemosample}
+ - How many times did you read this book last night?
+
+ - Five times.
+\end{printdemosample}
+
+
+\begin{question}
+ How \blank[width=1cm]{} people are there in the room?
+ \begin{tasks}[counter-format=tsk[A].](3)
+   \task many
+   \task much
+   \task long
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+people是集体名词，不是一个不可数名词，所以不用how much.
+
+我们也通常用many people bla bla bla.的说法
+
+  \subsection{比较级和最高级}
+$A$比$B$更加$\cdots$的说法需要知道：
+
+$A$ be $\cdots$er than $B$
+
+\begin{printdemosample}
+ Tigers are bigger than cats.
+
+ The duck is louder than the cat.
+\end{printdemosample}
+
+比较级别(更$\cdots$)的加$\sim$er有几种不同的添加方式：
+
+$\bigtriangleup$ 直接加er：
+
+\begin{tasks}[style=enumerate](4)
+ \task loud        \task strong      \task tall     \task quiet
+ \task louder      \task stronger    \task taller   \task quieter
+\end{tasks}
+
+\begin{printdemosample}
+ The hedgehog is smaller than the lion.
+
+ The monkey is weaker than the elephant.
+\end{printdemosample}
+
+$\bigtriangleup$单词已经是e结尾，所以只要加r:
+
+\begin{tasks}[style=enumerate](2)
+ \task nice      \task large
+ \task nicer     \task larger
+\end{tasks}
+
+$\bigtriangleup$单词y结尾，y$\rightarrow$i, 再加er:
+
+\begin{tasks}[style=enumerate](4)
+ \task happy        \task pretty      \task ugly     \task easy
+ \task happier      \task prettier    \task uglier   \task easier
+\end{tasks}
+
+\begin{printdemosample}
+ The girl is happier than her brother.
+
+ Parrots are prettier than mice.
+
+ The monster is uglier than the parrot.
+\end{printdemosample}
+
+$\bigtriangleup$末尾字母双拼后， 再加er: \marginpar{辅元辅的结构}
+
+\begin{tasks}[style=enumerate](4)
+ \task big         \task fat       \task hot     \task thin
+ \task bigger      \task fatter    \task hotter  \task thinner
+\end{tasks}
+
+除了加$\sim$er外，比较级还可以使用more $\cdots$，这个主要用于字母比较长的单词，当然一些短单词也可以：
+
+\begin{tasks}[style=enumerate](3)
+ \task fun          \task famous         \task important
+ \task more fun     \task more famous    \task more important
+\end{tasks}
+
+\begin{tasks}[style=enumerate](3)
+ \task boring          \task clever         \task difficult
+ \task more boring     \task more clever    \task more difficult
+\end{tasks}
+
+\begin{printdemosample}
+  He wants to be a pilot. It would be more exciting than being a footballer.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I think Chinese is more difficult than Maths.
+\end{printdemosample}
+
+
+最高级，表示“最$\cdots$的”，用于大于2个以上的比较，注意两个事物比较，只能产生比较级，不能为最高级！
+
+$\cdots$ be the xxxxx--est in $\cdots$
+
+\begin{printdemosample}
+ Nobody is taller than me in our class, so, I am the tallest in our class.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Jim is stronger than Carry. Carry is stronger than William. So, Jim is the strongest among them.
+\end{printdemosample}
+
+\begin{printdemosample}
+  He is the youngest and tallest boy in his class.
+\end{printdemosample}
+
+这里需要稍微注意多数的最高级，前面经常加上the。
+
+加$\sim$est构成最$\cdots$的规则和加$\sim$er是类似的：
+
+$\bigtriangleup$ 直接加est：
+
+\begin{tasks}[style=enumerate](4)
+ \task loud        \task strong      \task tall     \task quiet
+ \task louder      \task stronger    \task taller   \task quieter
+ \task loudest     \task strongest   \task tallest   \task quietest
+\end{tasks}
+
+$\bigtriangleup$末尾字母双拼后， 再加est:
+
+\begin{tasks}[style=enumerate](4)
+ \task big         \task fat        \task hot     \task thin
+ \task bigger      \task fatter    \task hotter   \task thinner
+ \task biggest     \task fattest   \task hottest  \task thinnest
+\end{tasks}
+
+对于需要使用more来表示比较级的情况，则可用most来表示最高级：
+
+\begin{tasks}[style=enumerate](3)
+ \task fun          \task famous         \task important
+ \task most fun     \task most famous    \task most important
+\end{tasks}
+
+\begin{printdemosample}
+  He is the youngest and tallest boy in his class.
+\end{printdemosample}
+
+
+最后要记住几个特殊的比较级和最高级：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task good         \task bad/ill    \task many/much   \task little
+ \task better      \task worse   \task more             \task less
+ \task best        \task worst   \task most	   \task least
+\end{tasks}
+
+\begin{printdemosample}
+ - How do you feel, Susie?
+
+ - Much better
+\end{printdemosample}
+
+\begin{printdemosample}
+ I am the best!
+\end{printdemosample}
+
+\begin{printdemosample}
+ Most of us like tigers very much.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The weather got worse during the day.
+\end{printdemosample}
+
+
+  \subsection{as ... as}
+表示和$\cdots$一样$\cdots$
+
+\begin{printdemosample}
+ "Run, run, as fast as you can. You can't catch me. I am the gingerbread man."
+\end{printdemosample}
+
+\begin{printdemosample}
+ This book is as interesting as that one.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I think I am as clever as you!
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{ASAP}
+ "Bob, finish your homework as soon as possible!"
+\end{printdemosample}
+
+这里面的as soon as 在中文里面就是一$\cdots$就$\cdots$
+
+\begin{printdemosample}
+ As soon as I came into the classroom, I gave my homework to Mrs. Chen.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I'll telephone you as soon as I get home.
+\end{printdemosample}
+
+一个有名的缩写ASAP的意思：
+
+\begin{tikzpicture}
+ \node [] {as soon as possible};
+ \node at (4, 0) [] {ASAP};
+ \draw [->, >=stealth'] (2, 0) -- (3, 0);
+\end{tikzpicture}
+
+\begin{printdemosample}
+ The colonel ordered, "I want two good engines down here asap."
+\end{printdemosample}
+
+
+  \subsection{情态动词}
+这种单词要和动词的原型一起使用，多表示“可不可以，能不能，应不应该”等意思，常见的情态动词如下：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task can         \task may    \task must   \task should    \task shall
+ \task will      \task need   \task would
+ \task could     \task might
+\end{tasks}
+
+\begin{printdemosample}
+ She must stay here, and you mustn't stay here.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We can't carry this heavy box.
+\end{printdemosample}
+
+\begin{printdemosample}
+ You should finish your homework as soon as possible.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I'm sorry I can't help you.
+\end{printdemosample}
+
+\begin{printdemosample}
+ May I take your order now?
+\end{printdemosample}
+
+
+另外，have to, has to也是用来表示“必须”的意思，和must比较起来，have to/has to强调的是客观原因，而must多表示人的主观因素！
+
+\begin{printdemosample}
+ We have to go to school before 8 o'clock.
+\end{printdemosample}
+
+不允许做什么事情，我们多用mustn't来表达：
+
+\begin{printdemosample}
+ We mustn't play on the street.
+\end{printdemosample}
+
+
+  \subsection{健康-health}
+当然，首先要知道health和healthy这两个词的区别：
+
+\begin{printdemosample}
+ His health is good.
+
+ He is healthy.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Your health is not good, please keep healthy.
+\end{printdemosample}
+
+当某人看起来不舒服，关心地询问，可以用下面说法：
+
+\begin{printdemosample} \marginpar{或者What's the matter with you?}
+ - What the matter?
+
+ - My feet hurt.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - What's wrong with you?
+
+ - My foot hurts.
+\end{printdemosample}
+
+当然，平常见面的普通问候则是：
+
+\begin{printdemosample}
+ - How are you Sucie?
+
+ - I'm tired, I didn't sleep well.
+\end{printdemosample}
+
+身体部位疼痛，我们通常使用$\sim$ache的结尾词语表示：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task headache  \task toothache  \task stomachache
+\end{tasks}
+
+\begin{printdemosample}
+ The patient's stomachache stopped after he took the medicine.
+\end{printdemosample}
+
+病情康复，可用get well.
+
+"感冒"的说法通常有下面两种：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task catch a cold    \task have a cold
+\end{tasks}
+
+下面一段文字来自Let's Talk in English: \marginpar{2017.0313.mp3}
+
+  \begin{quotation}
+Taylor needs help. She is moving a desk. Rob can help her. Be careful! Some books are falling. A book drops on Rob's foot. Now he is hurt. His leg is hurt, too. Taylor can help. But Rob has to stop hopping around first! \marginpar{stop doing sth\\stop to do sth}
+
+Linda's tooth hurts. How often does she go to the dentist? Never! Linda is scared of dentists. But she needs a dentist today.
+  \end{quotation}
+
+对应的对话场景如下：
+
+\begin{multicols}{2}
+ {\scriptsize{Taylor:}{}} Can you help me move this desk?
+
+ {\scriptsize{Rob:}{}} Sure, Taylor. One, two, three...
+
+ {\scriptsize{Taylor:}{}} Oh, be careful. The books are dropping on the floor.
+
+ {\scriptsize{Rob:}{}} Ahh. A book hit my foot!
+
+ {\scriptsize{Taylor:}{}} Oh no! Is your foot OK?
+
+ {\scriptsize{Rob:}{}} No. And my leg is hurt, too.
+
+ {\scriptsize{Taylor:}{}} Well, stop hopping and I can help you.
+\end{multicols}
+
+
+第二段对话，关于牙疼的话题， Conversation B:
+
+\begin{multicols}{2}
+ {\scriptsize{James:}{}} Hello, Linda. Is something wrong?
+
+ {\scriptsize{Linda:}{}} Yes, James. I don't feel well. My tooth hurts.
+
+ {\scriptsize{James:}{}} That isn't good. How often do you go to the dentist?
+
+ {\scriptsize{Linda:}{}} I never go to the dentist. I'm too scared!
+
+ {\scriptsize{James:}{}} Hmm. Dentists aren't scary. And you need a dentist.
+
+ {\scriptsize{Linda:}{}} Maybe you're right. My tooth really hurts. I have to go today.
+\end{multicols}
+
+
+  \subsection{good和well}
+一般而言，good是指事物(名词)好，well是指动作好。
+
+\begin{printdemosample}
+ I swim well.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She speaks English well.
+\end{printdemosample}
+
+\begin{printdemosample}
+ You speak English quite well.
+\end{printdemosample}
+
+get well多表示病情转好、康复的意思
+
+\begin{printdemosample}
+ I guarantee that if you take this medicine, you'll soon get well.
+\end{printdemosample}
+
+
+\begin{question}
+-  Which is \blank[width=1.6cm]{}, the sun, the moon or the earth?
+
+- Of course the moon is.
+   \begin{tasks}[counter-format=tsk[A].](4)
+     \task small
+     \task smaller
+     \task smallest
+     \task the smallest
+    \end{tasks}
+\end{question}
+
+\begin{question}[tags={mathEng}]
+ There are 8 bees near the hive. 3 bees fly away.
+
+How many bees stayed?  \blank[width=2cm]{}
+\end{question}
+
+\begin{question}
+ Amy is a \blank[width=1cm]{} girl. She cooks \blank[width=1cm]{}.
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+     \task good; good
+     \task well; well
+     \task good; well
+    \end{tasks}
+\end{question}
+
+  \subsection{简单的后缀}
+英语单词词根和汉字的偏旁部首类似，这里只根据小学课程的安排，先记录非常简单的内容。
+
+\begin{itemize}
+ \item $\sim$ful - 表示"xxx的“, 比如\cite{bibEngJuniorOneB}中描述春天的场景中使用了两个这样的单词： \marginpar{类似词汇helpful, wonderful}
+    \begin{tasks}[counter-format=tsk[1].](3)
+      \task colourful  \task beautiful \task useful
+    \end{tasks}
+
+ \item $\sim$fly - 多表示能飞的东西或者动物。
+   \begin{tasks}[counter-format=tsk[1].](3)
+      \task dragonfly  \task butterfly  \task firefly
+    \end{tasks}
+
+ \item $\sim$erry - 这是一个和甜水果有关的后缀。通常小小，圆圆的小果子都是以这个erry作为结尾的。\marginpar{blueberry, lingonberry}
+
+   \begin{tasks}[counter-format=tsk[1].](3)
+      \task cherry  \task berry \task strawberry
+   \end{tasks}
+
+ \item $\sim$er - 表示"做xx工作的人", 或者"和xx相关的东西物品"等等，下面是一些单词示例：
+    \begin{tasks}[counter-format=tsk[1].](3)
+      \task singer  \task teacher \task dancer
+   \end{tasks}
+
+ \item $\sim$ache - 表示"疼",
+    \begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task headache  \task toothache  \task stomachache
+ \end{tasks}
+\end{itemize}
+
+
+\begin{printdemosample}
+ Who am I? I have colorful feathers!
+\end{printdemosample}
+
+\begin{printdemosample}
+ The bread and butter is thickly spread with strawberry jam.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Toothache is pain in one of your teeth.
+\end{printdemosample}
+
+
+\begin{question}[tags={mathEng}]
+Maria has 2 cats.
+
+Marta has 5 cats.
+
+How many cats do they have in all?  \blank[width=2cm]{}
+\end{question}
+
+\begin{question}[tags={mathEng}]
+Isi saw six cars.
+
+Jamaal saw three cars.
+
+How many cars did Isi and Jamaal see?  \blank[width=2cm]{}
+\end{question}
+
+\begin{question}[tags={mathEng}]
+ 3 people are on the bus. 3 more people get on.
+
+ How many people are on the bus now? \blank[width=2cm]{}
+\end{question}
+
+  \subsection{few/little等词的区别} \marginpar{2017学而思三年级考点}
+这里需要知道下面的几个“一些”、"一点点"的表述词汇：
+
+ \begin{tasks}[counter-format=tsk[1].](4)
+      \task few  \task a few \task little  \task a little
+   \end{tasks}
+
+虽然上面的词，在中文当中都有“很少、一点点”的意思，但使用场合是有区别的！
+
+
+1. few, a few用来于可数名词
+
+2. little， a little用于不可数名词
+
+3. a little, a few是肯定含义，即“还有一些”
+
+4. little, few是否定含义，即"没有多少了"
+
+\begin{printdemosample}
+ She has a few friends in school.
+
+ She has few friends in school.
+\end{printdemosample}
+
+\begin{printdemosample}
+ There is a little oil in the dish.
+
+ There is little oil in the dish.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I'm still thirsty because there's little water left.
+\end{printdemosample}
+
+下面进行一些小测试：
+
+\begin{question}
+ - Mr Wang, would you please tell me the result of the test?
+
+ - You've done a good job. You made \blank[width=1cm]{} mistakes.
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+     \task a few
+     \task few
+     \task a little
+     \task little
+    \end{tasks}
+\end{question}
+
+
+\begin{question} \marginpar{2017学而思三年级}
+ Let's buy some rice. We have \blank[width=1cm]{} rice at home.
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+     \task few
+     \task a few
+     \task a little
+     \task little
+    \end{tasks}
+\end{question}
+
+\begin{question}
+ Hurry up! We've got \blank[width=1cm]{} time before the train leaves.
+
+ \begin{tasks}[counter-format=tsk[A].](3)
+     \task few
+     \task a little
+     \task little
+    \end{tasks}
+\end{question}
+
+%%注意people是集体名词，所以不能把它看成不可数名词！
+\begin{question}
+ There's still a little orange juice here, but \blank[width=1cm]{} people want to drink it.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+     \task few
+     \task a few
+     \task a little
+     \task little
+    \end{tasks}
+\end{question}
+
+ \begin{question}
+ Don't worry. We have \blank[width=1cm]{} time left.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+     \task few
+     \task a few
+     \task a little
+     \task little
+    \end{tasks}
+\end{question}
+
+  \subsection{dessert和desert}
+二者非常像，但意思完全不同！ 注意形象地记忆这两个单词！比如把甜食吃掉一个s后，就变成沙漠了。
+
+第一个音标为美国发音，第二个为英国发音：
+
+%https://tex.stackexchange.com/questions/25249/how-do-i-use-a-particular-font-for-a-small-section-of-text-in-my-document
+\begin{myWordList2}
+  \begin{tasks}[counter-format=tsk[1].](1)
+    \task dessert \qquad \tipaencoding{[dI"z3:rt]} \qquad \tipaencoding{[dI"z3:t]}{}
+    \task desert \qquad \,  \tipaencoding{["dez@rt]} \qquad \tipaencoding{["dez@t]}{}
+  \end{tasks}
+
+\end{myWordList2}
+
+\begin{printdemosample}
+ She had homemade ice cream for dessert.
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ A desert is a large area of land, usually in a hot region, where there is almost no water, rain, trees, or plants.
+
+ For example, the Sahara Desert - 撒哈拉沙漠
+\end{printdemosample}
+
+因为沙漠desert没有人烟，所以也有"无人居住、废弃"的意思：
+
+\begin{printdemosample}
+ The villages had been deserted.
+\end{printdemosample}
+
+
+  \subsection{鞋子的各种说法}
+
+shoes只是鞋子的总称，我们要会下面的单词：
+
+\begin{tasks}[style=enumerate](4)
+ \task slippers  \task sneakers \task boots
+ \task sandals
+\end{tasks}
+
+特别注意一双鞋(a pair of shoes)由于使用了a pair of这个说法，所以尽管鞋子shoes是复数，但是a pair of是一个整体，所以我们要用is而不用are：
+
+\begin{printdemosample}
+ This pair of shoes is not clean.
+
+ Those two pairs of shoes are clean.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{注意用they}
+ William puts on his pants. They're too small.
+\end{printdemosample}
+
+
+\begin{question}
+ This pair of gray trousers \blank[width=1cm]{} (is/are) a little short.
+\end{question}
+
+
+
+  \subsection{国家和国家人民的称呼}
+国家和国家人民以及语言，都可以使用：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](3)
+ \task China      \task Japan       \task Germany
+ \task Chinese    \task Japanese    \task German
+\end{tasks}
+
+继续：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task England   \task America(USA)   \task France    \task Australia
+ \task English   \task American         \task French    \task Australian
+\end{tasks}
+
+来自某个国家、地区(from):
+
+\begin{printdemosample}
+ - Where are you from?
+
+ - I'm from China.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We won three games against Australia.
+\end{printdemosample}
+
+ \subsection{一般过去时} \label{pastGrammar} \marginpar{这个知识点需要长时间的练习！}
+当我们论述故事的时候，多用一般过去时。
+
+它强调的是过去发生的事情，故yesterday等，是最简单的判断依据。
+
+\begin{printdemosample} \marginpar{get up \quad got up}
+ I got up at 6:30 yesterday.
+\end{printdemosample}
+
+需要知道be对应的过去式: \marginpar{do \quad did}
+
+\def\arraystretch{1.25}
+\begin{tabular}{l | l  }
+\hline
+{\large{be}}      &         {\large{过去式}}        \\
+\hline
+{is}              & \multirow{2}{*}{was}     \\
+{am}              &                            \\
+\hline
+{are}           &  {were}  \\
+\hline
+\end{tabular}
+
+\begin{printdemosample}
+ When I was a child, I usually played with my cousins.
+\end{printdemosample}
+
+\begin{printdemosample}
+ My parents were in Beijing last year. They are here now.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Paul's aunt wasn't at home yesterday.
+\end{printdemosample}
+
+\begin{printdemosample}
+ It was sunny and they were happy yesterday.
+\end{printdemosample}
+
+
+接下来，对动作(do), 需要对下面的句型有一定的熟悉度：
+
+\bgroup
+\def\arraystretch{1.45}
+\begin{tabular}{|l|l|l|}
+\hline
+{\large{肯定式}} & {\large{疑问式}} & {\large{否定式}}\\
+\hline
+{I worked $\cdots$} & {Did I work $\cdots$ ?} & {I didn't work $\cdots$}  \\
+{You worked $\cdots$} & {Did you work $\cdots$ ?} & {You didn't work $\cdots$} \\
+{She worked $\cdots$} & {Did she work $\cdots$ ?} & {She didn't work $\cdots$} \\
+{We worked $\cdots$} & {Did we work $\cdots$ ?} & {We didn't work $\cdots$} \\
+\hline
+\end{tabular}
+\egroup
+
+\begin{printdemosample}  \marginpar{say \quad said}
+ - What did you say just now?
+
+ - I said $\cdots$
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{grow \quad grew}
+ - Where did you grow up?
+
+ - I grew up in Nanjing.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{go to \quad went to}
+ They usually went to school at ten o'clock last year.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{come \quad came}
+ It was lucky you came along.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Did you go to Beijing last week?
+
+ - Yes, we did.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Did you go to Beijing yesterday?
+
+ - No, I didn't.
+\end{printdemosample}
+
+\begin{printdemosample}
+ What did you do yesterday?
+\end{printdemosample}
+
+ \subsection{-ist结尾的单词}
+英语当中，$\sim$ist结尾的单词，通常表示“从事xxx的人员, xx家”的意思，比如下面的几个：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task art      \task physics         \task science      \task piano
+ \task artist   \task physicist        \task scientist    \task pianist
+\end{tasks}
+
+\begin{printdemosample}
+ Each poster is signed by the artist.
+\end{printdemosample}
+
+
+继续：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task chemistry  \task dentistry    \task psychology     \task violin
+ \task chemist    \task dentist      \task psychologist   \task violinist
+\end{tasks}
+
+
+\begin{printdemosample}
+ Linda's tooth hurts. How often does she go to the dentist? Never! Linda is scared of dentists.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Scientists have collected more data than expected.
+\end{printdemosample}
+
+ \subsection{复杂的长句子(从句)} \label{sec.ComplicatedLong}
+看长句子的一个示例 (他就是那个偷了我钱包的小偷):
+
+\begin{printdemosample}
+ He is the thief.
+
+ The thief stole my purse!
+\end{printdemosample}
+
+因为是人，所以合并的时候用who来连接：
+
+\begin{printdemosample}
+ He is the thief who stole my purse!
+\end{printdemosample}
+
+如果表示的是其它类型，则对应的连接词是：
+
+\bgroup
+\def\arraystretch{1.15}
+\begin{tabular}{l|l}
+\hline
+{地点} & {where} \\
+\hline
+{时间} & {when}  \\
+\hline
+{原因} & {why}  \\
+\hline
+{物品} & {which/that}  \\
+\hline
+{谁的} & {whose} \\
+\hline
+\end{tabular}
+\egroup
+
+\begin{printdemosample}
+ I like the place where I was born.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Is that the reason why you didn't come to my birthday party?
+\end{printdemosample}
+
+\begin{question} \marginpar{2018学而思二年级}
+ The city \blank[width=1cm]{} she lives in is very far away.
+ \begin{tasks}[counter-format=tsk[A].](3)
+     \task when
+     \task who
+     \task which
+    \end{tasks}
+
+\end{question}
+
+\begin{question}
+ The letter is from my sister, \blank[width=1cm]{} is working in Beijing.
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+     \task which
+     \task that
+     \task whom
+     \task who
+    \end{tasks}
+\end{question}
+
+  \subsection{反身代词}
+反身代词是指“我自己”、“他自己”等等：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+ \task myself   \task himself   \task herself   \task ourselves
+ \task themselves \task itself  \task yourself  \task yourselves
+\end{tasks}
+
+\begin{printdemosample}
+ Take good care of yourself.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The child can dress himself.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{creep 爬行\\trough 水槽}
+ Wilbur checked himself and crept slowly to his trough.
+\end{printdemosample}
+
+
+\begin{question}
+Ann is alone. She is playing by \blank[width=1cm]{}.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+        \task she  \task her  \task herself  \task me
+  \end{tasks}
+\end{question}
+
+\begin{question}
+The boy always likes to talk to\blank[width=1cm]{}.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+        \task himself  \task myself  \task herself  \task yourself
+  \end{tasks}
+\end{question}
+
+  \subsection{睡和醒的几个不同说法}
+注意下面几个不同的含义：
+
+\begin{itemize}
+ \item be asleep
+ \item be sleepy
+ \item be awake
+ \item wake up
+\end{itemize}
+
+be sleepy可以理解为“打瞌睡，想要睡觉”(但是还没睡着)：
+
+\begin{printdemosample}
+ You must be sleepy, aren't you?
+\end{printdemosample}
+
+而fall asleep, be asleep表示"已经睡着了"
+
+\begin{printdemosample}
+ My father was so tired that he fall asleep quickly.
+\end{printdemosample}
+
+be awake是“这个人是醒过来的，不是睡着的”， wake up一般表示“把某人叫醒”。
+
+\begin{printdemosample}
+ The kid wakes me up at 7:00 am.
+\end{printdemosample}
+
+
+ \subsection{常见节假日}
+节假日的单词书写及对应的风俗文化，基本是小升初考试中较常见的内容。
+
+比如中国的一些传统节日：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task Dragon Boat Festival  \task Mid-Autumn Festival
+ \task Lantern Festival
+\end{tasks}
+
+
+西方的节日比较多，通常是"xxx Day"的样子。 目前需要记得下面几个常见的：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task Easter \task Christmas \task Christmas Eve  \task Halloween
+ \task Thanksgiving
+\end{tasks}
+
+最隆重的是圣诞节和圣诞节前的晚上(Christmas Eve)
+
+\begin{printdemosample}
+ The day after Christmas is generally a busy one for retailers.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Merry Christmas, Mom.
+\end{printdemosample}
+
+Halloween Day(万圣节)是每年的10月最后一天(31st October)，小孩穿上戏服，一家一户地要糖果吃。一般开门后说的话是：
+
+\begin{printdemosample}
+ "Trick or treat?"
+\end{printdemosample}
+
+当中的trick是做恶、欺骗的意思。假设一些题目有陷阱让人不小心就上当，我们可以称这些题目比较tricky. \marginpar{tricky}
+
+treat则是"款待、招待"的意思
+
+感恩节上，火鸡(turkey)和南瓜饼是必备的。它是在万圣节后的11月份，美国等国家规定是十一月份(November)的第4个星期四。
+
+\begin{printdemosample}
+ It's going to be the most magnificent Thanksgiving dinner we ever had.
+\end{printdemosample}
+
+\begin{printdemosample}
+ On Thanksgiving Day, a teacher asked her class of first-graders to draw a picture of something they were thankful for.
+\end{printdemosample}
+
+
+复活节(Easter Day)的具体日期，是按照月亮和地球的转动来计算的，所以每年的日期都不定，一般分布在3月底到4月之间。
+
+复活节的传统就是Easter Eggs，把鸡蛋染成彩色。兔子也是复活节的一个象征。
+
+\begin{printdemosample}
+ He only sees her at Christmas and Easter.
+\end{printdemosample}
+
+\begin{printdemosample}
+ "Happy Easter," he yelled.
+\end{printdemosample}
+
+
+
+  \subsection{一年12个月份}
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](3)
+ \task January \task February  \task March
+ \task April   \task May    \task June
+ \task July   \task August  \task September
+ \task October \task November  \task December
+\end{tasks}
+
+在平时使用中，上面的月份多使用前三个字母作为缩写。
+
+\begin{printdemosample}
+ Her baby was born on 4th December.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Her son, Jerome, was born in September.
+\end{printdemosample}
+
+从上面两个示例要看出，具体到某一天，用on，否则用in。这个可以记住于日历来进行形象记忆。
+
+  \subsection{单词kind} \index{kind}
+kind的单词主要有两个不同含义：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task 种类、类型 \task 友善的、好心的
+\end{tasks}
+
+\begin{printdemosample}
+ This kind of question often appears in the exam.
+\end{printdemosample}
+
+\begin{printdemosample}
+- Would you please do me a favor?
+
+- Sure. How may I help you?
+
+- Thank you. It's kind of you.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Which kind of music do you prefer?
+\end{printdemosample}
+
+\begin{printdemosample}
+ -  I'm a writer.
+
+ - What kind of book are you writing?
+\end{printdemosample}
+
+
+  \subsection{关于时间(time)}
+
+两种问时间的方式： \marginpar{需要注意两者的区别！}
+
+\begin{itemize}
+ \item What's the time?
+ \item What time is it?
+\end{itemize}
+
+\begin{printdemosample}
+ - What's the time?
+
+ - It's time to go to school!
+\end{printdemosample}
+
+我们说“按时，准时”使用on time这个惯用词:
+
+\begin{printdemosample}
+ You must be there on time.
+\end{printdemosample}
+
+另一个短语是in time, 多表示"迟早、过了一段时间，或者及时"的意思。
+
+on time一般用在句子最后，表示正好和指定的时间一样，没有偏差。而in time表示及时，也只是说明比指定时间提前了。
+
+注意这两个的区别。
+
+\begin{printdemosample}
+ They moved on to a larger farm and in time made it over to Francis.
+\end{printdemosample}
+
+几点半的说法，我们要会两种不同的说法：
+
+\begin{printdemosample} \marginpar{7:30}
+ - What time is it?
+
+ - It's seven thirty.
+\end{printdemosample}
+
+另一种是用“7点过了一半”的方式：
+
+\begin{printdemosample}\marginpar{7:30}
+  - What time is it?
+
+ - It's half past seven.
+\end{printdemosample}
+
+除了上面的表达外，我们还需要学会下面的说法：
+
+\begin{tikzpicture}
+   \draw (0,0) circle (1);
+
+   \draw (90:1) --+(-90:0.3); \draw (-90:1) --+(90:0.3);  \draw (0:1) --+(-180:0.3); \draw (180:1) --+(0:0.3);
+   \draw (60:1) --+(-120:0.18);  \draw (30:1) --+(-150:0.18);
+   \draw (-60:1) --+(120:0.18); \draw (-30:1) --+(150:0.18);
+   \draw (120:1) --+(-60:0.18); \draw (150:1) --+(-30:0.18);
+   \draw (-120:1) --+(60:0.18);\draw (-150:1) --+(30:0.18);
+
+   \node at (3.5, 0) [] {minute past hour};
+   \node at (-3.5, 0) [] {minute to hour};
+
+   \draw [->, >=stealth'] (-3.5, 0.3) to [bend left=35] (-0.4, 0.1);
+   \draw [->, >=stealth'] (3.5, 0.3) to [bend right=35] (0.4, 0.1);
+
+      \draw [dashed] (90:1) -- (-90:1);
+\end{tikzpicture}
+
+下面学习几个时间：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task \begin{tikzpicture}
+   \draw (0,0) circle (1);
+
+   \draw (90:1) --+(-90:0.3); \draw (-90:1) --+(90:0.3);  \draw (0:1) --+(-180:0.3); \draw (180:1) --+(0:0.3);
+   \draw (60:1) --+(-120:0.18);  \draw (30:1) --+(-150:0.18);
+   \draw (-60:1) --+(120:0.18); \draw (-30:1) --+(150:0.18);
+   \draw (120:1) --+(-60:0.18); \draw (150:1) --+(-30:0.18);
+   \draw (-120:1) --+(60:0.18);\draw (-150:1) --+(30:0.18);
+   %% tick
+   \draw [->, >=stealth'] (0:0) --+ (-10: 0.42);
+   \draw [->, >=stealth'] (0:0) --+ (300: 0.65);
+
+  \end{tikzpicture}
+ \task \begin{tikzpicture}
+   \draw (0,0) circle (1);
+
+   \draw (90:1) --+(-90:0.3); \draw (-90:1) --+(90:0.3);  \draw (0:1) --+(-180:0.3); \draw (180:1) --+(0:0.3);
+   \draw (60:1) --+(-120:0.18);  \draw (30:1) --+(-150:0.18);
+   \draw (-60:1) --+(120:0.18); \draw (-30:1) --+(150:0.18);
+   \draw (120:1) --+(-60:0.18); \draw (150:1) --+(-30:0.18);
+   \draw (-120:1) --+(60:0.18);\draw (-150:1) --+(30:0.18);
+   %% tick
+   \draw [->, >=stealth'] (0:0) --+ (-20: 0.42);
+   \draw [->, >=stealth'] (0:0) --+ (120: 0.65);
+
+
+  \end{tikzpicture}
+\end{tasks}
+
+对应答案：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task twenty-five past three  \task five to four
+\end{tasks}
+
+其实在中文当中也是有类似的叫法，故我们中文中的“一刻钟”，在英语中则是有quarter来表达的，比如：
+
+\begin{printdemosample}
+A quarter past three.
+
+A quarter to four.
+\end{printdemosample}
+
+对应的时间点分别是：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task \begin{tikzpicture}
+   \draw (0,0) circle (1);
+
+   \draw (90:1) --+(-90:0.3); \draw (-90:1) --+(90:0.3);  \draw (0:1) --+(-180:0.3); \draw (180:1) --+(0:0.3);
+   \draw (60:1) --+(-120:0.18);  \draw (30:1) --+(-150:0.18);
+   \draw (-60:1) --+(120:0.18); \draw (-30:1) --+(150:0.18);
+   \draw (120:1) --+(-60:0.18); \draw (150:1) --+(-30:0.18);
+   \draw (-120:1) --+(60:0.18);\draw (-150:1) --+(30:0.18);
+   %% tick
+   \draw [->, >=stealth'] (0:0) --+ (-10: 0.42);
+   \draw [->, >=stealth'] (0:0) --+ (0: 0.65);
+
+  \end{tikzpicture}
+ \task \begin{tikzpicture}
+   \draw (0,0) circle (1);
+
+   \draw (90:1) --+(-90:0.3); \draw (-90:1) --+(90:0.3);  \draw (0:1) --+(-180:0.3); \draw (180:1) --+(0:0.3);
+   \draw (60:1) --+(-120:0.18);  \draw (30:1) --+(-150:0.18);
+   \draw (-60:1) --+(120:0.18); \draw (-30:1) --+(150:0.18);
+   \draw (120:1) --+(-60:0.18); \draw (150:1) --+(-30:0.18);
+   \draw (-120:1) --+(60:0.18);\draw (-150:1) --+(30:0.18);
+   %% tick
+   \draw [->, >=stealth'] (0:0) --+ (-15: 0.42);
+   \draw [->, >=stealth'] (0:0) --+ (180: 0.65);
+
+  \end{tikzpicture}
+\end{tasks}
+
+上午和下午的两个讲法在英语中对应的：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task a.m. \task p.m.
+\end{tasks}
+
+具体到某一天，使用on， 其它则用in
+
+ \begin{printdemosample}
+ She was born in 1950.
+
+ She was born in America.
+  \end{printdemosample}
+
+具体的某一天的时间，多使用on
+
+  \begin{printdemosample}
+ More than eight years later, on Sept. 11, 2001, terrorists struck again, this time with more chilling results.
+
+ My little daughter was born on a cold morning of December.
+  \end{printdemosample}
+
+在星期几，也是用on
+
+\begin{printdemosample}
+ Zhang Lei and Li Ming want to draw some pictures on Wednesday.
+\end{printdemosample}
+
+
+  \subsection{ph/dr发音}
+英语中ph通常发 \begin{IPA}[f]\end{IPA} 的音：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+ \task phone  \task photo  \task physics
+\end{tasks}
+
+体育课P.E.实际是physical education的缩写。
+
+dr的\begin{IPA}[dr]\end{IPA}:
+
+\begin{tasks}[style=enumerate](3)
+ \task drum   \task drink   \task drunk
+ \task dress  \task drill   \task drop
+\end{tasks}
+
+drink不但可用于“喝”这个动作，也可以作名词，表示“喝的东西(即饮料)"
+
+比如soft drink表示不含酒精的饮料。
+
+\begin{printdemosample}
+ Can I have a drink?
+\end{printdemosample}
+
+\begin{printdemosample}
+ He doesn't drink.
+\end{printdemosample}
+
+短语dress up表示”打扮“：
+
+\begin{printdemosample}
+ You do not need to dress up for dinner.
+\end{printdemosample}
+
+  \subsection{be made of/from} \index{plastic} \index{metal} \index{swim}
+这两个说法都用来表示"由什么材料制成的"
+
+
+1. be made of 表示制成成品后,仍可看出原材料是什么,保留原材料的质和形状,制作过程仅发生物理变化.如：
+
+\begin{printdemosample}
+ The kite is made of paper． \quad \quad 风筝是用纸做的.
+\end{printdemosample}
+
+
+2.be made from 表示制成的东西完全失去了原材料的外形或特征,或原材料在制作过程中发生化学变化,在成品中已无法辨认.如：
+
+\begin{printdemosample}
+ The paper is made from wood． \quad \quad \quad 纸是木头做的.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Butter is made from milk．\quad \quad \quad 黄油是从牛奶中提炼出来的.
+\end{printdemosample}
+
+  \subsection{without/until}
+
+without doing sth
+
+without sth
+
+\begin{printdemosample}
+ He entered my room without asking me.
+
+ He entered my room without my permission.
+\end{printdemosample}
+
+这里的两个词，经常通过否定(not)方式来表达：
+
+not $\cdots$ without $\cdots$
+
+not $\cdots$ until $\cdots$
+
+对应的中文意思不应该生硬地翻译，而需要按照中文的习惯来表达！
+
+\begin{printdemosample}
+ I waited until 6 o'clock and then I went home.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Please wait until I finish my homework.
+\end{printdemosample}
+
+当使用not $\cdots$ without $\cdots$的时候，我们最好按照中文的思维，翻译成"直到$\cdots$才$\cdots$"
+
+\begin{printdemosample}
+ You must not leave the room until I let you go.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We won't be seeing each other until Christmas.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He finished five essays without difficulty.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We can't live without air and water.
+\end{printdemosample}
+
+另外一个类似的短语就是at all, 以及any more/any longer等。
+
+\begin{printdemosample}
+ This is not difficult at all!
+\end{printdemosample}
+
+上面的at all表明一点都不难，相当于说非常简单，用来强调语气。
+
+\begin{printdemosample}
+ It wasn't fast at all.
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ She liked pandas when she was a child. Now, she doesn't like them any more.
+\end{printdemosample}
+
+这里再添加一对容易混淆的词组，形容人"金发碧眼的": \marginpar{男性、女性}
+
+\begin{tasks}[style=enumerate](2)
+ \task blond  \task blonde
+\end{tasks}
+
+当中blond形容男性，blonde则用于女性.
+
+  \subsection{人称代词的几种形式}
+熟练地记住下面不同形式:
+
+\def\arraystretch{1.25}
+\begin{tabular}{| l | l  | l | l |}
+\hline
+{主格}      &         {宾格}       & {物主代词}  &   {所有格}\\
+\hline
+{I}              & {me}   &    {my}    &  {mine}\\
+\hline
+{you}              &  {you} & {your}        & {yours}                  \\
+\hline
+{he}           &  {him}   & {his} & {his}\\
+\hline
+{she}           &  {her}   & {her} & {hers}\\
+\hline
+{it}           &  {it}   & {its} & {its}\\
+\hline
+{we}           &  {us}   & {our} & {ours}\\
+\hline
+{they}           &  {them}   & {their} & {theirs}\\
+\hline
+\end{tabular}
+
+注意这当中的his/her等比较特殊，几个不同形式会是一样的词。
+
+\begin{question} \marginpar{博亚杯试题}
+找出下面的不同项:
+
+ \begin{tasks}[counter-format=tsk[A].](4)
+ \task you \task her  \task them  \task his
+\end{tasks}
+
+\end{question}
+
+
+  \subsection{between和among}
+一般而言，between是只在两个$\cdots$中间，而among是只在一堆$\cdots$中间(超过两个)
+
+\begin{printdemosample}
+ They walked among the crowds in Red Square.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{sit $\rightarrow$ sat}
+ I sat down between Joe and Diana.
+\end{printdemosample}
+
+这里再补充记录一下老掉牙的：
+
+\begin{printdemosample}
+ It's time \ul{to do sth}.
+\end{printdemosample}
+
+\begin{printdemosample}
+ It's time \ul{for sth}.
+\end{printdemosample}
+
+
+  \subsection{方向}
+标准的东南西北：
+
+\begin{tikzpicture}
+
+  \draw [<->, >=stealth'] (0,0) -- (2, 0);
+  \draw [<->, >=stealth'] (1, 1) -- (1, -1);
+
+  \node at (2.5, 0) {east};
+  \node at (-0.5, 0) {west};
+
+  \node at (1, 1.5) {north};
+  \node at (1, -1.5) {south};
+
+  \draw [->, >=stealth'] (6, 0) -- (5, 0) node [above, pos=.5] {left};
+
+  \draw [->, >=stealth'] (6.5, 0) -- (7.5, 0) node [above, pos=.5] {right};
+\end{tikzpicture}
+
+\begin{printdemosample}
+ In the north the ground becomes very cold as the winter snow and ice covers the ground.
+\end{printdemosample}
+
+注意左、右方向的单词在英语中是有多个含义的。
+
+left除了表示左边，还表示"剩下"
+
+\begin{printdemosample}
+ Is there any gin left?
+\end{printdemosample}
+
+right除了表示右边，还表示“对的"
+
+\begin{printdemosample}
+ Yes, you are right!
+\end{printdemosample}
+
+除此之外，right还可以用于加强语气的作用，比如：
+
+\begin{printdemosample}
+ It's right there!
+\end{printdemosample}
+
+\begin{printdemosample}
+ If you have a problem with that, I want you to tell me right now!
+\end{printdemosample}
+
+
+
+  \subsection{带ly后缀的副词}
+带ly后缀的，通常是副词，修饰动作(类似中文的"$\cdots$地$\cdots$")
+
+不带ly的，则是形容词，修饰名词(类似中文的"$\cdots$的$\cdots$")
+
+\begin{tasks}[style=enumerate](4)
+ \task slowly   \task quickly    \task quietly  \task carefully
+ \task slow     \task quick      \task quiet    \task careful
+\end{tasks}
+
+
+\begin{printdemosample}
+ The waiter walked away quickly.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He spoke slowly.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We carefully watched every detail of his action.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She picks them up happily.
+
+ She picked them up happily yesterday.
+\end{printdemosample}
+
+
+  \subsection{动作及运动(sports)}
+运动相关的单词在初级阶段，属于考察较多的词汇，这里稍微列举一下。
+
+球类运动多用$\sim$ball的方式，但也有特殊的(如\framebox{羽毛球}):
+
+\begin{tasks}[style=enumerate](4)
+ \task basketball   \task baseball    \task football  \task volleyball
+ \task badminton    \task hockey      \task tennis    \task table tennis
+\end{tasks}
+
+由于文化差异 \marginpar{注意这种表达差异！}，足球football在美国英语中并不是足球，而是橄榄球。美国英语中使用\framebox{soccer}来表示足球！
+
+\begin{printdemosample}
+ NBA - National Basketball Association
+\end{printdemosample}
+
+注意使用play的时候，弹奏乐器是在乐器前面加the，而体育运动前面一般不加the.
+
+\begin{printdemosample}
+ In their family, one plays the piano, another plays the violin, and the third is a singer; in short, they are all musicians.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Several boys were still playing football on the ground.
+\end{printdemosample}
+
+小练习：
+
+\begin{question}
+ I can play football very \blank[width=1cm]{}, but my brother isn't \blank[width=1cm]{} at it.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+        \task good; good \task well; well  \task good; well  \task well; good
+  \end{tasks}
+
+\end{question}
+
+ \subsection{suit}
+suit通常表示人的"一套衣服"，而旅行时候我们通常会把自己的衣服放到手提箱中，所以suitcase就是手提箱。
+
+同时，衣服穿在身上是要合适的，所以suitable就表示"合适的"的意思：
+
+\begin{tasks}[style=enumerate](3)
+ \task suitcase   \task suitable    \task suit
+\end{tasks}
+
+\begin{printdemosample}
+ Books are suitable for children.
+\end{printdemosample}
+
+\begin{printdemosample}
+ This programme is not suitable for children.
+\end{printdemosample}
+
+\begin{printdemosample}
+ What is the most suitable word to replace the \ul{good} word here?
+\end{printdemosample}
+
+  \subsection{other的几种讲法}
+对于总数是两个的情况，我们是用"一个$\cdots$, 另外一个$\cdots$"
+
+\begin{printdemosample}
+ They have two toys. One is a doll, the other is a ball.
+\end{printdemosample}
+
+对于总数$> 2$的情况，another或者others，具体的差别看下图：
+
+\begin{tikzpicture}
+
+  \draw[] (0,0) circle (0.35);
+
+  \draw[pattern = north west lines] (1,0) circle (0.35);
+  \node at (1.2, 1) [] {one $\cdots$, the other $\cdots$};
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \draw[] (3,0) circle (0.35);
+  \draw[pattern = north west lines] (4.2,0) circle (0.35);
+  \draw[] (4.9,0) circle (0.35);
+
+  \draw [dashed] (3.7,-0.5) --++ (1.8, 0) --++(0, 1) --++ (-1.8, 0) --cycle;
+
+  \node at (4.1, -1) {one $\cdots$, another $\cdots$};
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \draw[] (6.5,0) circle (0.35);
+  \draw[pattern = north west lines] (7.7,0) circle (0.35);
+  \draw[pattern = north west lines] (8.4,0) circle (0.35);
+
+   \draw [dashed] (7.2,-0.5) --++ (1.8, 0) --++(0, 1) --++ (-1.8, 0) --cycle;
+
+   \node at (7.8, 1) {one $\cdots$, others $\cdots$};
+
+\end{tikzpicture}
+
+\begin{printdemosample}
+ Some students like English and \ul{other students} like physics.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Some students like English and \ul{others} like physics.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I have two pens. One is blue, the other (pen) is black.
+\end{printdemosample}
+
+
+  \subsection{look forward to}
+look forward to是一个非常特殊的使用方法，它作为一个整体使用，所以后面跟的方式有下面两种：
+
+\begin{tasks}[style=enumerate](2)
+  \task look forward to \ul{doing} sth.  \task look forward to sth.
+\end{tasks}
+
+这个和我们多数情况下使用to do sth的场合是不一样的！
+
+\begin{printdemosample} \marginpar{新概念英语青少版2A第2单元句型}
+ REPORTER :  Are you looking forward to Sunday?
+
+ PAUL : Yes, I am.
+
+ REPORTER : That's the spirit, Paul! Good luck on Sunday!
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{look forward to}
+ He was looking forward to working with the new Prime Minister.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Well, we shall look forward to seeing him tomorrow.
+\end{printdemosample}
+
+\begin{printdemosample}
+ We all look forward to the day when the scientists can discover more secrets of the universe.
+\end{printdemosample}
+
+  \subsection{too/either及neither}
+"也"这个单词在肯定句中用too，否定句中是either。
+
+注意either有两种读法:
+
+\begin{tasks}[style=enumerate](2)
+  \task \tipaencoding{[aID@]}
+  \task \tipaencoding{[ID@]}
+\end{tasks}
+
+\begin{printdemosample}
+ I don't know either.
+\end{printdemosample}
+
+从字面上看， neither和either一样，都表示否定的意思，表示'都不'的意思, 而且这个多表示(两个)都不的场景。
+
+\begin{printdemosample} \marginpar{我们两都没有忘记它}
+ Neither of us forgot about it.
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ - I don't like this dress.
+
+ - Neither do I.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I never learned to swim and neither did they.
+\end{printdemosample}
+
+
+下面的几个用法需要熟记，不管对于考试和平常阅读都有非常大的帮助。
+
+\begin{printdemosample}\marginpar{neither $\cdots$ nor $\cdots$}
+ Professor Hisamatsu spoke neither English nor German.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I have neither time nor money.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Neither Anna nor I are interested in high finance.
+\end{printdemosample}
+
+\begin{printdemosample} \marginpar{either $\cdots$ or $\cdots$}
+ He must be either mad or drunk.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The clock is available with either Roman or Arabic numerals.
+\end{printdemosample}
+
+下面的例句演示就近原则：
+
+\begin{printdemosample} \marginpar{近视眼!}
+ Either you or he is wrong.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Neither he nor I am well-educated.
+\end{printdemosample}
+
+总结 - neither $\cdots$ nor $\cdots$和either $\cdots$ or $\cdots$这两种表达方式，一定要会！
+
+
+  \subsection{再论过去式}
+前面的\ref{pastGrammar}节已经初步学习了一般过去时。当中需要记得下面两个重要点(需要笑笑自己能够说出来！)
+
+\begin{tasks}[style=enumerate](2)
+  \task is/am变was, are变were
+  \task 动作词(如do)变did
+\end{tasks}
+
+这节将继续对动作词的过去式(do $\rightarrow$ did)做进一步的学习！
+
+学习之前，需要理解英语当中，表达"过去曾经做过$\cdots$"的话，我们只需要把动作的单词做以下变化即可(就像名词后面加个s来表示多个东西类似)。这个变化的基本准则如下：
+
+\begin{enumerate}
+ \item 正常情况下，是在动词后面加上ed, 若以e结尾，则只加d
+
+ \begin{tasks}[style=itemize](3)
+  \task jump $\rightarrow$ jumped
+  \task finish $\rightarrow$ finished
+  \task walk $\rightarrow$ walked
+ \end{tasks}
+
+ \item 辅音+y结尾的，把y变i, 再加ed
+
+ \begin{tasks}[style=itemize](3)
+  \task cry $\rightarrow$ cried
+  \task reply $\rightarrow$ replied
+  \task study $\rightarrow$ studied
+ \end{tasks}
+
+
+ \item 辅音+元音+辅音(辅元辅), 则双拼结尾的字母
+
+ \begin{tasks}[style=itemize](3)
+  \task nod $\rightarrow$ nodded
+  \task stop $\rightarrow$ stopped
+  \task drop $\rightarrow$ dropped
+ \end{tasks}
+
+ \item 不符合上面规则的情况(动词的特殊过去式)
+
+ \begin{tasks}[style=itemize](3)
+  \task do $\rightarrow$ did
+  \task go $\rightarrow$ went
+  \task see $\rightarrow$ saw
+ \end{tasks}
+
+\end{enumerate}
+
+而不规则的动词过去式几乎是必须要掌握的，所以下面列举了小学阶段应该熟练使用的动词不规则过去式，希望笑笑在平时学习中不断反复地练习:
+
+几乎没变化的: \marginpar{注意read的过去式读音有变化！}
+
+\begin{tasks}[style=enumerate](2)
+  \task cut $\rightarrow$ cut
+  \task hit  $\rightarrow$ hit
+  \task put  $\rightarrow$ put
+  \task cost  $\rightarrow$ cost
+  \task hurt  $\rightarrow$ hurt
+  \task read  $\rightarrow$ read
+\end{tasks}
+
+\begin{printdemosample}
+ She hit him on the head with her umbrella yesterday. But now, she doesn't hit him any more.
+\end{printdemosample}
+
+
+\begin{printdemosample}\marginpar{注意读音}
+ He read the poem aloud two hours ago.
+
+ He reads the poem everyday.
+\end{printdemosample}
+
+不按常理出牌的：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+  \task feel $\rightarrow$ felt
+  \task smell $\rightarrow$ smelt
+  \task sell $\rightarrow$ sold
+  \task tell $\rightarrow$ told
+  \task meet $\rightarrow$ met
+  \task find $\rightarrow$ found
+  \task get $\rightarrow$ got
+  \task have/has $\rightarrow$ had
+  \task hold $\rightarrow$ held
+  \task leave $\rightarrow$ left
+  \task make $\rightarrow$ made
+  \task come $\rightarrow$ came
+  \task become $\rightarrow$ became
+  \task go $\rightarrow$ went
+  \task run $\rightarrow$ ran
+  \task learn $\rightarrow$ learnt/learned
+  \task hear $\rightarrow$ heard
+  \task win $\rightarrow$ won
+  \task catch $\rightarrow$ caught
+  \task teach $\rightarrow$ taught
+  \task bring $\rightarrow$ brought
+  \task buy $\rightarrow$ bought
+  \task think $\rightarrow$ thought
+  \task fly $\rightarrow$ flew
+  \task throw $\rightarrow$ threw
+  \task know $\rightarrow$  knew
+  \task eat $\rightarrow$ ate
+  \task fall $\rightarrow$ fell
+  \task give $\rightarrow$ gave
+  \task take $\rightarrow$ took
+  \task see $\rightarrow$ saw
+  \task write $\rightarrow$ wrote
+  \task ride $\rightarrow$ rode
+  \task build $\rightarrow$ built
+  \task lend $\rightarrow$ lent
+  \task send $\rightarrow$ sent
+  \task spend $\rightarrow$ spent
+  \task lose $\rightarrow$ lost
+  \task pay $\rightarrow$  paid
+  \task say $\rightarrow$ said
+  \task draw $\rightarrow$ drew
+  \task speak $\rightarrow$ spoke
+  \task steal $\rightarrow$ stole
+  \task wake $\rightarrow$ woke
+  \task choose $\rightarrow$ chose
+  \task forget $\rightarrow$ forgot
+  \task sleep $\rightarrow$ slept
+  \task keep $\rightarrow$ kept
+  \task sweep $\rightarrow$ swept
+  \task stand $\rightarrow$ stood
+  \task understand $\rightarrow$ understood
+  \task begin $\rightarrow$ began
+  \task ring $\rightarrow$ rang
+  \task sing $\rightarrow$ sang
+  \task swim $\rightarrow$ swam
+  \task drink $\rightarrow$ drank
+  \task sit $\rightarrow$ sat
+\end{tasks}
+
+  \subsection{过去式牛刀小试}
+学习了前面一节内容，下面开始进行练习：
+
+\begin{question}
+ There \blank[width=1.5cm]{}(be) no one here a moment ago.
+\end{question}
+\begin{solution}
+ was
+\end{solution}
+
+\begin{question}
+ Helen and Nancy \blank[width=1.5cm]{}(be) good friends, but now they are not anymore.
+\end{question}
+\begin{solution}
+ were
+\end{solution}
+
+\begin{question}
+ I listened but \blank[width=1.5cm]{}(hear) nothing.
+\end{question}
+\begin{solution}
+ heard
+\end{solution}
+
+\begin{question}
+\noindent 找出下面句子的错误并修改正确:
+
+  \begin{tasks}[style=enumerate, label-offset=1em, label-align=right](1)
+    \task How is Jane yesterday? \qquad \quad \blank[width=2cm]{}
+    \task He go to school by bus last week. \quad \blank[width=2cm]{}
+    \task I can fly kites seven years ago. \quad \blank[width=2cm]{}
+    \task Did you saw him just now? \quad \blank[width=2cm]{}
+    \task Tom wasn't watch TV last night. \quad \blank[width=2cm]{}
+    \task I did not my homework yesterday. \quad \blank[width=2cm]{}
+  \end{tasks}
+\end{question}
+\begin{solution}
+ 1.
+ 2.
+ 3. can -> could
+\end{solution}
+
+\begin{question}
+\noindent 分别写出下面动词的第三人称单数形式、现在分词形式、过去式形式:
+
+  \begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+    \task go \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task enjoy \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task buy \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task like \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task get \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task walk \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task take \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task dance \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task write \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task run \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task swim \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task find \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task begin \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task eat \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task play \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+    \task study \quad \blank[width=1cm]{} \quad \blank[width=1cm]{} \quad \blank[width=1cm]{}
+  \end{tasks}
+\end{question}
+\begin{solution}
+ 1.
+ 2.
+ 3. can -> could
+\end{solution}
+
+\begin{question}
+ I \blank[width=1cm]{} my room last Sunday.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task cleaned
+              \task clean
+              \task am cleaning
+              \task cleans
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+What  \blank[width=1cm]{} Mike do last weekend?
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task do
+              \task does
+              \task is
+              \task did
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ \blank*[width=1cm]{} you \blank[width=1cm]{} TV last night?
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task Do, watch
+              \task Did, watch
+              \task Did, watched
+              \task Does, watches
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ \blank*[width=1cm]{} he \blank[width=1cm]{} football two days ago?
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task Does, play
+              \task Did, played
+              \task Did, play
+              \task Does, playing
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ They \blank[width=1cm]{} on a trip in February, 2007.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task are going
+              \task going
+              \task went
+              \task goes
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ She watered the flowers \blank[width=1cm]{}.
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+              \task tomorrow
+              \task sometimes
+              \task yesterday morning
+              \task every morning
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ Mike \blank[width=1cm]{} a big tiger in the nature park last year.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task saw
+              \task see
+              \task seeing
+              \task seen
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+- Good afternoon, Miss Lee. How does Mike feel?
+
+- He's tired. He \blank[width=1cm]{} a lot of work \blank[width=1cm]{}.
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+              \task does, this morning
+              \task do, this morning
+              \task did, this morning
+              \task have, this morning
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+\begin{question}
+ 尝试将绘本中的现在时改成过去时。
+
+ 或者将绘本中的过去时的动词给找出来。
+\end{question}
+\begin{solution}
+TODO
+\end{solution}
+
+  \subsection{both和all}
+both一般是指两个，其反义词是neither
+
+all用于两个以上，其反义词是none
+
+\begin{printdemosample}
+I have three brothers. All of them are college students.
+\end{printdemosample}
+
+\begin{printdemosample}
+He has two sisters. Both of them major in English.
+\end{printdemosample}
+
+\begin{printdemosample}
+ - Which one would you like? The cake, or the orange?
+
+ - Both.
+\end{printdemosample}
+
+both $\cdots$ and $\cdots$的短语也是平常阅读中经常碰到的.
+
+\begin{printdemosample} \marginpar{夏洛的网}
+ He was strong and brave, but the truth is, both the goose and the gander were worried about Templeton.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Both you and I are good students.
+\end{printdemosample}
+
+\begin{printdemosample}
+Either you or I am good students.
+
+Either I or you are good students.
+\end{printdemosample}
+
+  \subsection{though/although}\label{sec.Although}
+though/although的意思类似，表示"虽然、尽管"的意思。
+
+这里需要特别注意的是，中文里面经常有"虽然$\cdots$，但是$\cdots$"的讲法，在英文中，千万不要因为这种思维，而给英语加上"though/although $\cdots$, but $\cdots$"的说法。
+
+英语当中，though/although和but，二者只能使用一个，不能同时使用。
+
+\begin{printdemosample}
+ Although he was tired, he went on working.
+
+ Though he was tired, he still went on working.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He often helps me with my English (al)though he is quite busy.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He said he would come, he didn't, though.
+\end{printdemosample}
+
+类似的不能同时使用的还有"因为$\cdots$，所以$\cdots$", 这个在英语当中不可同时用"because $\cdots$, so $\cdots$"
+
+\begin{printdemosample}
+ He can't come because he is ill.
+\end{printdemosample}
+
+\begin{printdemosample}
+ It was still painful so I went to see a doctor.
+\end{printdemosample}
+
+
+because of sth.
+
+\begin{printdemosample}
+ He can't come because of his illness.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He walked slowly because of his bad leg.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Many families break up because of a lack of money.
+\end{printdemosample}
+
+和although/though类似的一个词是however, 一般都用于句首，表示"然而，尽管，但是"等意思:
+
+\begin{printdemosample}
+ This question is very difficult. However, Qucy solves it in a few minutes.
+\end{printdemosample}
+
+  \subsection{状语从句}
+这个多用于"当$\cdots$时候"
+
+\begin{printdemosample}
+ When the teacher came in, I stopped laughing.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Wash your hands before you have meals.
+\end{printdemosample}
+
+\begin{printdemosample}
+ After you use the toilet, flush it.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The detective found the truth as soon as he saw the window.
+\end{printdemosample}
+
+另一个需要记住的表达方式：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](1)
+  \task so $\cdots$ that $\cdots$ - 某某某是如此的$\cdots$，以至于$\cdots$
+  \task so that - 因此，以便
+\end{tasks}
+
+\begin{printdemosample}
+ Bring it closer so that I may see it better.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I am so tired that I want to sleep right away!
+\end{printdemosample}
+
+\begin{printdemosample}
+ The boy ran so fast that I couldn't catch him.
+\end{printdemosample}
+
+如果我们表达的是事物(名词)，而不是形容词, 那么要用such $\cdots$ that $\cdots$, 而不用so $\cdots$ that $\cdots$：
+
+\begin{printdemosample}
+ This is such an interesting book that we all enjoy reading it!
+\end{printdemosample}
+
+\begin{printdemosample}
+ This book is so interesting that we all enjoy reading it!
+\end{printdemosample}
+
+\begin{printdemosample}
+ It was such a fine day that we went out for a walk.
+\end{printdemosample}
+
+单词for, 也可以表示"因为"的意思，只不过没有because那么强烈，相当于简单地补充原因的意味:
+
+\begin{printdemosample}
+ He seldom goes out now, for he is very lazy.
+\end{printdemosample}
+
+
+下面进行一些小测试：
+
+\begin{question}
+ The girl is crying \blank[width=1cm]{} she felt very sad.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task though
+              \task before
+              \task because
+              \task so
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+C
+\end{solution}
+
+\begin{question}
+ It was \blank[width=1cm]{} hot last night \blank[width=1cm]{} we wouldn't sleep well.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task too, to
+              \task so, that
+              \task /, when
+              \task /, if
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+B
+\end{solution}
+
+\begin{question}
+ It is \blank[width=1cm]{} a heavy box \blank[width=1cm]{} nobody can move it away.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task as, as
+              \task so, that
+              \task such, that
+              \task so, as
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+C
+\end{solution}
+
+\begin{question}
+ He doesn't see anything \blank[width=1cm]{} he is blind.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task though
+              \task for
+              \task but
+              \task so
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+B for 也可以表示因为的意思，只不过没有because那么强烈。
+\end{solution}
+
+\begin{question}
+ He didn't go home \blank[width=1cm]{} he finished his homework.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task if
+              \task because
+              \task until
+              \task when
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+C
+\end{solution}
+
+\begin{question}
+ Bring it nearer \blank[width=1cm]{} I may see it better.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task although
+              \task even though
+              \task so that
+              \task since
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+?
+\end{solution}
+
+\begin{question}
+ Though he is a great writer,  \blank[width=2cm]{}.
+
+   \begin{tasks}[counter-format=tsk[A].](1)
+              \task his books is not widely read
+              \task but his books are not widely read
+              \task however his books is not widely read
+              \task his books are not widely read
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+D
+\end{solution}
+
+\begin{question}
+ \blank*[width=1cm]{} he does, nobody believes him again.
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task Whenever
+              \task However
+              \task Whatever
+              \task What
+   \end{tasks}
+
+\end{question}
+\begin{solution}
+C
+\end{solution}
+
+
+  \subsection{ever结尾的词}
+以$\sim$ever结尾的词比较多，需要记得它们的用法：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](3)
+  \task never  \task however
+  \task whatever \task whenever
+  \task wherever \task whoever
+\end{tasks}
+
+however在\ref{sec.Although}节中讲过有"可是，但是"等和though/although类似的意思，除此之外，还有"无论如何、不管怎样"这个和'how'有关的含义。
+
+\begin{printdemosample}
+ However carefully I explained, she still didn't understand.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She has the window open, however cold it is outside.
+\end{printdemosample}
+
+\begin{printdemosample}
+ However you look at it, it's going to cost a lot.
+\end{printdemosample}
+
+whatever表示'不管什么，任何事物':
+
+\begin{printdemosample}
+ Do whatever you like.
+\end{printdemosample}
+
+whenever表示‘无论何时’(任何时候)：
+
+\begin{printdemosample}
+ You can ask for help whenever you need it.
+\end{printdemosample}
+
+wherever表示'无论何地':
+
+\begin{printdemosample}
+ Sit wherever you like.
+\end{printdemosample}
+
+whoever表示'无论何人':
+
+\begin{printdemosample}
+ Whoever did this will sooner or later be caught!
+\end{printdemosample}
+
+   \subsection{not only/but also的表达}
+not only$\cdots$, but (also)$\cdots$在中文当中，是"不但$\cdots$， 而且$\cdots$"的表达意思。
+
+\begin{printdemosample}
+ Not only Jim but also his wife saw those elephants.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The Americans and the British not only speak the same language but also share a large number of social customs.
+\end{printdemosample}
+
+注意下面的句子中，指的是light color和bright color两种(分别是淡色/浅色和鲜艳色):
+
+\begin{printdemosample}
+ Light and bright colors make people not only happier but more active.
+\end{printdemosample}
+
+当not only/but also连接2个句子时，第一个句子可用倒装的方式：
+
+\begin{printdemosample}
+ Not only has he a first-class brain but also he is a tremendously hard worker.
+\end{printdemosample}
+
+  \subsection{whether和weather}
+这两个词发音一样，但意思完全不同。 \marginpar{自己要知道怎么巧妙记忆这两个的区别}
+
+whether相当于if，表示"是不是，是否"
+
+
+\begin{printdemosample}
+ Nobody knows whether there are aliens.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Tell me if you are just joking.
+\end{printdemosample}
+
+有时候也会采用 whether $\cdots$ or not 的表达方式：
+
+\begin{printdemosample}
+ Let me know whether he will come or not.
+\end{printdemosample}
+
+\begin{printdemosample}
+ To this day, it's unclear whether he shot himself or was murdered.
+\end{printdemosample}
+
+而weather是天气(详见\ref{sec.Weather}节内容)。下面再额外学习两个表示天气的单词:
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+  \task storm  \task thunder
+\end{tasks}
+
+\begin{printdemosample}
+ A few minutes later the storm began.
+\end{printdemosample}
+
+\begin{printdemosample}
+ There was frequent thunder and lightning, and torrential rain.
+\end{printdemosample}
+
+
+  \subsection{宾语从句}
+宾语从句比较简单，是一种稍微长的句子，按照大体单词意思基本都能够理解其表达的含义：
+
+比如William说"我饿了。"，那么我们就可以这么描述:
+
+\begin{printdemosample}
+ William says that he is hungry.
+\end{printdemosample}
+
+\begin{printdemosample}
+ William says that he wants to have dinner.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I want to know why you are late.
+\end{printdemosample}
+
+
+如果说的是一个地点、时间、人物，那么将分别用where,when,who/whom等词。\marginpar{\ref{sec.ComplicatedLong}节初步讨论过}
+
+\begin{printdemosample}
+ Could you tell me who knows the answer, please?
+\end{printdemosample}
+
+而若是"谁的", 则用whose:
+
+\begin{printdemosample}
+ He asked whose handwriting was the best in our class.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The teacher asked us how many people there were in the room.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Could you tell me what I should do with the money?
+\end{printdemosample}
+
+\begin{printdemosample}
+ Do you know which class he is in?
+\end{printdemosample}
+
+\begin{printdemosample}
+ She asked me if I knew whose pen it was.
+\end{printdemosample}
+
+下面来几个练习：
+
+\begin{question}
+Could you telll me \blank[width=1cm]{} the nearest hospital is?
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task what
+              \task how
+              \task whether
+              \task where
+   \end{tasks}
+\end{question}
+\begin{solution}
+D
+\end{solution}
+
+\begin{question}
+Do you know where \blank[width=1cm]{} now?
+
+   \begin{tasks}[counter-format=tsk[A].](4)
+              \task he lives
+              \task does he live
+              \task he lived
+              \task did he live
+   \end{tasks}
+\end{question}
+\begin{solution}
+A
+\end{solution}
+
+\begin{question}
+I can't understand \blank[width=3cm]{}.
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+              \task what does Christmas mean
+              \task what Christmas does mean
+              \task what mean Christmas does
+              \task what Christmas means
+   \end{tasks}
+\end{question}
+\begin{solution}
+D
+\end{solution}
+
+\begin{question}
+I don't know \blank[width=2cm]{}. Can you tell me, please?
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+              \task how the two players are old
+              \task how old are the two players
+              \task the two players are how old
+              \task how old the two players are
+   \end{tasks}
+\end{question}
+\begin{solution}
+D
+\end{solution}
+
+\begin{question}
+I want to know \blank[width=3cm]{}.
+
+   \begin{tasks}[counter-format=tsk[A].](2)
+              \task whom is she looking after
+              \task whom she is looking
+              \task whom is she looking
+              \task whom she is looking after
+   \end{tasks}
+\end{question}
+\begin{solution}
+D
+\end{solution}
+
+  \subsection{instead}
+instead这个词，字面上是‘作为替代’的意思，在翻译中需要注意体会其含义。
+
+\begin{printdemosample}
+ Lily isn't here. Ask Lucy instead.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She didn't answer me, instead, she asked me another question.
+\end{printdemosample}
+
+有时候还会使用instead of的方式：
+
+\begin{printdemosample} \marginpar{注意究竟是问的哪一位}
+ We'll ask Sucy instead of Mary.
+\end{printdemosample}
+
+\begin{printdemosample}\marginpar{代替}
+ I will go instead of you.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She had to spend nearly four months away from him that summer, instead of the usual two.
+\end{printdemosample}
+
+  \subsection{many和much}
+这两个词都表示"很多的"意思:
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](2)
+  \task many 用于可数名词
+  \task much 用于不可数名词
+\end{tasks}
+
+\begin{printdemosample} \marginpar{people是集体名词}
+ There are many flowers.
+
+ There are many people.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I have much money.
+\end{printdemosample}
+
+much除了表示许多数量外，还可以修饰动作类的词:
+
+\begin{printdemosample}
+ I like it very much!
+
+ We like them so much!
+\end{printdemosample}
+
+或者修饰比较级:
+
+\begin{printdemosample}
+ I feel much better.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He's much taller than her.
+\end{printdemosample}
+
+  \subsection{enjoy}
+enjoy本身表示乐于其中的意思。
+
+\begin{printdemosample}
+ They all enjoyed themselves at the party.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I must say I am really enjoying myself at the moment.
+\end{printdemosample}
+
+喜欢做某事也可以使用enjoy doing sth来表达：\marginpar{\ref{sec.like}节也类似表达方式}
+
+\begin{printdemosample} \marginpar{板球}
+ I enjoyed playing cricket.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Everyone in my family enjoys listening to music.
+\end{printdemosample}
+
+上述例句当中，需要明白everyone, someone, anyone这个表示每个人，某个人，任何人，其实际指代人是一个，所以都是第三人称。在现在时当中，动作要使用第三人称单数形式。
+
+\begin{printdemosample}
+ There is someone at the door.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Is anyone here?
+\end{printdemosample}
+
+\begin{printdemosample}
+ Everyone in the street was shocked when they heard the news.
+\end{printdemosample}
+
+  \subsection{各种表达说话的单词}
+英语当中常见的表示说话的单词有下面几个：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](4)
+  \task say
+  \task talk
+  \task speak
+  \task tell
+\end{tasks}
+
+这当中，talk强调的是几个人一起交谈(每个人都在说)；speak则比较庄重，前调一个人在说，而其他人则是听众。
+
+\begin{printdemosample}
+ Let's talk in English!
+\end{printdemosample}
+
+\begin{printdemosample}
+ Miss Wu is going to speak at our class meeting.
+\end{printdemosample}
+
+因为speak的这个1人说，多人听的特点，演讲单词有就是speech(也是speak的名词形式):
+
+\begin{printdemosample}
+ Several people made speeches at the wedding.
+\end{printdemosample}
+
+另外, speak也可表示说的某国语言(因为这也是1个说，其他人听的场景)
+
+\begin{printdemosample}
+ Please speak in English!
+\end{printdemosample}
+
+talk经常和with, about, to等连着用
+
+\begin{printdemosample}
+ Jim is going to talk about English names tomorrow.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Look, Mrs Chen is talking with Lucy's parents.
+\end{printdemosample}
+
+\begin{printdemosample}
+ What are you talking about?
+\end{printdemosample}
+
+
+say则主要指说话的内容:
+
+\begin{printdemosample}
+ I don't know what she said.
+\end{printdemosample}
+
+或者也可以表示纸条上写的话：
+
+\begin{printdemosample}
+ Kate saw a card on her table, it said: "Happy Birthday!"
+\end{printdemosample}
+
+tell是把一件事情、故事讲述给别人听，从而让别人知道事情、故事的结果。
+
+\begin{printdemosample}
+ He will tell this good news to everyone.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Buzz off, Bill! I will tell Miss Hill!
+\end{printdemosample}
+
+除了上面的传统表示说话的单词外，我们还需要知道更多的一些形容说话的词语，这些词语在英语的文章、小说当中经常出现\marginpar{cry并不只表示哭泣！}：
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](5)
+  \task cry
+  \task scream
+  \task shout
+  \task yell
+  \task whisper
+\end{tasks}
+
+这些词语，相当于我们中文中如 - 窃窃私语、柔声细语、粗声粗气等说法
+
+下面是夏洛的网中一段描述:
+
+\begin{printdemosample}
+  ''Run downhill!'' suggested the cows.
+
+ "Run toward me!'' yelled the gander.
+
+ "Run uphill!'' cried the sheep.
+
+ "Turn and twist!'' honked the goose.
+
+ "Jump and dance!'' said the rooster.
+
+ "Look out for Lurvy!'' called the cows.
+
+ "Look out for Zuckerman!'' yelled the gander.
+
+ "Watch out for the dog!'' cried the sheep.
+
+ "Listen to me, listen to me!'' screamed the goose.
+\end{printdemosample}
+
+  \subsection{as well}
+这个单词表示"也"的意思，和too类似。所以也不会用于否定意思的句子当中。
+
+\begin{printdemosample}
+ You need to go shopping and I need to go shopping as well.
+\end{printdemosample}
+
+另一个表示"也"的是also
+
+\begin{printdemosample}
+ His father, also a top-ranking officer, had perished during the war.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Santa Claus comes from Finland. The country is near the North Pole. Santa lives in a small village there.
+\end{printdemosample}
+
+
+  \subsection{no matter}
+no matter这个表示“不论，无论”的意思
+
+\begin{printdemosample}
+ No matter what you may say, he will not believe you.
+\end{printdemosample}
+
+\begin{printdemosample}
+ No matter how well you know Paris, it is easy to get lost!
+\end{printdemosample}
+
+
+\begin{printdemosample}
+  "All right," said Wilbur. "But don't fail to let me know if there's
+anything I can do to help, no matter how slight."
+\end{printdemosample}
+
+  \subsection{一些名人的英文名}
+一些中文经常看到的人名，往往并不清楚对应的英文单词。多数情况下，可以根据读音大致猜出人名，但这里还是把这些词语简单地罗列一下。
+
+\begin{tasks}[style=enumerate, label-offset=1em, label-align=right](3)
+  \task Einstein      \task [+] Germany German     \task[+] 爱因斯坦
+  \task Washington    \task [+] America American    \task[+] 华盛顿
+  \task Lincoln      \task [+] America American  \task[+] 林肯
+  \task Newton       \task [+] England English \task[+] 牛顿
+  \task Gauss        \task [+] Germany German  \task[+] 高斯
+  \task Shakespeare  \task [+] England English \task[+] 莎士比亚
+  \task Bach         \task [+] Germany German \task[+] 巴赫
+  \task Chopin         \task [+] Poland Polish \task[+] 肖邦
+  \task Beethoven     \task [+] Germany German \task[+] 贝多芬
+  \task Michelangelo  \task [+] Italy Italian \task[+] 米开朗基罗
+\end{tasks}
+
+The mathematician Joseph-Louis Lagrange said that Newton was the greatest genius who ever lived, and once added that Newton was also "the most fortunate, for we cannot find more than once a system of the world to establish."
+
+English poet Alexander Pope wrote the famous epitaph:
+
+\begin{quote}
+ Nature and nature's laws lay hid in night;
+
+ God said "Let Newton be" and all was light.
+\end{quote}
+
+  \subsection{too ... to ...}
+too $\cdots$ to $\cdots$的中文表达应该是"太$\cdots$了，以至于不能$\cdots$"
+
+\begin{printdemosample}
+ The boy is too young to go to school.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The hat is too large to wear.
+\end{printdemosample}
+
+\begin{printdemosample}
+ The question is too difficult for me to answer.
+\end{printdemosample}
+
+\begin{question}
+ \blank*[width=1cm]{} difficult questions they are! I can't answer them.
+     \begin{tasks}[counter-format=tsk[A].](4)
+              \task How
+              \task How an
+              \task What
+              \task What an
+    \end{tasks}
+\end{question}
+
+\begin{question}
+ The girl is too short to get on the elephant. (改成同义句)
+
+ 1. The girl \blank[width=2cm]{} that she \blank[width=2cm]{} get on the elephant.
+
+ 2. The elephant \blank[width=2cm]{} that the girl \blank[width=2cm]{} get on it.
+\end{question}
+
+  \subsection{-able的后缀}
+这个后缀来源于拉丁文，主要是用于形容词：
+
+\begin{tasks}[style=enumerate](5)
+ \task valuable   \task adjustable \task respectable \task usable  \task reasonable
+ \task[+] value   \task[+] adjust  \task[+] respect  \task[+] use \task[+] reason
+\end{tasks}
+
+\begin{printdemosample}
+Trainers are so comfortable to wear.
+\end{printdemosample}
+
+\begin{printdemosample}
+She shifted into a more comfortable position on the chair.
+\end{printdemosample}
+
+\begin{printdemosample}
+He made us a reasonable offer for the car.
+\end{printdemosample}
+
+\begin{question} \marginpar{学而思四年级}
+She offered \blank[width=1cm]{} valuable advice that \blank[width=1cm]{} people disagreed.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task such; a few
+   \task such; few
+   \task so; a few
+   \task so; few
+   \end{tasks}
+\end{question}
+
+我们在前面(\ref{sec.HowOften}节)学习问频率的时候知道了sometimes，实际上有好多个长得像的单词：\marginpar{有名的四胞胎}
+
+\begin{tasks}[style=enumerate](4)
+  \task sometimes
+  \task some times
+  \task sometime
+  \task some time
+\end{tasks}
+
+记忆这些词，首先记得一个准则就是带time为时间，带times为次数。
+
+所以：
+
+\begin{itemize}
+ \item sometimes是"有些次数"，在中文里我们就使用"有的时候"来表达。 some times则是字面上的“一些次数”
+ \item sometime表示"某个时间"(某个点), some time则是"一些时间"(某个段)
+\end{itemize}
+
+\begin{printdemosample}
+- When can you finish the work?
+
+- Sometime next month.
+\end{printdemosample}
+
+尝试填入合适的词语：
+
+% some time
+\begin{question}
+They haven't seen each other for \blank[width=2cm]{}.
+\end{question}
+
+% sometime
+\begin{question}
+We'll take our holiday \blank[width=2cm]{} in August.
+\end{question}
+
+\begin{question}
+\blank*[width=2cm]{} he goes to the cinema on Sunday.
+\end{question}
+
+\begin{question}
+He has been to Beijing for \blank[width=2cm]{} before.
+\end{question}
+
+  \subsection{How about/What about}
+提某种建议的时候，可以使用How about或者What about
+
+\begin{printdemosample}
+ How about you, Yang Ling?
+\end{printdemosample}
+
+注意如果是动作，那么需要使用doing sth.
+
+\begin{printdemosample} \marginpar{\footnotesize{英国:mum\\美国:mom}}
+ How about leaving a message to your mom?
+\end{printdemosample}
+
+\begin{printdemosample}
+ He texted everyone and said, "How about coming to my house?"
+\end{printdemosample}
+
+\begin{printdemosample}
+ It costs about \$10.
+\end{printdemosample}
+
+
+  \subsection{关于女子的相关词汇}
+
+ 首先引入ress这个后缀，通常指女性。比如tress指:(女子的)一绺长发; (女子的)披肩长发;
+
+ 接下来就可以记忆下面几个词汇了:
+
+ \begin{tasks}[style=enumerate](2)
+    \task[+] waiter  \task[+] waitress
+    \task[+] actor   \task[+] actress
+ \end{tasks}
+
+
+ \begin{printdemosample} \marginpar{\footnotesize{a female actor}}
+  An actress is a woman whose job is acting in plays or films.
+ \end{printdemosample}
+
+ \begin{printdemosample}
+  A waitress is a woman who works in a restaurant, serving people with food and drink.
+ \end{printdemosample}
+
+
+下面是几个积累知识点：
+
+\begin{printdemosample}
+ I'm on my way.  \hspace{1cm} 我就来了(或者马上就到)
+
+ I'm on it.      \hspace{2cm} 对于某人交代的事情，表示我正在做
+\end{printdemosample}
+
+\begin{printdemosample}
+  My dog was barking on night. Woof woof woof, all night!
+\end{printdemosample}
+
+注意这里的on night，说话者是想具体指狗叫的那个晚上，所以采用on night的说法，注意在平时使用中揣摩。
+
+
+\begin{question}
+ What about \blank[width=1cm]{} (have) a picnic on the beach?
+\end{question}
+
+
+ \subsection{动词形式变化的认知}
+这里面，需要练习能从第三人称单数到过去式, 以及现在分词，都能反过来知道其动词原形是什么。
+
+
+ \begin{tasks}[style=enumerate](4)
+ \task[+] tries   \task[+] tried   \task[+] trying      \task try
+ \task[+] replies \task[+] replied \task[+] replying    \task reply
+ \task[+] cries   \task[+] cried   \task[+] crying      \task cry
+ \task[+] goes    \task[+] went    \task[+] going       \task go
+ \task[+] stops   \task[+] stopped \task[+] stopping    \task stop
+ \task[+] shops   \task[+] shopped \task[+] shopping    \task shop
+ \task[+] says    \task[+] said    \task[+] saying      \task say
+ \task[+] flies   \task[+] flew    \task[+] flying      \task fly
+ \task[+] has     \task[+] had     \task[+] having      \task have
+ \task[+] dances  \task[+] danced  \task[+] dancing     \task dance
+ \task[+] runs    \task[+] ran     \task[+] running     \task run
+\end{tasks}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %%% 2019-05-25 上述小学英语第一阶段内容的终稿
+ %%% 不再新添内容。后期的新知识放在下面的第二阶段！
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{小学英语-II}
+
+  \subsection{现在完成时}
+首先建议观看完学而思上完成时的视频。同时知道现在完成时的表达方式是:
+
+\hspace{1.2cm} $\cdots$ + have/has + 过去分词 + $\cdots$
+
+\begin{printdemosample}
+ He has gone shopping.
+
+ I have already cleaned the toilet.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I have lost my watch.
+\end{printdemosample}
+
+\begin{printdemosample}
+ I haven't seen him for a long time.
+\end{printdemosample}
+
+\begin{printdemosample}
+ He has lived in Beijing for 30 years.
+
+ She has lived in Beijing since 2010.
+\end{printdemosample}
+
+
+这当中需要注意的过去分词，一般情况下，和过去式一样，也是加ed，但对于不规则的过去式，它的过去分词通常也是不规则的。
+
+ \begin{tasks}[style=enumerate](3)
+ \task[+] is/am   \task[+] was   \task[+] been
+ \task[+] are     \task[+] were  \task[+] been
+ \task[+] do/does \task[+] did   \task[+] done
+ \task[+] begin  \task[+] began   \task[+] begun
+ \task[+] go  \task[+] went   \task[+] gone
+ \task[+] break  \task[+] broke  \task[+] broken
+\end{tasks}
+
+暂时先记住上面这几个简单的变化。记住大部分情况下，过去分词和过去式的形式是类似的，只不过上面的是几个比较特殊的情况。
+
+接下来学习现在完成时的否定讲法和疑问讲法. 如果知道了以前带be和带动作的否定与疑问的讲法, 那么就可以猜出来围绕这个have/has进行就行了.
+
+不过和之前不同的是,这里面的动词不要再还原回去:
+
+\begin{printdemosample}
+ You have seen it.
+
+ Have you seen it?
+
+ You haven't seen it.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She has seen it.
+
+ Has she seen it?
+
+ She hasn't seen it.
+\end{printdemosample}
+
+下面有几个超级考点,需要知道:
+
+\begin{itemize}
+ \item have been to  $\quad$去过哪儿
+ \item have gone to  $\quad$去$\cdots$了
+ \item have been in  $\quad$在哪儿待了多长时间
+\end{itemize}
+
+\begin{printdemosample}
+ - Have you ever been to India?
+
+ - Yes, I have. $quad$ No, I haven't.
+\end{printdemosample}
+
+\begin{printdemosample}
+ She has been at this school since 2016.
+
+ Miss Zhu have taught English for 10 years.
+\end{printdemosample}
+
+下面进行一些简单练习:
+
+\begin{question}
+ - \blank[width=1cm]{} have you been an actor?
+
+ - For three years.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task When
+   \task How
+   \task How long
+   \task Why
+   \end{tasks}
+\end{question}
+%C
+
+\begin{question}
+ They have \blank[width=1cm]{} gone to Tibet.
+
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task yet
+   \task just now
+   \task already
+   \task still
+   \end{tasks}
+\end{question}
+%C
+
+\begin{question}
+ You don't need to describe her. I \blank[width=1cm]{} her serveral times.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task had met
+   \task have met
+   \task met
+   \task meet
+   \end{tasks}
+\end{question}
+%B
+
+\begin{question}
+ Mr. Li isn't here. He \blank[width=1cm]{} to England.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task has been
+   \task have been
+   \task has gone
+   \task have gone
+   \end{tasks}
+\end{question}
+%C
+
+\begin{question}
+ Mrs. Wang has lived in Nanjing \blank[width=1cm]{} 2010.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task since
+   \task from
+   \task for
+   \task in
+   \end{tasks}
+\end{question}
+%A
+\begin{question}
+- Mum, may I go out and play basketball?
+
+- \blank[width=1cm]{} you \blank[width=1cm]{} your homework yet?
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task Do; finish
+   \task Are; finishing
+   \task Did; finish
+   \task Have; finished
+   \end{tasks}
+\end{question}
+
+有的时候，注意完成时表示一种持续性的动作，所以通常有些非持续性动作的情况，我们不会使用完成时来表述的。
+
+下面是一个示例:
+
+\begin{question}
+Tom \blank[width=1cm]{} the CD player for two weeks.
+
+  \begin{tasks}[counter-format=tsk[A].](4)
+   \task has lent
+   \task has borrowed
+   \task has bought
+   \task has had
+   \end{tasks}
+\end{question}
+% D
+
+接下来，我们需要继续对不规则的过去分词进行整理:
+
+ \begin{tasks}[style=enumerate](3)
+ \task[+] cost   \task[+] cost   \task[+] cost
+ \task[+] meet   \task[+] met  \task[+] met
+ \task[+] sit    \task[+] sat   \task[+] sat
+ \task[+] cut    \task[+] cut   \task[+] cut
+ \task[+] put    \task[+] put   \task[+] put
+ \task[+] read   \task[+] read  \task[+] read
+ \task[+] hurt    \task[+] hurt   \task[+] hurt
+ \task[+] burn    \task[+] burnt   \task[+] burnt
+ \task[+] build    \task[+] built   \task[+] built
+ \task[+] smell    \task[+] smelt   \task[+] smelt
+\end{tasks}
+
+
+
+  \subsection{used to的用法}
+入门级别的used to do sth, 表示"过去经常做某事", 言下之意就是现在已经不做了：
+
+\begin{printdemosample}
+ Palmer says he used to spend four weeks talking about TV cooking shows in his class.
+\end{printdemosample}
+
+ 上面句型中还包括了下面的2个用法
+
+ \begin{itemize}
+  \item spend time/money (in) doing sth
+  \item spend time/money on/for sth
+ \end{itemize}
+
+\begin{printdemosample}
+ I spent two hours on this maths problem.
+\end{printdemosample}
+
+\begin{printdemosample}
+ They spent two years (in) building this bridge.
+\end{printdemosample}
+
+\begin{printdemosample}
+  This kind of food programming is not as popular as it used to be.
+\end{printdemosample}
+
+ 而另一个用到的则是doing sth的方式, 表示习惯做某事：
+
+ \begin{itemize}
+  \item be used to doing sth/sth
+  \item get used to doing sth/sth
+ \end{itemize}
+
+\begin{printdemosample}
+ I am used to cleaning the room.
+
+ She is not used to eating Chinese food.
+\end{printdemosample}
+
+再比如夏洛的网中的一段话：
+
+\begin{printdemosample}
+ "Don't worry, you'll get used to it," said Templeton. He sat up $\cdots$
+\end{printdemosample}
+
+而正常的be used to do sth, 则是字面意思上的'用来做$\cdots$'
+
+\begin{printdemosample}
+ Wood is often used to make desks and chairs.
+\end{printdemosample}
+
+
+ \subsection{kind of与a kind of}
+ kind of是一种口语化的表达方式，表示"有一点$\cdots$，稍微$\cdots$"，所以有点a little的意味，通常后面带形容词。
+
+ a kind of就是字面的"一种$\cdots$类型"意思
+
+\begin{printdemosample}
+ It is a kind of animal.
+
+  It is kind of interesting
+\end{printdemosample}
+
+ kind表达种类的方式还有下面几种:
+
+  \begin{tasks}[style=enumerate](2)
+ \task[+] all kinds of $\cdots$   \task[+] 各种$\cdots$
+ \task[+] a kind of $\cdots$      \task[+] 一种$\cdots$
+ \task[+] different kinds of $\cdots$     \task[+] 不同类型的$\cdots$
+ \task[+] many kinds of $\cdots$  \task[+] 许多种$\cdots$
+\end{tasks}
+
+\begin{printdemosample}
+ There are many kinds of birds in the zoo.
+\end{printdemosample}
+
+
+\begin{question}
+- Do you know that there are different \blank[width=1cm]{} animals in the zoo?
+
+- Yes, I do. And I also know that some of them are \blank[width=1cm]{} scary.
+  \begin{tasks}[counter-format=tsk[A].](2)
+   \task kinds of; kind of
+   \task kinds of; kinds of
+   \task kind of; kinds of
+   \task kind of; kind of
+   \end{tasks}
+
+\end{question}
+
+ \subsection{三升四暑假知识整理}
+表达'某个人的blabla'的时候，英语一般用's来表示, 但需要知道下面的一些区别:
+
+\begin{printdemosample} \marginpar{两张桌子和一张桌子}
+ This is Yuki's ruler.
+
+ These are students' rullers.
+
+ Lily's and Lucy's desk.
+
+ Lily and Lucy's desk.
+\end{printdemosample}
+
+当中注意who's和whose千万别搞错!
+
+\begin{printdemosample}
+ - Whose book is this?
+
+ - It's mine.
+\end{printdemosample}
+
+一个单词既当名词用，也当动词用的示例:
+
+\begin{lstlisting}
+ I saw a saw saw a saw.
+
+ I comb my hair with my comb. (make your hair tidy)
+
+ The business suit suits you well.
+\end{lstlisting}
+
+词汇学习:
+
+\begin{tasks}[style=enumerate](3)
+ \task[+] alarm clock   \task[+] Brazil   \task[+] whole
+ \task[+] swan   \task[+]] bettle  \task[+] jellyfish
+\end{tasks}
+
+到达某地的说法：
+
+\begin{itemize}
+ \item arrive at schoool/station $\qquad$到达小地点
+ \item arrive in Nanjing/Beijing $\qquad$到达大地点
+ \item arrive home
+\end{itemize}
+
+看书、读报的说法，需要明白watch与read:
+
+\begin{itemize}
+ \item read - 通常看的东西是静态的(看里面的内容，不是look)
+ \item watch - 通常看的东西是动态的
+\end{itemize}
+
+\begin{printdemosample}
+ read a newspaper, read a magazine
+\end{printdemosample}
+
+频率副词的放置位置:
+
+\begin{itemize}
+ \item be的后面
+ \item 动作do的前面
+ \item 对于一般现在时，是不影响三单的
+\end{itemize}
+
+\begin{printdemosample}
+ I'm never late.
+
+ He always/sometimes goes to school at 7:00.
+\end{printdemosample}
+
+  \subsection{再论完成时}
+这里面学习下面的两个不同场景：
+
+\begin{tasks}[style=enumerate](2)
+ \task has/have been to \task has/have gone to
+\end{tasks}
+
+记住have/has gone to表示已经去某地，但目前还没有回来。
+
+而have/has been to表示已经去过某地，现在可能已经回来了。
+
+\begin{printdemosample}
+ She has been to Hangzhou.
+
+ Oh, Qucy is not here, she has gone to Hangzhou.
+\end{printdemosample}
+
+另一个是一直呆在某地，has/have been in
+
+\begin{printdemosample}
+ He has been in Beijing for three months.
+\end{printdemosample}
+
+\begin{printdemosample}
+ They have lived in Shanghai for 3 years.
+
+ They have lived in Beijing since 2010.
+\end{printdemosample}
+
+注意上面的since一词，表示自从2010年开始，就一直居住在北京。
+
+下面是一些过去分词和过去式不相同的动词整理:
+
+\begin{tasks}[style=enumerate](3)
+ \task[+] eat   \task[+] ate   \task[+] eaten
+ \task[+] give   \task[+] gave   \task[+] given
+ \task[+] know   \task[+] knew   \task[+] known
+ \task[+] grow   \task[+] grew   \task[+] grown
+ \task[+] run   \task[+] ran   \task[+] run
+ \task[+] come   \task[+] came   \task[+] come
+ \task[+] fly   \task[+] flew   \task[+] flown
+ \task[+] ring   \task[+] rang   \task[+] rung
+ \task[+] swim   \task[+] swam   \task[+] swum
+ \task[+] see   \task[+] saw   \task[+] seen
+ \task[+] write   \task[+] wrote   \task[+] written
+ \task[+] wake   \task[+] woke   \task[+] waken
+ \task[+] break   \task[+] broke   \task[+] broken
+ \task[+] choose   \task[+] chose   \task[+] chosen
+ \task[+] forget   \task[+] forgot   \task[+] forgotten
+\end{tasks}
+
+
+  \subsection{分数的数学表达方式}
+这部分可以考虑结合Smart Math这本书一起练习
+
+简单来讲，英语使用"数词+序数词"的方式来表达分数，当分子是大于1的数字的时候，后面的序数词要用复数
+
+
+\begin{tasks}[style=enumerate](2)
+ \task[*] $\displaystyle \frac{1}{3}$   \task[+] one third, 或者 a third
+ \task[*] $\displaystyle \frac{2}{3}$      \task[+] two thirds
+ \task[*] $\displaystyle \frac{5}{6}$     \task[+] five sixths
+ \task[*] $\displaystyle \frac{4}{9}$  \task[+] four ninths
+\end{tasks}
+
+ 除此之外，一刻钟的quarter也用来表示四分之一的含义，比如：
+
+\begin{printdemosample}
+ Three quarters of the students have passed the exam.
+\end{printdemosample}
+
+\begin{tasks}[style=enumerate](2)
+ \task[*] $\displaystyle \frac{1}{4}$   \task[+] one quarter, 或者 a quarter, one fourth
+\end{tasks}
+
+  \subsection{动词的过去式过去分词整理}
+1. 完全不变类型
+
+\begin{tasks}[style=enumerate](3)
+  \task[+] cut   \task[+] cut   \task[+] cut
+  \task[+] put   \task[+] put   \task[+] put
+  \task[+] let   \task[+] let   \task[+] let
+  \task[+] hit   \task[+] hit  \task[+] hit
+  \task[+] hurt   \task[+] hurt  \task[+] hurt
+  \task[+] cost   \task[+] cost   \task[+] cost
+  \task[+] read   \task[+] read   \task[+] read
+ \end{tasks}
+
+2. AAB类型
+\begin{tasks}[style=enumerate](3)
+  \task[+] beat   \task[+] beat   \task[+] beaten
+\end{tasks}
+
+3. ABA类型，兜了一圈又回去了
+\begin{tasks}[style=enumerate](3)
+  \task[+] come    \task[+] came   \task[+] come
+  \task[+] become   \task[+] became   \task[+] become
+  \task[+] run   \task[+] ran   \task[+] run
+\end{tasks}
+
+4. ABC类型，都不相同
+
+\begin{tasks}[style=enumerate](3)
+  \task[+] begin  \task[+] began  \task[+] begun
+  \task[+] take    \task[+] took    \task[+] taken
+  \task[+] drink    \task[+] drank   \task[+] drunk
+  \task[+] mistake   \task[+] mistook   \task[+] mistaken
+  \task[+] ring   \task[+] rang  \task[+] rung
+  \task[+] ride   \task[+] rode  \task[+] ridden
+  \task[+] sing   \task[+] sang  \task[+] sung
+  \task[+] do   \task[+] did \task[+] done
+  \task[+] swim   \task[+] swam \task[+] swum
+  \task[+] write   \task[+] wrote \task[+] written
+  \task[+] blow   \task[+] blew \task[+] blown
+  \task[+] go   \task[+] went \task[+] gone
+  \task[+] draw   \task[+] drew \task[+] drawn
+  \task[+] lie   \task[+] lay \task[+] lain
+  \task[+] fly   \task[+] flew \task[+] flown
+  \task[+] see   \task[+] saw \task[+] seen
+  \task[+] grow   \task[+] grew \task[+] grown
+  \task[+] wear   \task[+] wore \task[+] worn
+  \task[+] know   \task[+] knew \task[+] known
+  \task[+] throw   \task[+] threw \task[+] thrown
+  \task[+] show   \task[+] showed \task[+] shown
+  \task[+] break   \task[+] broke \task[+] broken
+  \task[+] choose   \task[+] chose \task[+] chosen
+  \task[+] forget   \task[+] forgot \task[+] forgotten
+  \task[+] bear   \task[+] bore \task[+] born/borne
+  \task[+] speak   \task[+] spoke \task[+] spoken
+  \task[+] draw   \task[+] drew \task[+] drawn
+  \task[+] wake   \task[+] woke \task[+] woken
+  \task[+] drive   \task[+] drove \task[+] driven
+  \task[+] hide   \task[+] hid \task[+] hidden
+  \task[+] eat   \task[+] ate \task[+] eaten
+  \task[+] lay   \task[+] laid \task[+] laid
+  \task[+] fall   \task[+] fell \task[+] fallen
+  \task[+] give   \task[+] gave \task[+] given
+  \task[+] rise   \task[+] rose \task[+] risen
+  \task[+] shake   \task[+] shook \task[+] shaken
+  \task[+] steal   \task[+] stole \task[+] stolen
+ \end{tasks}
+
+5. ABB类型，多数的动词都是这个摸样
+
+\begin{tasks}[style=enumerate](3)
+  \task[+] build  \task[+] built   \task[+] built
+  \task[+] get    \task[+] got     \task[+] got/gotten
+  \task[+] catch    \task[+] caught     \task[+]caught
+  \task[+] hang(吊死)    \task[+] hanged     \task[+]hanged
+  \task[+] hang(悬挂)    \task[+] hung     \task[+]hung
+  \task[+] deal    \task[+] dealt    \task[+]dealt
+  \task[+] feed    \task[+] fed     \task[+]fed
+  \task[+] hold    \task[+] held     \task[+]held
+  \task[+] find    \task[+] found     \task[+]found
+  \task[+] sit    \task[+] sat     \task[+] sat
+  \task[+] pay    \task[+] paid     \task[+] paid
+  \task[+] win    \task[+] won    \task[+] won
+  \task[+] send    \task[+] sent    \task[+] sent
+  \task[+] meet    \task[+] met   \task[+] met
+  \task[+] shoot    \task[+] shot   \task[+] shot
+  \task[+] keep    \task[+] kept   \task[+] kept
+  \task[+] tell    \task[+] told   \task[+] told
+  \task[+] sleep    \task[+] slept   \task[+] slept
+  \task[+] win    \task[+] won  \task[+] won
+  \task[+] sweep    \task[+] swept  \task[+] swept
+  \task[+] feel    \task[+] felt  \task[+] felt
+  \task[+] smell    \task[+] smelt  \task[+] smelt
+  \task[+] leave    \task[+] left  \task[+] left
+  \task[+] lend    \task[+] lent  \task[+] lent
+  \task[+] send    \task[+] sent  \task[+] sent
+  \task[+] spend    \task[+] spent  \task[+] spent
+  \task[+] lose    \task[+] lost  \task[+] lost
+  \task[+] burn    \task[+] burnt  \task[+] burnt
+  \task[+] learn    \task[+] learnt  \task[+] learnt
+  \task[+] mean    \task[+] meant  \task[+] meant
+  \task[+] teach    \task[+] taught  \task[+] taught
+  \task[+] bring    \task[+] brought  \task[+] brought
+  \task[+] fight    \task[+] fought  \task[+] fought
+  \task[+] buy    \task[+] bought  \task[+] bought
+  \task[+] think    \task[+] thought  \task[+] thought
+  \task[+] hear   \task[+] heard  \task[+] heard
+  \task[+] sell    \task[+] sold  \task[+] sold
+  \task[+] tell    \task[+] told  \task[+] told
+  \task[+] say    \task[+] said  \task[+] said
+  \task[+] make    \task[+] made  \task[+] made
+  \task[+] stand    \task[+] stood  \task[+] stood
+  \task[+] understand    \task[+] understood  \task[+] understood
+
+ \end{tasks}
+
+  \subsection{数学英语初步}
+
+这里主要介绍几何图形(geometry)在英语中的描述方法。
+
+首先为平面图形：
+
+\begin{tikzpicture}
+
+ \draw (0,0) --(2,0) -- (1, 1.8) -- (0, 0);
+ \node at (2.4, 1.6) [font=\scriptsize](IDslide) {side};
+ \node at (2.4, 0.6) [font=\scriptsize](IDcorner) {corner};
+
+ \draw [->, >=stealth'] (IDslide.south) to [bend left=30] ($(IDslide.south) + (-0.6, -0.4)$);
+ \draw [->, >=stealth'] (IDcorner.south) to [bend right=30] ($(IDcorner.south) + (0.5, -0.4)$);;
+
+ \draw (3.0, 0) rectangle (5.36, 1.3);
+
+ \draw (6.0, 0) rectangle (7.30, 1.3);
+
+ \draw (9.5, 0.75)  circle (0.7); \fill (9.5, 0.75) circle (1.5pt);
+ \draw [->, >=stealth'] (8,1.1) to [bend left=30] (9.3, 0.82);
+ \node at (8.2, 1.3)[font=\scriptsize]{center};
+
+ \node at (1, -0.8) [] {triangle};
+
+ \node at (4, -0.8) [] {rectangle};
+
+ \node at (6.8, -0.8) [] {square};
+
+ \node at (9.5, -0.8) [] {circle};
+\end{tikzpicture}
+
+
+\begin{question}
+ How much is eighty-five minus fifty-eight plus sixty-nine?  \blank[width=2cm]{}
+\end{question}
+
+
+\begin{question}[tags={mathEng}]
+ Write how many.
+
+ \begin{tikzpicture}
+  \draw (0, 0) rectangle (1 , 1) ;
+ \end{tikzpicture}\hspace{1cm} \blank[width=1cm]{}sides. \blank[width=1cm]{}corners.
+
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+\begin{question}[tags={mathEng}]
+ How is a square different from a rectangle? \blank[width=3cm]{}
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+\begin{question}[tags={mathEng}]
+ I have 4 corners. My sides are not the same length.
+
+What shape am I? \blank[width=3cm]{}
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+\begin{question}[tags={mathEng}]
+My sides are all the same length. I have 3 corners.
+
+What shape am I? \blank[width=3cm]{}
+\end{question}
+\begin{solution}
+%placeholder
+\end{solution}
+
+  \subsection{数学英语进阶}
+
+  接下来为立体图形：
+
+\begin{tikzpicture}
+\fill[ball color=black!10] (0,0) circle (1.0 cm);
+\newcommand\latitude[1]{%
+  \draw (#1:1.0) arc (0:-180:{1.0*cos(#1)} and {0.2*cos(#1)});
+  \draw[dashed] (#1:1.0) arc (0:180:{1.0*cos(#1)} and {0.2*cos(#1)});
+}
+\latitude{30};
+\latitude{0};
+\latitude{-30};
+
+    \draw (-6,-1) arc (180:360:1cm and 0.5cm) -- (-5,1) -- cycle;
+    \draw[dashed] (-6,-1) arc (180:0:1cm and 0.5cm);
+    \shade[left color=gray,right color=gray,opacity=0.2] (-6,-1) arc (180:360:1cm and 0.5cm) -- (-5,1) -- cycle;
+
+
+    \node at (4, 0)[cylinder, shape border rotate=180, draw, shape aspect=0.35,minimum height=3cm,minimum width=0.99cm,  cylinder uses custom fill, cylinder end fill=gray!20, cylinder body fill=gray!10] {cylinder};
+
+    \node at (0, -1.8) [] {sphere};
+    \node at (4.0, -1.8) [] {cylinder};
+    \node at (-4.9, -1.8) [] {cone};
+\end{tikzpicture}
+
+这里需要整理一下"球"，在中文中，地球、球状物虽然都是带"球"字，但英文中的描述却是完全不一样的，所以对应的单词也完全不同：
+
+\begin{tasks}[style=enumerate](4)
+ \task ball  \task sphere  \task earth  \task globe
+\end{tasks}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+   \subsection{谚语金句}
+
+\begin{printdemosample} \marginpar{意喻苦尽甘来}
+ April showers bring May flowers.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Yesterday is a history, tomorrow is a mystery, but today is a gift, that is why it is called Present.
+\end{printdemosample}
+
+\section{背诵默写}
+这里整理需要能够背诵出来，并且能够默写出来的各种句型。有点类似英语写作素材和范文的功能。
+
+Don't be afraid to use it!
+
+  \subsection{学而思三年级下的背诵}
+
+\begin{printdemosample}
+ Would you like to buy my watch? It's a good watch. It was a birthday present that I got when I was seven years old.
+\end{printdemosample}
+
+\begin{printdemosample}
+ My bedroom is my favorite place. It's purple which is my favorite color.
+\end{printdemosample}
+
+  \subsection{四年级寒假英语书写内容}
+关于时态的练习:
+
+她去学校的不同表达方式:
+
+\begin{printdemosample}
+She goes to school everyday.
+
+She went to school yesterday/last Thursday.
+
+She has gone to school.
+
+She had gone to school when her mother got up yesterday morning.
+\end{printdemosample}
+
+将上面的时态分别写出否定、疑问句。
+
+学习书写下面几个长句子:
+
+\begin{itemize}
+  \item 一年有四季
+  \item 简介自己(名字，年龄，爱好)
+  \item 介绍自己的玩具,好朋友
+  \item 他们真的很有趣
+  \item 我们完得很开心
+\end{itemize}
+
+
+  \subsection{Breakfast or lunch?} \marginpar{\scriptsize{新概念英语}}
+\lettrine[lines=2, lraise=0.1]{I}t was Sunday. I never get up early on Sundays. I sometimes stay in bed until lunch time.
+
+Last Sunday I got up very late. I looked out of the window. It was dark outside.   “What a day!” I thought. “It's raining again.” Just then, the telephone rang. It was my aunt Lucy. “I've just arrived by train,” she said. “I'm coming to see you.” “But I'm still having breakfast,” I said. “What are you doing ?” she asked. “I'm having breakfast,” I repeated. “Dear me,” she said. “Do you always get up so late ? It's one o'clock!”
+
+\noindent \rule{1.0\textwidth}{0.5mm}
+
+\noindent 1. I didn't finish my homework \blank[width=1cm]{} my mother came back home.
+\begin{tasks}(4)
+  \task since \task because \task until \task after
+
+\end{tasks}
+
+\noindent 2. The door bell \blank[width=1cm]{} when I was leaving.
+\begin{tasks}(4)
+  \task rang \task ringing \task rings \task rung
+\end{tasks}
+
+  \subsection{A Private Conversation} \marginpar{\scriptsize{新概念英语}}
+\lettrine[lines=2, lraise=0.1]{L}{ast} week I went to the theatre. I had a very good seat. The play was very interesting. I did not enjoy it. A young man and a young woman were sitting behind me. They were talking loudly. I got very angry. I could not hear the actors.
+
+I turned round. I looked at the man and the woman angrily. They did not pay any attention. In the end, I could not bear it. I turned round again. "I can't hear a word!" I said angrily.  "It's none of your business," the young man said rudely. "This is a private conversation!".
+
+  \subsection{家庭成员(family)}
+介绍人员的方式：
+
+\begin{printdemosample}
+ There are three people in my family. They are my father, my mother and me.
+\end{printdemosample}
+
+\begin{printdemosample}
+ Hello everyone, my name is Yang YuXin. I'm eight years old.
+\end{printdemosample}
+
+ \subsection{熟练词语运用}
+
+\begin{printdemosample}
+ That's really interesting!
+\end{printdemosample}
+
+
+\begin{printdemosample}
+ Fantastic! How beautiful they are!
+\end{printdemosample}
+
+
+\newpage
+
+\section{英语进阶}
+这里更多的是把各个知识点进行整理归纳，便于应对考试和课外阅读能力的提高。
+
+  \subsection{特殊单复数整理}
+1. 单词以s, o, x, ch, sh结尾的，多数是加es：
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task bus  \task buses
+ \task box  \task boxes
+ \task glass    \task glasses
+ \task potato  \task potatoes
+ \task tomato  \task tomatoes
+ \task peach    \task peaches
+ \task sandwich  \task sandwiches
+\end{tasks}
+
+\framebox{注意} 有些o结尾的单词又不需要es:
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](2)
+ \task photo  \task photos
+ \task piano  \task pianos
+ \task stomach  \task stomachs
+\end{tasks}
+
+2. 辅音加y结尾的， y变成i, 再加es
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task cherry  \task cherries
+ \task strawberry  \task strawberries
+\end{tasks}
+
+\framebox{非辅音的不要加} \qquad boy
+
+3. 以f, fe结尾的，变v, 再加es
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+ \task life  \task leaf  \task leaves
+ \task scarf  \task scarves
+\end{tasks}
+
+4. oo变ee:
+
+\begin{tasks}[style=itemize](2)
+ \task foot   \task feet
+ \task tooth  \task teeth
+\end{tasks}
+
+5. 其它特殊的：
+
+\begin{tasks}[style=itemize](2)
+ \task man  \task men       \task woman  \task women
+ \task child  \task children \task mouse \task mice
+\end{tasks}
+
+6. 不可数名词：
+
+\begin{tasks}[counter-format=tsk[1].,label-offset=1em, label-align=right](4)
+  \task milk \task people \task sheep  \task water
+  \task fish \task meat   \task juice  \task food
+  \task fruit \task cheese
+\end{tasks}
+
+  \subsection{动词时态整理}\label{secEngProgress.VerbShitai}
+
+现在时中，不发音的e：
+
+\begin{tasks}[style=itemize](4)
+ \task come  \task coming  \task make    \task making
+ \task have  \task having  \task write   \task writing
+ \task take  \task taking  \task become  \task becoming
+\end{tasks}
+
+最后字母双写再加ing的：
+
+\begin{tasks}[style=itemize](4)
+ \task stop  \task stopping   \task run   \task running
+ \task hop   \task hopping    \task chop  \task chopping
+ \task shop  \task shopping
+\end{tasks}
+
+
+  \subsection{太阳系的八大行星}
+
+首先，在古代各个国家里都是能够观察得到行星的。但由于各个国家文化上的差异，对于这些行星的命名，都各自按照自己国家的习惯进行，但基本上多以本国神话人物名字命名。
+
+目前英语上的八大行星的称谓，大多数源自罗马神话人物，而中国采用的命名方式则是古老的阴阳五行理论。
+
+
+
+%%TODO - 下面的东西要重新整理。。。。  (https://www.zhihu.com/search?type=content&q=%E5%85%AB%E5%A4%A7%E8%A1%8C%E6%98%9F%E5%91%BD%E5%90%8D)
+太阳系有八大行星，从内到外分别为水星Mercury、金星Venus、地球Earth、火星Mars、木星Jupiter、土星Saturn、天王星
+Uranus和海王星Neptune。其中，水木金火土都比较亮，用肉眼就能观察到，所以人类很早就开始认识它们了。中文之所以称为水星、木星、金星、火
+星、土星，因为古人观察到，金星色白、木星色青、水星色灰、火星色赤、土星色黄，对应我国古老的阴阳五行理论，分别给它们取名为金星、木星、水星、火星和
+土星。
+
+希腊人则用神话中的神名来命名这些行星，罗马人将其翻译为罗马神话中对应的神名，水星为信使之神Mercury、金星为爱与美之女神Venus、火
+星为战神Mars、木星为主神Jupiter、土星为农神Saturn。天王星直到1781年才被人们用天文望远镜发现的，学者们延续古代命名行星的习
+惯，用天空之神Uranus命名了这颗行星，中文译为天王星。海王星被发现的更晚，到1846年才用天文望远镜捕捉到，学者们用海神Neptune命名了
+这个星，中文译为海王星。
+
+
+  \subsection{英文的词根}\label{secCiGeng}
+英语单词当中很多都是派生词，也就是所谓的前缀+词根+后缀，常用的词根有400个，前缀和后缀分别为30个，所以只要记住这些，就能组合成3000多个单词
+
+
+er后缀的单词整理已经放在\ref{secErSuffix}节中介绍了！
+
+
+
+
+dis
+
+tele
+
+这个前缀的单词多和通信, 无线电相关.
+
+tele + vision = television
+
+tele + phone = telephone
+
+un
+
+uniform, ...
+
+%  \subsection{bi-}
+bi - 表示“两，双”
+
+binary
+
+bilingual
+
+biweekly
+
+binomial - 二项式， 多项式叫做polynomial
+
+\begin{tikzpicture}
+  \node at (0, -1) [] {$(x+y)^n$};
+  \node at (0, -1) [] {$a_0 + a_1x + a_2x^2 + \cdots + a_nx^n$};
+\end{tikzpicture}
+
+
+
+ % \subsection{dis-}
+dis - 具有否定的含义
+
+%% ALWAYS call this in each section, in order to
+%% reset the num to 1
+\setcounter{mydemonum}{0}
+
+disconnect
+
+discover discovery
+
+dislike
+
+disorder
+
+
+%disappear
+\begin{tikzpicture}
+  \node [rectangle, anchor = east, text width=2cm] (ID1) {\hfill appear};
+  \node [rectangle, anchor = east, below of = ID1, yshift=0.2cm, text width=2cm] (ID2) {\hfill \colorbox{mygreen}{dis}appear};
+
+  \node [rectangle, anchor = east, right of = ID1, xshift=3cm, text width=3cm] {出现};
+  \node [rectangle, anchor = east, right of = ID2, xshift=3cm, text width=3cm] {消失不见了};
+\end{tikzpicture}
+
+\begin{mydemosample}
+The black car drove away from them and disappeared.
+\end{mydemosample}
+
+
+dis-前缀的另一个含义是分离、分开或者散开
+
+比如老师宣布下课通常都这么讲:
+
+%dismiss
+\begin{mydemosample} \marginpar{\scriptsize{老师宣布下课通常都这么讲}}
+You are dismissed.
+\end{mydemosample}
+
+discard
+
+  \subsection{in-}
+这是一个表示否定的前缀.
+
+%% insane VS sane
+\begin{tikzpicture}
+  \node [rectangle, anchor = east, text width=2cm] (ID1) {\hfill sane};
+  \node [rectangle, anchor = east, below of = ID1, yshift=0.2cm, text width=2cm] (ID2) {\hfill \colorbox{mygreen}{in}sane};
+
+  \node [rectangle, anchor = east, right of = ID1, xshift=3cm, text width=3cm] {神智正常};
+  \node [rectangle, anchor = east, right of = ID2, xshift=3cm, text width=3cm] {神智不正常, 疯了};
+\end{tikzpicture}
+
+\setcounter{mydemonum}{0}
+  \begin{mydemosample}
+  Are you insane?
+  \end{mydemosample}
+
+  \subsection{poly-}
+poly-表示"多"的意思，经常出现在科学(数学、化学等)中的用语当中。
+
+poly + gon = polygon 多边形
+
+\begin{tikzpicture}
+\foreach \a in {3,...,7}{
+\draw[red, dashed] (\a*2,0) circle(0.5cm);
+\node[regular polygon, regular polygon sides=\a, draw,
+inner sep=0.3535cm] at (\a*2,0) {};
+}
+\end{tikzpicture}
+
+poly + nomial = polymomial 多项式
+
+  \subsection{tele-}
+
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{vi}
+图像
+
+visual vision video
+
+visible
+
+
+\section{易错用的例子整理}
+
+  \subsection{note}
+Please note that xxxx
+
+相当于提醒,注意某某事情.
+
+而不要用Please be noted that xxx
+
+这个被动的说法教少见.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\input letustalkenglish.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{空中美语初级}
+
+因为这个节目的语速较快，内容也比较高， 所以这里不再按照时间顺序， 而是按照学习的难度逐个往后排序。
+
+
+  \subsection{Be Nice to Your Sister}
+
+音频文件2017-0612， 正文内容时间点大约是00:56开始。
+
+场景发生于黄先生和黄太太(Mr and Mrs Wong)的三个小孩之间。这三个小孩分别为Page， Jimmy, Timmy, 他们在一起因为看电视的缘故而发生了争吵。
+
+The three kids are sitting on the sofa. Page is watching a show, but Jimmy taks the remote.
+
+\begin{multicols}{2}
+ {\scriptsize{Page:}{}} Hey, I was watching my favorite TV show!
+
+ {\scriptsize{Timmy:}{}} Your show is boring, we want to watch cartoons.
+
+ {\scriptsize{Page:}{}} Why aren't you doing your homework?
+
+ {\scriptsize{Timmy:}{}} You sound like mum.
+...
+
+{\scriptsize{Page:}{}} How dare you!
+
+...
+
+Why are you all shouting?
+
+
+\end{multicols}
+
+Page:
+
+...
+
+
+They didn't ...
+
+...
+
+
+You two need...
+
+..
+
+Yes, ...
+
+
+...
+
+...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+该话题中需要学习的单词如下：
+
+\begin{myWordList}
+  \begin{tasks}[counter-format=tsk[1].](2)
+    \task cartoon
+    \task sound
+    \task naughty
+    \task manners
+  \end{tasks}
+
+\end{myWordList}
+
+
+
+\begin{printdemosample}
+ Let's watch the cartoon about cute rabbits on T.V. now.
+
+ Eating breakfast food for dinner sounds like a great idea.
+
+ The teacher asks the naughty student to leave the classroom.
+
+ It's not good manners to talk with your mouth..
+\end{printdemosample}
+
+  \subsection{Pineapples}
+2017-0623
+
+  \subsection{Study}
+ 2017-03002
+
+
+
+
+  \subsection{书写-handwriting}
+ 2017-03003
+
+ Could/Would you ... ºÍCan you ...Ö®¼äµÄÒ»Ð©Çø±ð¡£
+
+ Can I/May I ...
+
+ 9:45 listing and write:
+
+ * duck * * pond *
+
+
+ * personality  *
+
+  12:08 handwriting  personality map
+
+ * emotion *
+
+15:45 or so, learning how to say `like it'
+
+ * generally *
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%TODO - SHOULD include this in the future?%%%%%%%%%%%%%%%%%%%%
+%%\input adv_read.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\input new_concept.tex
+
+
+\section{试题整理}
+
+%%使用引用方式，防止示例的代码内容被脚本抽取到作为练习内容！
+%\input use_exsheets.tex
+
+  \subsection{基础练习题目}
+
+这里计划超前选择一些书面的试题，用于练习、掌握基本的知识。
+
+\begin{question}[type=exercise]
+ There is \blank[width=8mm]{} map of the world on \blank[width=8mm]{} wall. \blank[width=8mm]{} map is mine.
+ \begin{tasks}[counter-format=tsk[A])](4)
+ \task a, a, A
+ \task a, the, The
+ \task the, the, The
+ \task the, the, A
+\end{tasks}
+\end{question}
+
+\begin{question}[type=exercise]
+ I bought \blank[width=8mm]{} shoes yesterday. \blank[width=8mm]{} shoes are very beautiful.
+ \begin{tasks}[counter-format=tsk[A])](4)
+ \task a, The
+ \task a pair of, The
+ \task the, The
+ \task a pair, The pair
+\end{tasks}
+\end{question}
+
+下面的问题为根据描述写出对应的事物：
+
+\begin{question}[type=exercise] \marginpar{2010学而思杯小学二年级试题}
+ This is a bird that is very clever and can talk. \hspace{0.5cm} \blank[width=2cm]{}
+\end{question}
+
+\begin{question}[type=exercise]
+ This is the place where you put things that you don't use. \hspace{0.5cm} \blank[width=2cm]{}
+\end{question}
+
+  \subsection{新课标的准备}
+
+下面是为了准备2018年的新课标1级做准备的练习题目：
+
+\newpage
+
+%\input xinkebiao.tex
+
+  \subsection{小升初专题}
+
+这里收集小升初的一些难读较大的选拔试题，争取能够在小学4年级前达到对应水平！
+
+%\input raise.tex
+
+  \subsection{中考专题}
+这里虽然是初中水平，还是希望笑笑在小学高年级能够达到这个水准。
+
+%\input zhongkao.tex
+%\input scrapy.eng.1.tex
+
+  \subsection{旧高考专题}
+%\input oldgaokao.tex
+
+
+  \subsection{新高考专题}
+TODO
+
+  \subsection{错题整理}
+
+% \input gzeng.tex
+
+  Can you see this long words of text?
+
+
+\begin{question}[type=exam,name=abc]
+What's this?
+
+\end{question}
+
+\begin{question}[type=exam]
+What's \blank[width=1cm]{} this?
+\vspace{-0.3cm} % This is bad, but it works
+\begin{tasks}(3)
+ \task hello
+ \task world
+ \task good
+\end{tasks}
+
+\end{question}
+
+\begin{question}[type=exam]\label{q:abc}
+What's \blank[width=1cm] this?
+\vspace{-0.3cm} % This is bad, but it works
+\begin{tasks}(3)
+ \task hello
+ \task world
+ \task good
+\end{tasks}
+
+\end{question}
+
+参照Ex-~\ref{q:abc}
+
+ \subsection{练习题的分类设计}
+
+从2017年开始，发现借助于\lstinline{exsheets}等包，可以制作比较合适的练习题内容。
+
+为了能够更加合理地整理和运用电子文档操作练习题的功能，这里把各个学科的练习题目总类和分法都提前设计好，这样后面随着长时间的收集与练习，可以非常方便的抽取出自己想要的练习主题出来。
+
+\begin{table}
+\centering
+      \def\arraystretch{1.15}
+        \begin{tabular}{l | l |  l }
+        \hline
+        {学科} & {练习分类}& {分类说明}  \\
+            \hline
+            \multirow{6}{*} {语文} & \multirow{3}{*} {topic}      & \multicolumn{1}{l}{pinyin : 拼音,这是一个很大的主题，class则会细化} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{cy : 成语} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{poem : 古诗词} \\\cline{2-3}
+                                  & \multirow{3}{*}{class}       & \multicolumn{1}{l}{wrongone: 一年级错题}     \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{pyone: 一年级拼音练习} \\\cline{3-3}
+                                   &                              & \multicolumn{1}{l}{numpy.pi} \\\hline
+
+        \end{tabular}
+
+    \caption{语文练习分类的设计}
+\end{table}
+
+通常情况下，可以通过class/topic两种方式来指定练习的种类，这样可以自己根据class/topic的设置值来自由抽取特定类型的题目。
+
+比如经过简短的考虑和设计，决定笑笑学校期间的错题也作为一个class类别放在所有练习题库中，原因是：
+
+\begin{itemize}
+ \item 错题的总体数量不会太多，对现有的收集题库影响不大
+ \item 把错题class再加上对应的topic，可以总结出容易出错的知识模块
+ \item 无论是单独只抽取错题，还是把它们混合到对应的主题topic模块，都能有效地、有针对性的进行温习
+\end{itemize}
+
+但是，class/topic目前只能指定一个数值。所以当我们需要作一些交叉类型题目的抽取的时候，这种方式就比较局限了。
+
+举个例子，我想方便地把各年的希望杯试题都抽取出来，同时，这当中有的题目还要作为各个年级易错题目可抽取，且试题总数、以及各年的试题、或者各个年级的试题，都需要能够自由抽取。
+
+为了处理这种场景，就需要使用tags的选项。使用该方式的最大好处就是可以按照任意的组合方式来抽取试题。\marginpar{\TeX{}-Live 2016支持该选项}
+
+\begin{table}
+\centering
+      \def\arraystretch{1.15}
+        \begin{tabular}{l | l |  l }
+        \hline
+        {学科} & {练习分类}& {分类说明}  \\
+        \hline
+        \multirow{16}{*} {数学} & \multirow{2}{*} {topic}      & \multicolumn{1}{l}{multi: 乘法问题} \\\cline{3-3}
+                                &                              & \multicolumn{1}{l}{complex : 复数} \\\cline{2-3}
+                                & \multirow{3}{*}{class}       & \multicolumn{1}{l}{wrongone: 一年级错题}     \\\cline{3-3}
+                                &                              & \multicolumn{1}{l}{wrong/two/...依次二，三年级错题...} \\\cline{3-3}
+                                 &                             & \multicolumn{1}{l}{numpy.pi} \\\cline{2-3}
+                                 & \multirow{2}{*} {希望杯}      & \multicolumn{1}{l}{hope: 希望杯试题} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{hopejf :希望杯小学四年级(Junior Four)} \\\cline{2-3}
+                                  & \multirow{3}{*} {华杯赛}      & \multicolumn{1}{l}{huashu: 华杯赛试题} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{huashujf :华杯赛小中(Junior Four)} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{huashujs :华杯赛小高(Junior Six)} \\\cline{2-3}
+                                  & \multirow{3}{*} {走美杯}      & \multicolumn{1}{l}{zoumei3: 走美三年级试题} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{huashujf :华杯赛小中(Junior Four)} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{huashujs :华杯赛小高(Junior Six)} \\\cline{2-3}
+                                  & \multirow{3}{*} {学而思}      & \multicolumn{1}{l}{xes: 学而思培训内容} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{xesjf :小中阶段内容} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{xesjs :小高阶段内容} \\\hline
+
+        \end{tabular}
+
+    \caption{数学练习分类的设计}
+\end{table}
+
+数学的topic分类有：
+
+tuse - 涂色问题(多见于小学数学场景)
+
+TODO -
+
+
+理论上，表格中列举的topic/class数值都可以移到tags当中去，这样可以非常方便地处理任意组合的试题抽取工作。
+
+\begin{table}
+\centering
+      \def\arraystretch{1.15}
+        \begin{tabular}{l | l |  l }
+        \hline
+        {学科} & {练习分类}& {分类说明}  \\
+        \hline
+        \multirow{5}{*} {英语} & \multirow{2}{*} {topic}      & \multicolumn{1}{l}{phonics: 自然拼读练习} \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{basicwrite : 基础书写} \\\cline{2-3}
+                                  & \multirow{3}{*}{tags}       & \multicolumn{1}{l}{wrongone: 一年级错题,这里用作新课标1级}     \\\cline{3-3}
+                                  &                              & \multicolumn{1}{l}{listenwrBasic: 基本听写或者默写} \\\cline{3-3}
+                                   &                              & \multicolumn{1}{l}{gram1:一级语法，一次类推} \\\hline
+
+        \end{tabular}
+
+    \caption{英语练习分类的设计}
+\end{table}
+
+  \subsection{音标的输出}
+
+目前在\LaTeX{]下可以使用\lstinline{tipa}包来输出英文的音标, 也可以在一定条件下和\XeTeX{}使用.
+
+这个条件就是包的命名放在fontspec之前。
+
+\begin{lstlisting}
+%% MUST defined before fontspce
+\usepackage{tipa}
+
+\usepackage{fontspec,xunicode,xltxtra,makeidx,xecolor}
+\end{lstlisting}
+
+音标的输出符号基本和字母类似，无需死记这些，只要能在适当时候查询得到即可：
+
+\bgroup
+\def\arraystretch{1.15}
+\begin{tabular}{|r|l|r|l|r|l|}
+\hline
+{音标} & {字母} & {音标} & {字母} & {音标} & {字母}\\
+\hline
+{\begin{IPA}[@]\end{IPA}} & {\verb+@+} & {\begin{IPA}[E]\end{IPA}} & {E}  & {\begin{IPA}[S]\end{IPA}} & {S}\\
+{\begin{IPA}[O]\end{IPA}} & {O} & {\begin{IPA}[\ae]\end{IPA}}  & {\verb+\ae+} & {\begin{IPA}[N]\end{IPA}} & {N}\\
+{\begin{IPA}[2]\end{IPA}} & {2} & {\begin{IPA}[Z]\end{IPA}}  & {Z} & {\begin{IPA}[D]\end{IPA}} & {D}\\
+{\begin{IPA}[T]\end{IPA}} & {T} & {\begin{IPA}[U]\end{IPA}}  & {U} & {\begin{IPA}[B]\end{IPA}} & {B}\\
+{\begin{IPA}[3]\end{IPA}} & {3} & {}  & {} & {} & {}\\
+\hline
+\end{tabular}
+\egroup
+
+\begin{thebibliography}{99}
+\bibitem{bibNewConceptEngYoungVer} 外语教学与研究出版社:{\em 新概念英语青少版入门级}, 2010年.
+\bibitem{bibEngJuniorOneA}译林出版社:{\em 小学英语(一上)}, 2012年.
+\bibitem{bibEngJuniorOneB}译林出版社:{\em 小学英语(一下)}, 2012年.
+\bibitem{bibPhonicsStageTwo} 外语教学与研究出版社:{\em 丽声拼读故事会 第二级}, 2011年.
+\bibitem{bibNationalGeoBasic} 外语教学与研究出版社:{\em 国家地理儿童百科入门级}, 2010年.
+\bibitem{bibNewDongFangReadBasic} 西安交通大学出版社:{\em 新东方泡泡剑桥儿童英语故事阅读}, 2012年.
+\bibitem{bibCaliforniaMath}McGraw-Hill Press:{\em 加州小学数学}, 2012年.
+\end{thebibliography}
+
+
+%%%%Index%%%%%
+\printglossaries
+
+\printindex
+
+\end{document}
