@@ -391,7 +391,7 @@ class Vocabulary:
       "quick", "quickly",
       "read", "red", "right", "run",
       "say", "school", "see", "she", "shop", "shopping", "should", "sing", "sister", "sit", "six", "sleep", "slow", "slowly","so", "some", "soon", "stand", "stop", "sun",
-      "take", "tell", "ten", "than", "that", "the", "there are", "there is", "these", "they", "this", "those", "time", "to", "today", "too", "tooth", "two",
+      "take", "tell", "ten", "than", "thank you", "that", "the", "there are", "there is", "these", "they", "think", "this", "those", "time", "to", "today", "too", "tooth", "two",
       "up", "us", "use",
       "very",
       "wait", "want", "was", "water", "we", "what", "when", "who", "why", "will", "with", "woman",  "work", "write",
