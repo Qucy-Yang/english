@@ -1,0 +1,697 @@
+% An Annoated version of Grammer
+%
+% [2020-12-05] Create this new grammar one
+%
+% [2015-10-19] Move all here, work well on TeX-Live2014, but Live-2015 seems
+%              NOT GOOD for the ' symbole output.
+%
+% [2015-10-18] Try convert the concrete_eng.tex into XeLatex format
+
+\documentclass[a4paper]{article}
+\title{English Grammar}
+\author{Yang Songxiang}
+
+%% MUST defined before fontspce
+\usepackage{tipa}
+
+\usepackage{fontspec,xunicode,xltxtra,makeidx,xecolor}
+\usepackage{color,listings,tabularx,amsfonts}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{titlesec}
+\usepackage{lettrine}
+\usepackage{framed}
+\usepackage{colortbl}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\usepackage[many]{tcolorbox}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{epigraph}
+\usepackage{soul}
+\usepackage[nonumberlist]{glossaries}
+%
+%%
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{tkz-base}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,trees,calc,automata,positioning, fit}
+\usetikzlibrary{calendar}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{angles}
+\usetikzlibrary{graphs}
+
+\tikzset{
+  mybox/.style={
+    rectangle,
+    rounded corners,
+    draw=black
+  },
+}
+
+\usepackage[auto-label]{exsheets}
+\usepackage{enumerate}
+\usepackage{tasks}
+\usepackage{indentfirst}
+
+\usepackage[bookmarks=true,pdfborder={0 0 0}]{hyperref}
+%%去除TexLive-2015开始fontspec对引号的影响
+\defaultfontfeatures[\rmfamily,\sffamily,\ttfamily]{}
+\setmainfont{WenQuanYi Micro Hei}
+\setsansfont{WenQuanYi Micro Hei}
+\setmonofont{WenQuanYi Micro Hei}
+
+%required Windows fonts
+\newcommand\fontnamekai{STKaiti}
+% Tex-Live2016
+%\newfontinstance\KAI {\fontnamekai}
+\newfontfamily\KAI {\fontnamekai}
+\newcommand{\kai}[1]{{\KAI#1}}
+%\newfontfamily\mynamingfont {Liberation Serif}
+%\newfontfamily\mynamingfontb {Century Schoolbook L}
+%\newfontfamily\mynamingfontc {Droid Serif}
+%\newfontfamily\mynamingfontd [Mapping=tex-text]{TeX Gyre Pagella}
+
+
+\newcommand\vtextvisiblespace[1][.4em]{%
+  \mbox{\kern.06em\vrule height.5ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.5ex}}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5\baselineskip}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip=0pt plus 1pt minus 0.1pt
+
+%listing global settings
+\lstset{basicstyle=\scriptsize,frame=lines}
+
+%some global color
+\definecolor{light-gray}{rgb}{0.87,0.87,0.87}
+\definecolor{light-yellow}{rgb}{0.88,0.92,0.48}
+\definecolor{mygreen}{rgb}{0.63,1,0.35}
+
+%complicated def
+\lstnewenvironment{myjavacode}[1][]
+      {\lstset{language=Java}\lstset{escapeinside={(*@}{@*)},
+       basicstyle=\footnotesize\ttfamily,
+       numbers=left,numberstyle=\scriptsize,stepnumber=1,numbersep=5pt,
+       breaklines=true,
+       %firstnumber=last,
+           %frame=tblr,
+           framesep=5pt,
+           showstringspaces=false,
+           keywordstyle=\itshape\color{blue},
+          %identifierstyle=\ttfamily,
+           stringstyle=\xecolor{maroon},
+        commentstyle=\color{black},
+        rulecolor=\color{black},
+        xleftmargin=0pt,
+        xrightmargin=0pt,
+        aboveskip=\medskipamount,
+        belowskip=\medskipamount,
+               backgroundcolor=\color{white}, #1
+}}
+{}
+
+\newfontfamily\thekai{STKaiti}
+%%尝试把margainpar中的文字大小修改
+\setlength\marginparwidth{2cm}
+\makeatletter
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{\thekai\footnotesize #1}%
+  \global\setbox\@currbox\copy\@marbox
+  \@xympar}
+\makeatother
+
+%% Try new a my own code 用于扩展词汇的统一处理
+\newcounter{myexpandnum}
+\newcounter{mydemonum}
+%\newenvironment{myexpand2}[1][\unskip]{\colorbox{red}{Expand\refstepcounter{myexpandnum} \themyexpandnum #1}}{}
+
+%\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum}  扩展词汇\themyexpandnum- \vspace{0.5cm} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+\newenvironment{myexpand}[1][]{\refstepcounter{myexpandnum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=red] (0,0) circle (1ex); \colorbox{blue!30}{扩展词汇\themyexpandnum- \vspace{0.5cm}} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \node [signal, draw, text=white, fill=red!65!black, signal to=nowhere,signal from=east]{\large{ #1}};}{}
+
+
+\newenvironment{mydemosample}{\stepcounter{mydemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] \shade [ball color=blue] (0,0) circle (1ex); \colorbox{blue!30}{例句 \themydemonum}
+\\
+\rule{0.2\textwidth}{0.5mm} \begin{quotation}}{\end{quotation}}
+
+%%这个用于适合打印的例句输出
+\newcounter{printdemonum}
+\newenvironment{printdemosample}{\stepcounter{printdemonum} \tikz [baseline={([yshift=-.8ex]current bounding box.center)}] {\node[rectangle]{\includegraphics[scale=0.10]{../img/huawen.eps}}} {\kai{例句} \theprintdemonum{}} \vspace{-0.41cm} \begin{quotation}} {\end{quotation}}
+
+% a table collection
+%\definecolor{Gray}{gray}{0.85}
+%\definecolor{LightCyan}{rgb}{0.88,1,1}
+%\newcolumntype{mycA}{>{\columncolor{Gray}}c}
+%\newcolumntype{mycB}{>{\columncolor{LightCyan}}c}
+
+%\newcommand\mywordnums[2]{First #1 , second #2}
+\newcommand\mywordnums[2]{\bgroup \def\arraystretch{1.15} \scriptsize
+  \begin{tabular}{|>{\columncolor[gray]{0.8}}c|>{\columncolor[rgb]{0.88,1,1}}c|}
+   \hline
+   {单数} & {复数} \\
+   \hline
+   {#1} & {#2} \\
+   \hline
+  \end{tabular}
+\egroup}
+
+%% 2016-12-22添加了一个类似tip类型的示例
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myTipStyleDemoCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=-0.5cm,
+rightmargin=-0.5cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myTipStyleDemoCounter}\sffamily\large 例句~\themyTipStyleDemoCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myTipStyleDemo}
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%是替换掉上面的自己写的简单的myexpand环境
+%
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+\newcounter{myExpandWordCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\small,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,blue!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myExpandWordCounter}\sffamily\large 扩展词汇~\themyExpandWordCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myExpandWord}
+
+
+%% marginpar for exercise
+\SetupExSheets{headings=margin-nr}
+
+%%
+%% 寒假学习计划的临时环境
+%来源：http://tex.stackexchange.com/questions/171951/how-was-this-tip-box-produced/171954#171954
+%%
+%% 若需要修改TIP的标签位置，修改 \coordinate (aux) at ( $ (O)!0.5!(P) $ );的中间0.5这个数值
+\newcounter{myPlanCounter}
+
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=1.8cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,green!30]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,green]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!30,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\refstepcounter{myPlanCounter}\sffamily\large 计划阶段~\themyPlanCounter} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myPlan}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% mySimpExpand
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% 2016-12-22继续扩展上面的环境，打算做一个词汇积累类型的新环境,这个目前打算用来做英语的扩展词汇用,最终目标
+%也是替换掉上自己写的简单的myexpand环境
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\tcbset{colback=Salmon!50!white,colframe=FireBrick!75!black, width=(\linewidth-8mm)/2,before=,after=\hfill,equal height group=ske}
+\newcounter{mySimpExpandCnt}
+\newenvironment{mySimpExpand}[1][]
+  {\refstepcounter{mySimpExpandCnt}\begin{tcolorbox}[
+    colback=green!5,
+    colframe=green!40!black,
+    title=\large{扩展词汇-\themySimpExpandCnt : #1}]
+  }
+  {\end{tcolorbox}}
+
+%% ReadIt(大家说英语节目的内容整理)
+\newmdenv[
+hidealllines=true,
+innertopmargin=16pt,
+innerbottommargin=10pt,
+font=\sffamily\large,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=35pt,
+skipbelow=15pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.1!(P) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=20pt]aux|-P) --
+    ([yshift=20pt,xshift=4cm]aux|-P) --
+    ([xshift=4cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Read It} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myReadList}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\normalsize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily read it} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily read it} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList2}
+
+%% for keywords
+\newmdenv[
+hidealllines=true,
+innertopmargin=14pt,
+innerbottommargin=8pt,
+font=\sffamily\footnotesize,
+leftmargin=0.0cm,
+rightmargin=0.0cm,
+skipabove=34pt,
+skipbelow=13pt,
+singleextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P) $ );
+  \fill[rounded corners=4pt,line width=1pt,gray!10]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+     ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O) --
+    (O) -- cycle;
+  \node at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+firstextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \fill[rounded corners=8pt,line width=1pt,gray!10,overlay]
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) {[sharp corners] --
+    ([yshift=-6pt]P) --
+    ([yshift=-6pt]O|-P) } -- cycle;
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O) --
+    (O|-P) --
+    (aux|-P) --
+    ([yshift=15pt]aux|-P) --
+    ([yshift=15pt,xshift=3cm]aux|-P) --
+    ([xshift=3cm]aux|-P) --
+    (P) --
+    (P|-O);
+  \node[overlay] at ([xshift=2cm,yshift=6pt]aux|-P)
+    {\sffamily Keywords} ;
+  },
+middleextra={
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O);
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (P) --
+    (P|-O);
+  },
+secondextra={
+  \coordinate (aux) at ( $ (O)!0.5!(P|-O) $ );
+  \draw[rounded corners=8pt,line width=1pt,gray,overlay]
+    (O|-P) --
+    (O) --
+    (P|-O) --
+    (P);
+  },
+]{myWordList}
+
+
+%% 下面这个适合定理的风格
+
+%% FROM - http://tex.stackexchange.com/questions/135871/what-are-the-relative-strong-and-weak-points-between-tcolorbox-and-mdframed
+%\newcounter{mySimpExpandCounter}
+%\tcbuselibrary{theorem}
+%\newtcbtheorem[number within=section]{mySimpExpand22222}{My Theorem}%
+%{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+
+
+%\titleformat{\section}[block]{\kai}{\thesection}{10pt}{}
+
+%% 2015-10-18 Try use glossaries packages for English Words Annotation
+%\input words.tex
+
+%\makeglossaries
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+这是语法文档的\XeLaTeX{}格式输出。
+\end{abstract}
+
+%%% start new page from the first
+\newpage
+\section{小学错题}
+
+\input xiaoxue.tex
+
+\begin{thebibliography}{99}
+\bibitem{bibNewConceptEngYoungVer} 外语教学与研究出版社:{\em 新概念英语青少版入门级}, 2010年.
+\bibitem{bibEngJuniorOneA}译林出版社:{\em 小学英语(一上)}, 2012年.
+\bibitem{bibEngJuniorOneB}译林出版社:{\em 小学英语(一下)}, 2012年.
+\bibitem{bibPhonicsStageTwo} 外语教学与研究出版社:{\em 丽声拼读故事会 第二级}, 2011年.
+\bibitem{bibNationalGeoBasic} 外语教学与研究出版社:{\em 国家地理儿童百科入门级}, 2010年.
+\bibitem{bibNewDongFangReadBasic} 西安交通大学出版社:{\em 新东方泡泡剑桥儿童英语故事阅读}, 2012年.
+\bibitem{bibCaliforniaMath}McGraw-Hill Press:{\em 加州小学数学}, 2012年.
+\end{thebibliography}
+
+
+%%%%Index%%%%%
+\printglossaries
+
+\printindex
+
+\end{document}
