@@ -387,7 +387,7 @@ class Vocabulary:
       "make", "man", "many", "me", "morning", "mother", "my", "myself", "much","music", "must", "Me too", "Miss Thin", "Mr Chan", "Mrs Ship",
       "name", "new", "next", "nine", "no", "not", "now",
       "of", "off", "old", "on", "one", "only", "open", "or", "our", "out",
-      "pen", "pig", "play", "please", "put",
+      "parent", "pen", "pig", "play", "please", "put",
       "quick", "quickly",
       "read", "red", "right", "run",
       "say", "school", "see", "she", "shop", "shopping", "should", "sing", "sister", "sit", "six", "sleep", "slow", "slowly","so", "some", "soon", "stand", "stop", "sun",
