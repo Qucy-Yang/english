@@ -378,7 +378,7 @@ class Vocabulary:
       "cake", "can", "car", "card", "cat", "classroom", "clean", "close", "cold", "color", "cool", "come", "cut",
       "dad", "dance", "day", "didn't", "do", "does", "dog", "down", "did", "draw",
       "eat", "egg", "every", "English",
-      "fast", "father", "find", "fish","five", "fly", "food", "foot", "football", "for", "fox", "from",
+      "fast", "father", "few", "find", "fish","five", "fly", "food", "foot", "football", "for", "fox", "from",
       "get", "girl", "give",  "go", "good", "green",
       "had", "happy", "hand", "has", "have", "he", "help", "her", "here", "him", "his", "home", "hot", "hour", "how",
       "if", "in", "is", "isn't", "it", "I",
